@@ -59,8 +59,8 @@ export const MenuDrawer: React.FC<MenuDrawerProps> = ({ classes, handleMenuItemC
           handleMenuItemClick={handleMenuItemClick}
         />
         <MenuDrawerListItem
-          to="/experiments"
-          text="Experiments"
+          to="/analyses"
+          text="Analyses"
           classes={classes}
           handleMenuItemClick={handleMenuItemClick}
         />

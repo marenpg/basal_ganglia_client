@@ -6,7 +6,7 @@ import { CheckBoxElement } from "../../../utils/types";
 import { BgLinkTable } from "../../Base/BgTable";
 import Checkboxes from "../../Base/Checkboxes";
 
-import { getConnectionId, sortRegionConnections, getFilteredConnections, getRegionConnectivity } from "./utils";
+import { getConnectionId, sortRegionConnections, getFilteredConnections } from "./utils";
 import { ConnectivityDialog } from "./ConnectivityDialog";
 import { connectivityCheckboxes, relationTypeCheckboxes, connectivityTableHeaders, RegionConnectivity, BrainRegionConnectionsProps, TableOrders } from "./types";
 

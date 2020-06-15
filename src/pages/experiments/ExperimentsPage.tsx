@@ -45,7 +45,7 @@ const ExperimentsPage: React.FC<StyleProps> = ({ classes }) => {
         headerContainerClass={classes.headerContainer}
         pageHeaderClass={classes.pageHeader}
         subtitle=" "
-        title={"Experiments"}>
+        title={"Analyses"}>
         <Box display="flex" justifyContent="center" flexDirection="column">
           <RadioButtons
             legend="Species:"

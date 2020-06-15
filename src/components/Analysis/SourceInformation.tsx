@@ -5,7 +5,6 @@ import { AnalysisContext } from "../../providers/contexts";
 
 import { InformationCard, InformationTable } from "../Base/InformationCard";
 import { TableElements } from "./types";
-import { Source } from "../../utils/api/types";
 
 const getName = (sourceName: string) => {
   if (!sourceName) return "";

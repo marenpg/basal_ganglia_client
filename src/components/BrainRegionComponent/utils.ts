@@ -1,7 +1,6 @@
 import {
   BrainRegion,
   CellType,
-  Experiment,
   CellClass,
   CellGroup,
   Analysis,
@@ -9,7 +8,7 @@ import {
 import { CellTypeTreeNode } from "../../utils/types";
 import { getCellTypeTreeNode } from "../CellTypes/utils";
 
-export const getCellsInAllRegions = (regions: BrainRegion[]) => {
+export const getCellsInAllRegions = (regions: BrainRegion[]): CellType[] => {
   const cellTypes: CellType[] = regions.reduce(
     (acc: any, current: BrainRegion, index: number) => {
       if ("cellsObserved" in acc) {
@@ -28,7 +27,7 @@ const getSubregionsHelper = (
   region: BrainRegion,
   subRegions: BrainRegion[],
   map: { [key: string]: BrainRegion }
-) => {
+): BrainRegion[] => {
   region.subRegions.map((r) => {
     const child = map[r.id];
     if (child.subRegions) {
@@ -51,7 +50,11 @@ export const getAllSubRegions = (
   return getSubregionsHelper(region, subRegions, map);
 };
 
-export const sortElements = (elements: any, order: string, orderBy: string) => {
+export const sortElements = (
+  elements: any,
+  order: string,
+  orderBy: string
+): any => {
   if (order === "asc") {
     return elements.sort((a: any, b: any) =>
       a[orderBy] > b[orderBy] ? 1 : a[orderBy] < b[orderBy] ? -1 : 0

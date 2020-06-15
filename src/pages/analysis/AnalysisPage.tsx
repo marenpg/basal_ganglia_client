@@ -17,12 +17,12 @@ const AnalysisPage: React.FC<StyleProps> = ({ classes }) => {
   return (
     <>
       <IconButton
-        aria-label="Back to all experiments"
-        title="See all experiments"
+        aria-label="Back to all analyses"
+        title="See all analyses"
         color="primary"
         className={classes.closeButton}
         component={Link}
-        href={`/experiments/specie=${selectedAnalysis.specimen?.specie?.id}`}
+        href={`/analyses/specie=${selectedAnalysis.specimen?.specie?.id}`}
       >
         <CancelIcon />
       </IconButton>

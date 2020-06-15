@@ -57,7 +57,7 @@ export const BrainRegionTabs: React.FC<BrainRegionTabsProps> = ({
             textColor="primary"
           >
             <Tab label="Cells" {...a11yTabProps(0)} />
-            <Tab label="Experiments" {...a11yTabProps(1)} />
+            <Tab label="Analyses" {...a11yTabProps(1)} />
             {connectivity && connectivity.length > 0 &&
               <Tab label="Connected Regions" {...a11yTabProps(2)} />
             }

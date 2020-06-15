@@ -13,7 +13,7 @@ export const Home: React.FC<StyleProps> = ({ classes }) => (
       <Box display="flex" justifyContent="space-around">
         <HeadingBox classes={classes} url="/brain-regions" imgSrc="/img/icons/brain.svg" imgTitle="Brain icon" heading="Brain regions" description="" />
         <HeadingBox classes={classes} url="/cell-types" imgSrc="/img/icons/cell.svg" imgTitle="Neuron icon" heading="Cell types" description="" />
-        <HeadingBox classes={classes} url="/experiments" imgSrc="/img/icons/experiment.svg" imgTitle="Experiment icon" heading="Experiments" description="" />
+        <HeadingBox classes={classes} url="/analyses" imgSrc="/img/icons/experiment.svg" imgTitle="Analyses icon" heading="Analyses" description="" />
       </Box>
     </Container>
   </>

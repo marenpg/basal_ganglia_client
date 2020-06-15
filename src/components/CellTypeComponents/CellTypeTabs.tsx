@@ -40,7 +40,7 @@ export const CellTypeTabs: React.FC = () => {
             indicatorColor="primary"
             textColor="primary"
           >
-            <Tab label="Experiments" {...a11yTabProps(0)} />
+            <Tab label="Analyses" {...a11yTabProps(0)} />
             <Tab label="Brain regions" {...a11yTabProps(1)} />
           </Tabs>
         </AppBar>

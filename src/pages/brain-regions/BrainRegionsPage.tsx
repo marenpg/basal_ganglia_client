@@ -88,17 +88,15 @@ const BrainRegionsPage: React.FC<StyleProps> = ({ classes }) => {
           justifyContent="space-between"
           className={classes.specieTreeContainer}
         >
-          {speciesRegions && speciesRegions.map(specieRegions => {
-            if (specieRegions.selected) {
-              return <SpecieBrainRegions
-                key={specieRegions.specieId}
-                title={`${specieRegions.specieName}`}
-                filter={searchFilter}
-                regions={specieRegions.regions}
-                handleRegionSelected={handleRegionSelected}
-              />
-            }
-          })}
+          {speciesRegions && speciesRegions.map(specieRegions => (specieRegions.selected && <SpecieBrainRegions
+            key={specieRegions.specieId}
+            title={`${specieRegions.specieName}`}
+            filter={searchFilter}
+            regions={specieRegions.regions}
+            handleRegionSelected={handleRegionSelected}
+          />))
+
+          }
         </Box>
       </Container>
       {selectedRegionId &&

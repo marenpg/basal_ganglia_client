@@ -109,7 +109,7 @@ export const getStereologyElements= (data: Data): TableElements => {
   { title: "Counted objects", value: data.stereology.countedObjects },
   { title: "Coefficient of error", value: data.stereology.coefficientOfError },
   { title: "Estimated volume", value: data.stereology?.volumeUnit ? `${data.stereology.estimatedVolume} ${data.stereology.volumeUnit}`: data.stereology?.estimatedVolume },
-  { title: "Any except probe", value: data.stereology.anyExceptProbe },
+  // { title: "Any except probe", value: data.stereology.anyExceptProbe },
 ])};
 
 export const getQuantitationSummary = (qunatitation: Quantitation): string => {
