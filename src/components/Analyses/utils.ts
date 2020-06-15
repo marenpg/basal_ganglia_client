@@ -1,28 +1,10 @@
 import { Analysis, DataType } from "../../utils/api/types";
 import { CheckBoxElement } from "../../utils/types";
-import { ExperimentWithDataTypes, TableSort } from "./types";
+import { TableSort } from "./types";
 import { Mark } from "@material-ui/core";
 import { TableRow } from "../Base/BgTable/types";
 import { sortElements } from "../../utils";
 
-export const getDataTypeBoxes = (
-  experiments: ExperimentWithDataTypes[]
-): CheckBoxElement[] => {
-  let dataTypeSet: Set<string> = new Set();
-  experiments.map((experiment) => {
-    if (experiment.dataTypes) {
-      dataTypeSet = new Set([...dataTypeSet].concat(experiment.dataTypes));
-    }
-  });
-
-  const dataTypes = [...dataTypeSet].map((dataType, i) => ({
-    id: i,
-    name: dataType,
-    selected: true,
-  }));
-
-  return dataTypes;
-};
 
 const sortFunction = (a:string, b:string, order: string) => {
   if (!a) a= "";
@@ -134,30 +116,39 @@ export const headers = [
     { text: "Data types", val: "dataType" },
     { text: "Strain", val: "strain" },
     { text: "Substrain", val: "substrain" },
-    { text: "Sex", val: "sex" }
+    { text: "Sex", val: "sex" },
+    { text: "Cell type", val: "cellTypePutative" },
+    { text: "Object of interest", val: "" }
   ];
   
-export const getSubRows = (analysis: Analysis): TableRow[] => (
-  sortElements<DataType[]>(analysis.dataTypes, "asc", "name").map(dataType => (
+export const getSubRows = (analysis: Analysis): TableRow[] => {
+  const dataTypes: DataType[] = []
+  analysis.quantitations.map(q => (dataTypes.push(q)));
+  analysis.cellMorphologies.map(q => (dataTypes.push(q)));
+  analysis.distributions.map(q => (dataTypes.push(q)));
+  return(
+  sortElements<DataType[]>(dataTypes, "asc", "id").map(dataType => (
     {
       id: `${analysis.id}-${dataType.id}`,
       link: `/analyses/${analysis.id}/${dataType.id}`,
-      subHeaders: [{ text: analysis.dataType }],
-      cells: [{ text: dataType.name.replace(/_/g, ", ") }]
+      cells: [{ text: `${dataType.name.split("_")[0]}, ${dataType.name.split("_")[1]}` }, {text:dataType.regionRecord?.primaryRegion?.name}]
     }
   ))
-)
+)}
   
 export const getRows = (analyses: Analysis[]): TableRow[] => (
   analyses.map(analysis => (({
     id: analysis.id,
     cells: [
-      { text: analysis.name },
+      { text: `${analysis.name.split("_")[0]}, ${analysis.name.split("_")[1]}` },
       { text: analysis.dataType },
       { text: analysis.specimen?.strain?.name },
       { text: analysis.specimen?.substrain?.name },
-      { text: analysis.specimen?.sex?.name }
+      { text: analysis.specimen?.sex?.name },
+      { text: analysis.cellTypePutative?.name },
+      {text: analysis.objectOfInterest?.NeuralStructure?.name}
     ],
+    subHeaders: [{ text: analysis.dataType }, { text: "Brain region" }],
     subRows: getSubRows(analysis)
   })))
 );

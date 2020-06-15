@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 
 import { Header } from "../Base/Headers";
 import { BrainRegion } from "../../utils/api/types";
@@ -6,7 +6,6 @@ import { BrainRegionProps } from "./types";
 import { SubRegionToggle } from "./SubRegionToggle";
 import { BrainRegionTabs } from "./BrainRegionTabs";
 import { getAllSubRegions } from "./utils";
-import { BrainRegionsDataContext } from "../../providers/contexts";
 
 export const BrainRegionComponent: React.FC<BrainRegionProps> = ({ classes, id, regions, drawer = false }) => {
   const [allSubRegions, setAllSubRegions] = useState<BrainRegion[]>([]);
@@ -15,17 +14,14 @@ export const BrainRegionComponent: React.FC<BrainRegionProps> = ({ classes, id, 
   const [subRegionsSelected, setSubRegionsSelected] = useState(true);
   const [hasSubRegions, setHasSubRegions] = useState<boolean>();
 
-  const { BrainRegion: brainRegions, Specie: species } = useContext(BrainRegionsDataContext);
-
   useEffect(() => {
-
     const selectedRegion = regions.filter(r => r.id === id)[0];
     const updatedSubRegions = getAllSubRegions(selectedRegion, regions);
     setSubRegions(updatedSubRegions);
     setAllSubRegions(updatedSubRegions);
     setSelectedRegion(selectedRegion);
     setHasSubRegions(regions.length > 1);
-  }, [regions]);
+  }, [id, regions]);
 
   const handleSubRegionsSelectedChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     const newSubRegionsSelected = event.target.checked;

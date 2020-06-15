@@ -7,16 +7,6 @@ interface MultiselectProps {
   updateSelectedValues: (values: string[]) => void;
 }
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      // maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-    },
-  },
-};
-
 export const Multiselect: React.FC<MultiselectProps> = ({ elements, label, updateSelectedValues }) => {
   const [selected, setSelected] = useState<string[]>([]);
 
@@ -39,7 +29,6 @@ export const Multiselect: React.FC<MultiselectProps> = ({ elements, label, updat
         onChange={handleChange}
         input={<Input />}
         renderValue={(selected) => (selected as string[]).join(', ')}
-        MenuProps={MenuProps}
       >
         {elements.map((element) => (
           <MenuItem key={element} value={element}>

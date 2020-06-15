@@ -113,7 +113,6 @@ export const getStereologyElements= (data: Data): TableElements => {
 ])};
 
 export const getQuantitationSummary = (qunatitation: Quantitation): string => {
-  console.log(qunatitation);
   if(qunatitation.number){
     if(!qunatitation.originalExtent) return "";
     const qNumber = qunatitation.originalExtent === "bilateral" ? qunatitation.number/2 : qunatitation.number

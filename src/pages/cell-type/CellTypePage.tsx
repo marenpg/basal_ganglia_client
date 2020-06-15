@@ -1,7 +1,7 @@
 
 import React, { useContext } from "react";
 
-import { AnalysisContext, CellTypeContext } from "../../providers/contexts";
+import { CellTypeContext } from "../../providers/contexts";
 
 import { Header } from "../../components/Base/Headers";
 import { StyleProps, style } from "./CellTypePage.jss";

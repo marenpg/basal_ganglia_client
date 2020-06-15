@@ -37,7 +37,7 @@ export const DistributionInformation: React.FC = () => {
     ]);
 
     setSummary(getDistributionSummary(data));
-  }, [selectedAnalysis]);
+  }, [selectedAnalysis, selectedData]);
 
   if (!selectedAnalysis) return <></>;
 

@@ -38,7 +38,7 @@ export const BrainRegionTabs: React.FC<BrainRegionTabsProps> = ({
     setAnalysisIds(getAnalysisIdsInRegions([selectedRegion].concat(subRegions)));
 
     setConnectivity(getRegionConnectivity(selectedRegion));
-  }, [subRegions])
+  }, [selectedRegion, subRegions])
 
   const handleTabChange = (_: any, newTabValue: number) => {
     setTabValue(newTabValue);

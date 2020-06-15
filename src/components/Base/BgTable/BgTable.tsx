@@ -51,8 +51,8 @@ export const BgLinkTable: React.FC<BgLinkTableProps> = ({
         {headers && (
           <TableHead>
             <TableRow>
-              {headers.map(header => (
-                <React.Fragment key={header.text}>
+              {headers.map((header, i) => (
+                <React.Fragment key={`${header.text}-${i}`}>
                   {header.val ? (
                     <SortableTableHeader val={header.val} text={header.text} />
                   ) : (

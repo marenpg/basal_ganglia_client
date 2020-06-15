@@ -33,7 +33,7 @@ export const MorphologyInformation: React.FC = () => {
       { title: "RRID", value: data.reconstructionMethod.rrid },
     ]);
 
-  }, [selectedAnalysis]);
+  }, [selectedAnalysis, selectedData]);
 
   const getNeuromorphoData = async (morphology: CellMorphology) => {
     const neuromorphoId = morphology.neuromorphoId.indexOf("NMO_0") >= 0 ? morphology.neuromorphoId.replace("NMO_0", "") : morphology.neuromorphoId.replace("NMO_", "");

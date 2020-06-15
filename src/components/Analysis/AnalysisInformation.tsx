@@ -25,7 +25,7 @@ export const AnalysisInformation: React.FC = () => {
   useEffect(() => {
     selectedAnalysis?.lightFluorescenceMicroscopes && selectedAnalysis?.lightFluorescenceMicroscopes?.length > 0 && (
       setLfElements(selectedAnalysis.lightFluorescenceMicroscopes.map(l => ([
-        { title: "Mounting medium", value: l.mountingMedium },
+        { title: "Mounting medium", value: l.mountingMedium?.name },
         { title: "Refraction medium", value: l.refractionMedium },
         { title: "Numerical aperature", value: l.numericalAperature },
         { title: "Objective lens", value: l.objectiveLens },

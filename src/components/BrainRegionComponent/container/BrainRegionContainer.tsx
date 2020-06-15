@@ -22,7 +22,7 @@ export const BrainRegionComponent3: React.FC<BrainRegionProps> = ({ classes, id,
         setAllSubRegions(updatedSubRegions);
         setSelectedRegion(selectedRegion);
         setHasSubRegions(regions.length > 1);
-    }, [regions]);
+    }, [id, regions]);
 
     const handleSubRegionsSelectedChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
         const newSubRegionsSelected = event.target.checked;

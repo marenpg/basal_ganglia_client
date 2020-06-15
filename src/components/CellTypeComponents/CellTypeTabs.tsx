@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 
-import { AppBar, Box, Container, Divider, Tabs, Tab } from "@material-ui/core";
+import { AppBar, Box, Container, Tabs, Tab } from "@material-ui/core";
 import { CellTypeContext } from "../../providers/contexts";
 import TabPanel from "../Base/TabPanel";
 import AnalysesContainer from "../../containers/AnalysesContainer";

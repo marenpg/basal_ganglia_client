@@ -370,7 +370,9 @@ const analysisDetailedQuery = gql`
       lightFluorescenceMicroscopes {
         id
         name
-        mountingMedium
+        mountingMedium {
+          name
+        }
         refractionMedium
         numericalAperature
         objectiveLens

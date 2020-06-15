@@ -4,7 +4,7 @@ export const getParentsOfElement = (
   leafElement: any,
   allElements: any[],
   parentKey: string
-) => {
+): any[] => {
   let child = leafElement;
   const parents = [];
   while (child) {
@@ -24,7 +24,7 @@ export const getParentsOfElements = (
   leafElements: any[],
   allElements: any[],
   parentKey: string
-) => {
+): any[] => {
   let matchingRegions: Set<any> = new Set();
   leafElements.map((leafNode) => {
     const parentRegions = leafNode[parentKey]
@@ -37,7 +37,10 @@ export const getParentsOfElements = (
   return [...matchingRegions];
 };
 
-const getExpandedNodeIdsHelper = (nodes: GenericTreeNode[], ids: string[]) => {
+const getExpandedNodeIdsHelper = (
+  nodes: GenericTreeNode[],
+  ids: string[]
+): string[] => {
   let newIds: string[] = [];
   nodes.map((node) => {
     if (node.expanded) {
@@ -50,12 +53,14 @@ const getExpandedNodeIdsHelper = (nodes: GenericTreeNode[], ids: string[]) => {
   return newIds.concat(ids);
 };
 
-export const getExpandedNodeIds = (nodes: GenericTreeNode[]) => {
+export const getExpandedNodeIds = (nodes: GenericTreeNode[]): string[] => {
   const uniqueIds: Set<string> = new Set(getExpandedNodeIdsHelper(nodes, []));
   return [...uniqueIds];
 };
 
-export const setAllNodesExpanded = (nodes: GenericTreeNode[]) => {
+export const setAllNodesExpanded = (
+  nodes: GenericTreeNode[]
+): GenericTreeNode[] => {
   nodes.map((rootNode) => {
     rootNode.expanded = true;
     if (rootNode.children.length > 0) {

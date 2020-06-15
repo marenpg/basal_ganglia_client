@@ -12,7 +12,7 @@ interface AnalysesContainerProps extends StyleProps {
   filters?: string;
 }
 
-const AnalysesContainer: React.FC<AnalysesContainerProps> = ({ classes, analysisIds, filters, children }) => {
+const AnalysesContainer: React.FC<AnalysesContainerProps> = ({ analysisIds, filters, children }) => {
   const analysisIdObjects = analysisIds ? analysisIds.map(id => ({ id })) : [];
   const { loading, data, error } = useAnalysesHooks<AnalysesData>(analysisIdObjects);
 
@@ -40,7 +40,6 @@ const AnalysesContainer: React.FC<AnalysesContainerProps> = ({ classes, analysis
           filterMap[filter[0]] = filter[1].replace("[", "").replace("]", "").split(",");
         }
       })
-      console.log("filterMap", filterMap);
       value.filters = filterMap;
     }
     return value;

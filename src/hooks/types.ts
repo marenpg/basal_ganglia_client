@@ -6,7 +6,6 @@ import {
   Sex,
   Reporter,
   Strain,
-  Substrain,
   CellType,
   AgeCategory,
 } from "../utils/api/types";

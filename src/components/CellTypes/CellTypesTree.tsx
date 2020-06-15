@@ -10,12 +10,13 @@ import { CellTypeComponent } from "../CellTypeComponents";
 import { CellTypesDataContext } from "../../providers/contexts";
 import { getExpandedNodeIds } from "../../utils/treeMapper";
 
-export const CellTypesTree: React.FC<CellTypesTreeProps> = ({ classes, cellTypeTree }) => {
+export const CellTypesTree: React.FC<CellTypesTreeProps> = ({ cellTypeTree }) => {
   const [treeNodes, setTreeNodes] = useState<CellTypeTreeNode[]>([]);
   const [expandedNodeIds, setNodeIds] = useState<string[]>([]);
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
   const [selectedCellType, setSelectedCellType] = useState<CellType | CellTypeTreeNode>();
-  const { CellType } = useContext(CellTypesDataContext);
+
+  const { CellType: cellTypes } = useContext(CellTypesDataContext);
 
   useEffect(() => {
     setTreeNodes(cellTypeTree);
@@ -31,8 +32,8 @@ export const CellTypesTree: React.FC<CellTypesTreeProps> = ({ classes, cellTypeT
       setSelectedCellType(cellType);
       return;
     }
-    if (CellType) {
-      setSelectedCellType(CellType.filter((c: CellType) => c.id === cellType.originalId)[0]);
+    if (cellTypes) {
+      setSelectedCellType(cellTypes.filter((c: CellType) => c.id === cellType.originalId)[0]);
     }
   };
 

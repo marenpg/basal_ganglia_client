@@ -32,7 +32,7 @@ const BrainRegionConnectionsContainer: React.FC<BrainRegionConnectionsProps> = (
 		setAllConnections(sorted);
 		loading.current = false;
 
-	}, [connectivity]);
+	}, [connectivity, order, orderBy]);
 
 
 	if (!loading.current && !allConnections.length) {

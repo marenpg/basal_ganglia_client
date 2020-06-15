@@ -1,11 +1,5 @@
 import { StyleProps } from "./CellTypes.jss";
-import {
-  CellGroup,
-  Specie,
-  CellClass,
-  CellType,
-  BrainRegion,
-} from "../../utils/api/types";
+import { CellGroup, Specie, CellClass, CellType } from "../../utils/api/types";
 import { CellTypeTreeNode } from "../../utils/types";
 
 export type CellGroupTree = CellGroup & { children: CellClassTree[] };

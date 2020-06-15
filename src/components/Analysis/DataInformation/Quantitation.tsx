@@ -37,7 +37,7 @@ export const QuantitationInformation: React.FC = () => {
     ]);
 
     setSummary(getQuantitationSummary(data));
-  }, [selectedAnalysis]);
+  }, [selectedAnalysis, selectedData]);
 
   if (!selectedAnalysis) return <></>;
 

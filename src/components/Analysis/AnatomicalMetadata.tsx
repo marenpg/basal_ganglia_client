@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 
-import { Box, Typography } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import { AnalysisContext } from "../../providers/contexts";
 
 import { InformationCard, InformationTable } from "../Base/InformationCard";
@@ -8,33 +8,22 @@ import { TableElement, TableElements } from "./types";
 import { getStringRep, getDataTypeShortName, getAtlasPrettyName } from "./utils";
 
 export const AnatomicalMetadata: React.FC = () => {
-  const [ooiElements, setOoiElements] = useState<TableElements>([]);
   const [regionElements, setRegionElements] = useState<TableElements>([]);
   const [metadataElements, setMetadataElements] = useState<TableElements>([]);
   const [collectorsComment, setCollectorsComment] = useState<TableElement>();
 
-  const { selectedAnalysis } = useContext(AnalysisContext);
+  const { selectedAnalysis, selectedData } = useContext(AnalysisContext);
 
   useEffect(() => {
-    if (!selectedAnalysis) return;
+    if (!selectedAnalysis || !selectedData) return;
 
-    selectedAnalysis.objectOfInterest && setOoiElements([
-      { title: "Name:", value: getStringRep(selectedAnalysis.objectOfInterest.NeuralStructure.name, selectedAnalysis.objectOfInterest.NeuralStructure.ontology) },
-      { title: "Recognition criteria:", value: selectedAnalysis.objectOfInterest.recognitionCriteria },
-    ]);
+    const regionRecord = selectedData.regionRecord;
 
-    const regionRecord =
-      (selectedAnalysis?.quantitations && selectedAnalysis?.quantitations[0]?.regionRecord)
-      ?? (selectedAnalysis?.distributions && selectedAnalysis?.distributions[0]?.regionRecord)
-      ?? (selectedAnalysis?.cellMorphologies && selectedAnalysis?.cellMorphologies[0]?.regionRecord)
-
-    const regionZone =
-      (selectedAnalysis?.quantitations && selectedAnalysis?.quantitations[0]?.regionZone)
-      ?? (selectedAnalysis?.cellMorphologies && selectedAnalysis?.cellMorphologies[0]?.regionZone)
+    const regionZone = "regionZone" in selectedData ? selectedData.regionZone : undefined;
 
     const regions = selectedAnalysis.brainRegions.map(r => r.name)?.join(", ");
     regionRecord && setRegionElements([
-      { title: "Brain region", value: regions },
+      { title: "Brain region", value: regionRecord.primaryRegion?.name },
       { title: "Region zone", value: regionZone && getStringRep(regionZone.name, regionZone.ontology) },
       { title: "Coverage", value: regionRecord.coverage, tooltip: "Something" },
       { title: "Specificity", value: regionRecord.specificity, tooltip: "soomtthing" },

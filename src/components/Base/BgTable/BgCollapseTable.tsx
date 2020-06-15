@@ -89,6 +89,11 @@ export const BgCollapseTable: React.FC<BgCollapseTableProps> = ({
             {visibleRows.map(row => (
               <CollapseRow key={row.id} row={row} classes={classes} />
             ))}
+            {emptyRows > 0 && (
+              <TableRow style={{ height: 33 * emptyRows }}>
+                <TableCell colSpan={6} />
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       </TableContainer>

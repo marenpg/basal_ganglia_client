@@ -12,14 +12,14 @@ import { BrainRegion } from "../../utils/api/types";
 export const CellTypeBrainRegionTree: React.FC<CellTypeBrainRegionTreeProps> = ({ brainRegions }) => {
   const [treeNodes, setTreeNodes] = useState<GenericTreeNode[]>([]);
   const [expandedIds, setExpandedIds] = useState<string[]>([]);
-  const { BrainRegion } = useContext(CellTypesDataContext);
+  const { BrainRegion: allBrainRegions } = useContext(CellTypesDataContext);
 
   useEffect(() => {
-    if (BrainRegion) {
+    if (allBrainRegions) {
       const brainRegionsWithInfo: BrainRegion[] = []
-      BrainRegion.map(br => {
+      allBrainRegions.map(br => {
         brainRegions.map(br2 => {
-          if (br2.id == br.id) {
+          if (br2.id === br.id) {
             br.name = br2.name;
             brainRegionsWithInfo.push(br);
           }
@@ -31,7 +31,7 @@ export const CellTypeBrainRegionTree: React.FC<CellTypeBrainRegionTreeProps> = (
       setExpandedIds(getExpandedNodeIds(brainRegionTree));
 
     }
-  }, [brainRegions]);
+  }, [allBrainRegions, brainRegions]);
 
   return (
     <Box pt={1}>

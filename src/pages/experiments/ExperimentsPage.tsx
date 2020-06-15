@@ -28,7 +28,7 @@ const ExperimentsPage: React.FC<StyleProps> = ({ classes }) => {
 
   useEffect(() => {
     filters?.specie && species && setSelectedSpecieId(species.find(s => s.id === filters.specie)?.id ?? "1");
-  }, [filters]);
+  }, [filters, species]);
 
   const getAnalysisOnSpecie = (specieId: string, analysesToFilter?: Analysis[]) => {
     return analysesToFilter ? analysesToFilter.filter(a => specieId === a.specimen.specie.id) : [];

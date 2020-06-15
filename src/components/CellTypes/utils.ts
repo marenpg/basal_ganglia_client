@@ -1,5 +1,5 @@
 import { CellClass, CellGroup, CellType } from "../../utils/api/types";
-import { CellTypeTreeNode, GenericTreeNode } from "../../utils/types";
+import { CellTypeTreeNode } from "../../utils/types";
 
 export const getCellTypeTreeNode = (
   cellType: CellGroup | CellClass | CellType,

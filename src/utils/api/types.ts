@@ -485,7 +485,6 @@ export interface ElectronMicroscopeDetail {
 export interface LightFluorescenceMicroscopeDetail {
   id: string;
   name: string;
-  mountingMedium: number;
   refractionMedium: string;
   numericalAperature: number;
   objectiveLens: string;
@@ -493,5 +492,6 @@ export interface LightFluorescenceMicroscopeDetail {
   pixelSize: number;
   z_stack: boolean;
   opticalSliceSize: string;
+  mountingMedium: Solution;
   microscope: Microscope;
 }

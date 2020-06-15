@@ -8,6 +8,24 @@ const analysisQuery = gql`
       dataType
       name
       numberOfAnimals
+      cellMorphologies {
+        id
+        name
+        regionRecord {
+          primaryRegion {
+            name
+          }
+        }
+      }
+      distributions {
+        id
+        name
+        regionRecord {
+          primaryRegion {
+            name
+          }
+        }
+      }
       experiment {
         id
         name
@@ -28,6 +46,14 @@ const analysisQuery = gql`
           id
         }
       } # Experierment end
+      cellTypePutative {
+        name
+      }
+      objectOfInterest {
+        NeuralStructure {
+          name
+        }
+      }
       specimen {
         sex {
           name
@@ -42,6 +68,7 @@ const analysisQuery = gql`
           name
         }
         ageCategory {
+          name
           description
         }
       }
@@ -53,12 +80,16 @@ const analysisQuery = gql`
       visualizationMethod {
         name
       }
-      dataTypes {
+
+      quantitations {
         id
         name
-      }
-      quantitations {
         finalEstimateBasis
+        regionRecord {
+          primaryRegion {
+            name
+          }
+        }
       }
     } # Analysis end
     Specie {
@@ -108,9 +139,9 @@ export default <T>(
   data?: T;
   refetch?: any;
 } => {
-  const variables = ids && ids.length ? { filter: { OR: ids } } : {};
+  const filter = ids && ids.length ? { OR: ids } : {};
   return useQuery(analysisQuery, {
     fetchPolicy: "network-only",
-    variables: variables,
+    variables: { filter },
   });
 };

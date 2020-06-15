@@ -57,7 +57,7 @@ export const AdvancedFilter: React.FC<AdvancedFilterProps> = ({ analyses, select
     })
     setSubstrains(udatedSubstrains)
 
-  }, [selectedStrains])
+  }, [selectedStrains, strains])
 
   const handleFilterAnalyses = () => {
     const filteredAnalyses = getFilteredAnalyses(

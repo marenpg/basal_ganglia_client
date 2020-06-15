@@ -20,7 +20,7 @@ export const BrainRegionCellTree: React.FC<BrainRegionCellTreeProps> = ({ cellTy
 
     setTreeNodes(cellTypeTree);
     setExpandedIds(getExpandedNodeIds(cellTypeTree));
-  }, [cellTypes]);
+  }, [allCellTypes, cellClasses, cellGroups, cellTypes]);
 
   return (
     <Box pt={1}>

@@ -1,5 +1,4 @@
 import {
-  Quantitation,
   Analysis,
   ReporterIncubation,
   DataType,

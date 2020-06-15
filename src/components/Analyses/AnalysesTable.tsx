@@ -40,7 +40,7 @@ export const AnalysesTable: React.FC<AnalysesTableProps> = ({ filteredSpecieAnal
     );
     setAnalysesOnSpecie(sortedAnalyses);
     setFilteredAnalyses(sortedAnalyses);
-  }, [analyses, filteredSpecieAnalyses]);
+  }, [analyses, filteredSpecieAnalyses, order, orderBy, species]);
 
 
   useEffect(() => {
