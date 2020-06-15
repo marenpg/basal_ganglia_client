@@ -26,6 +26,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "postinstall": "tsc",
+    "start:dev": "react-scripts start",
     "build": "react-scripts build",
     "heroku-prebuild": "react-scripts build",
     "deploy": "git push heroku master",
