@@ -328,6 +328,14 @@ export interface CellMorphology {
   regionRecord: RegionRecord;
   regionZone: RegionZone;
   reconstructionMethod: Software;
+  morphology: Neuromorpho;
+}
+
+export interface Neuromorpho {
+  id: string;
+  href: string;
+  base64: string;
+  archive: string;
 }
 
 export interface Quantitation {

@@ -5,12 +5,8 @@ const app = express();
 const port = process.env.PORT || 8080;
 
 app.use(express.static(path.join(__dirname, "build")));
-app.get("/*", (req, res) => {
+app.get("/*", (_, res) => {
   res.sendFile(path.join(__dirname, "build/index.html"));
-
-  // if (req.headers["x-forwarded-proto"] === "https") {
-  //   res.redirect("http://" + req.hostname + req.url);
-  // }
 });
 
 app.listen({ port }, () => {

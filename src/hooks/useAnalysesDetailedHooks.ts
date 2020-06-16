@@ -240,6 +240,13 @@ const analysisDetailedQuery = gql`
         morphologicalAttributes
         originalFormat
 
+        morphology {
+          id
+          href
+          base64
+          archive
+        }
+
         regionRecord {
           id
           name
