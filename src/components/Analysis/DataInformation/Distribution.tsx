@@ -31,7 +31,6 @@ export const DistributionInformation: React.FC = () => {
 
     const tableElements: TableElements = getTableElementsDistribution(data);
     if(data.relatedQuantitation) {
-      console.log("HAS RELATED QUANT", data.relatedQuantitation);
       tableElements.push({title: "Related distribution", value: getAnalysisNameFormatted(data.relatedQuantitation.name), link: `/analyses/${data.relatedQuantitation.analysis?.id}/${data.relatedQuantitation.id}`})
     }
     setGenInfoElements(tableElements)

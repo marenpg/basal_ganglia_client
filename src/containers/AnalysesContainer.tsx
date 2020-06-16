@@ -40,6 +40,7 @@ const AnalysesContainer: React.FC<AnalysesContainerProps> = ({ analysisIds, filt
           filterMap[filter[0]] = filter[1].replace("[", "").replace("]", "").split(",");
         }
       })
+
       value.filters = filterMap;
     }
     return value;

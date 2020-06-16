@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import { Box, ExpansionPanel, ExpansionPanelSummary, Typography, ExpansionPanelDetails, Divider, ExpansionPanelActions, Button } from "@material-ui/core";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
@@ -10,6 +10,7 @@ import Checkboxes from "../Base/Checkboxes";
 
 import { getFilteredAnalyses } from "./utils";
 import { Multiselect } from "./Multiselect";
+import { getStringRep } from "../Analysis/utils";
 
 interface AdvancedFilterProps {
   analyses: Analysis[];
@@ -33,15 +34,30 @@ export const AdvancedFilter: React.FC<AdvancedFilterProps> = ({ analyses, select
   const [selectedSubstrains, setSelectedSubstrains] = useState<string[]>([]);
   const [selectedAgeCategories, setSelectedAgeCategories] = useState<string[]>([]);
 
-  const { sex, visualizationMethods, reporters, strains, ageCategories } = useContext(AnalysesContext); // TODO: Use these to make checkbox/filterss
+  const { sex, visualizationMethods, reporters, strains, ageCategories, filters } = useContext(AnalysesContext); // TODO: Use these to make checkbox/filterss
+
+  const mounted = useRef<boolean>(false);
 
   useEffect(() => {
+    if(!analyses?.length) return;
+    clearAllSelected();
     setAllAnalyses(analyses);
     setDataTypeCheckboxes([...new Set(analyses.map(a => a.dataType))].map((d, i) => ({ id: i, name: d, selected: true })));
 
     const allAnimalStatuses = [...new Set(analyses.map(a => a.experiment?.animalStatus))].filter(a => a != null).sort();
     setAnimalStatuses(allAnimalStatuses);
-  }, [analyses]);
+
+    if(!mounted.current) {
+      if(filters?.rrids) {
+        setSelectedReporters(filters.rrids);
+        const filteredAnalyses = getFilteredAnalyses(
+          analyses, undefined, undefined, [], [], [], filters.rrids);
+        handleFilteredAnalysesChange(filteredAnalyses);
+      }
+      mounted.current = true;
+    }
+
+  }, [analyses, selectedSpecieIds, filters]);
 
   useEffect(() => {
     sex && setSexCheckboxes(sex.map(s => ({ ...s, selected: true })));
@@ -51,13 +67,26 @@ export const AdvancedFilter: React.FC<AdvancedFilterProps> = ({ analyses, select
     if (!strains || !selectedStrains.length) return;
 
     const selectedStrainObjects = strains.filter(s => selectedStrains.includes(s.name));
-    let udatedSubstrains: Substrain[] = [];
+    let updatedSubstrains: Substrain[] = [];
     selectedStrainObjects.map(s => {
-      udatedSubstrains = udatedSubstrains.concat(s.substrains);
+      updatedSubstrains = updatedSubstrains.concat(s.substrains);
     })
-    setSubstrains(udatedSubstrains)
-
+    setSelectedSubstrains(selectedSubstrains.filter(s => updatedSubstrains.map(u => u.name).includes(s)))
+    setSubstrains(updatedSubstrains)
   }, [selectedStrains, strains])
+
+
+
+  const clearAllSelected = () => {
+    setDataTypeCheckboxes(dataTypeCheckboxes.map(box => ({...box, selected:true})))
+    setSexCheckboxes(sexCheckboxes.map(box => ({...box, selected:true})))
+    setSelectedAnimalStatuses([]);
+    setSelectedVisualizationMethods([]);
+    setSelectedReporters([]);
+    setSelectedStrains([]);
+    setSelectedSubstrains([]);
+    setSelectedAgeCategories([]);
+  }
 
   const handleFilterAnalyses = () => {
     const filteredAnalyses = getFilteredAnalyses(
@@ -72,6 +101,11 @@ export const AdvancedFilter: React.FC<AdvancedFilterProps> = ({ analyses, select
       selectedSubstrains
     );
     handleFilteredAnalysesChange(filteredAnalyses);
+  }
+
+  const handleClearAllFields = () => {
+    clearAllSelected();
+    handleClearFilter();
   }
 
   const updateCheckboxes = (checkBoxId: string | number, checkBoxes: CheckBoxElement[]) => {
@@ -93,7 +127,7 @@ export const AdvancedFilter: React.FC<AdvancedFilterProps> = ({ analyses, select
   }
 
   return (
-    <ExpansionPanel defaultExpanded={false}>
+    <ExpansionPanel defaultExpanded={filters?.rrids?.length ? true : false}>
       <ExpansionPanelSummary
         expandIcon={<ExpandMoreIcon />}
         aria-controls="panel1a-content"
@@ -117,33 +151,33 @@ export const AdvancedFilter: React.FC<AdvancedFilterProps> = ({ analyses, select
             <Box display="flex" justifyContent="flex-start" flexDirection="row">
 
               <Box pr={2} width="100%" maxWidth="300px">
-                <Multiselect label="Strains" elements={strains.filter(x => selectedSpecieIds.includes(x.comesFrom.id)).map(v => v.name).filter(r => r != null).sort()} updateSelectedValues={handleMultiselectChange(setSelectedStrains)} />
+                <Multiselect label="Strains" elements={strains.filter(x => selectedSpecieIds.includes(x.comesFrom.id)).map(v => v.name).filter(r => r != null).sort()} selected={selectedStrains} updateSelectedValues={handleMultiselectChange(setSelectedStrains)} />
               </Box>
 
               {strains.length > 0 && substrains.length > 0 &&
-                <Multiselect label="Substrains" elements={substrains.map(v => v.name).sort()} updateSelectedValues={handleMultiselectChange(setSelectedSubstrains)} />
+                <Multiselect label="Substrains" elements={substrains.map(v => v.name).sort()} selected={selectedSubstrains}  updateSelectedValues={handleMultiselectChange(setSelectedSubstrains)} />
               }
             </Box>
           }
           {animalStatuses &&
-            <Multiselect label="Animal status" elements={animalStatuses} updateSelectedValues={handleMultiselectChange(setSelectedAnimalStatuses)} />
+            <Multiselect label="Animal status" elements={animalStatuses} selected={selecedAnimalStatuses} updateSelectedValues={handleMultiselectChange(setSelectedAnimalStatuses)} />
           }
           {ageCategories &&
-            <Multiselect label="Age categories" elements={ageCategories.filter(x => selectedSpecieIds.includes(x.specie.id)).map(x => x.description)} updateSelectedValues={handleMultiselectChange(setSelectedAgeCategories)} />
+            <Multiselect label="Age categories" selected={selectedAgeCategories} elements={ageCategories.filter(x => selectedSpecieIds.includes(x.specie.id)).map(x => getStringRep(x.name, x.description) ?? "")} updateSelectedValues={handleMultiselectChange(setSelectedAgeCategories)} />
           }
           {visualizationMethods &&
-            <Multiselect label="Visualization methods" elements={visualizationMethods.map(v => v.name)} updateSelectedValues={handleMultiselectChange(setSelectedVisualizationMethods)} />
+            <Multiselect label="Visualization methods" selected={selectedVisualizationMethods} elements={visualizationMethods.map(v => v.name)} updateSelectedValues={handleMultiselectChange(setSelectedVisualizationMethods)} />
           }
 
           {reporters &&
-            <Multiselect label="Antibodies" elements={reporters.map(v => v.rrid).filter(r => r != null && r.indexOf("RRID") === 0).sort()} updateSelectedValues={handleMultiselectChange(setSelectedReporters)} />
+            <Multiselect label="Antibodies" selected={selectedReporters} elements={reporters.map(v => v.rrid).filter(r => r != null && r.indexOf("RRID") === 0).sort()} updateSelectedValues={handleMultiselectChange(setSelectedReporters)} />
           }
         </Box>
       </ExpansionPanelDetails>
       <Divider />
       <ExpansionPanelActions>
-        <Button size="small" color="primary" onClick={handleClearFilter}>
-          Show all
+        <Button size="small" color="primary" onClick={handleClearAllFields}>
+          Clear filter
           </Button>
         <Button size="small" color="primary" onClick={handleFilterAnalyses}>
           Apply filter

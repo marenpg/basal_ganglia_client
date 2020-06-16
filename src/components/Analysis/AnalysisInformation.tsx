@@ -6,6 +6,8 @@ import { AnalysisContext } from "../../providers/contexts";
 import { InformationCard, InformationTable } from "../Base/InformationCard";
 import { TableElements } from "./types";
 import { orderReporterIncubations } from "./utils";
+import analysis from "../../pages/analysis";
+import { ReporterIncubation } from "../../utils/api/types";
 
 export const AnalysisInformation: React.FC = () => {
   const [lfElements, setLfElements] = useState<TableElements[]>([]);
@@ -54,7 +56,7 @@ export const AnalysisInformation: React.FC = () => {
         { title: "Order", value: incubation.order },
         { title: "Name", value: incubation.reporter?.name },
         { title: "Type", value: incubation.reporter?.type },
-        { title: "Unique Id", value: incubation.reporter?.rrid },
+        { title: "Unique Id", value: incubation.reporter?.rrid, link: getRRIDLink(incubation) },
         { title: "Concentration", value: incubation.concentration },
         { title: "Time", value: incubation.time ? `${incubation.time} hours` : undefined },
         { title: "Temperature", value: incubation.temperature },
@@ -65,6 +67,13 @@ export const AnalysisInformation: React.FC = () => {
       ]))));
 
   }, [selectedAnalysis]);
+
+  const getRRIDLink = (incubation: ReporterIncubation) => {
+    if(incubation.reporter?.rrid && incubation.reporter?.rrid.startsWith("RRID") ){
+      return `/analyses/specie=${selectedAnalysis?.specimen?.specie?.id}&rrids=[${incubation.reporter.rrid}]`;
+    }
+    return "";
+  }
 
   if (!selectedAnalysis) return <></>;
   // TODO Shrinkage_correction

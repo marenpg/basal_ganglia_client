@@ -43,55 +43,59 @@ export const getAnalysesOnSpecieBoxes = (specieCheckboxes: CheckBoxElement[], an
 
 export const getFilteredAnalyses = (
   allAnalyses: Analysis[],
-  dataTypeCheckboxes: CheckBoxElement[],
-  sexCheckboxes: CheckBoxElement[],
-  selectedAgeCategories: string[],
-  selecedAnimalStatuses: string[],
-  selectedVisualizationMethods: string[],
-  selectedReporters: string[],
-  selectedStrains: string[],
-  selectedSubstrains: string[]
+  dataTypeCheckboxes?: CheckBoxElement[],
+  sexCheckboxes?: CheckBoxElement[],
+  selectedAgeCategories?: string[],
+  selecedAnimalStatuses?: string[],
+  selectedVisualizationMethods?: string[],
+  selectedReporters?: string[],
+  selectedStrains?: string[],
+  selectedSubstrains?: string[]
 ): Analysis[] => {
   let filteredAnalyses = allAnalyses;
 
   // Checkboxes
-  const selectedDataTypes = dataTypeCheckboxes.filter(s => s.selected).map(s => s.name);
-  filteredAnalyses = filteredAnalyses.filter(a => selectedDataTypes.includes(a.dataType ))
-  console.log("selectedDataTypes", allAnalyses.length, filteredAnalyses.length);
-
-  const selectedSexes = sexCheckboxes.filter(s => s.selected).map(s => s.name);
-  filteredAnalyses = filteredAnalyses.filter(a => selectedSexes.includes(a.specimen?.sex?.name ))
-  console.log("selectedSexes", allAnalyses.length, filteredAnalyses.length);
+  if(dataTypeCheckboxes){
+    const selectedDataTypes = dataTypeCheckboxes.filter(s => s.selected).map(s => s.name);
+    filteredAnalyses = filteredAnalyses.filter(a => selectedDataTypes.includes(a.dataType ))
+    // console.log("selectedDataTypes", allAnalyses.length, filteredAnalyses.length);
+  }
+  
+  if(sexCheckboxes) {
+    const selectedSexes = sexCheckboxes.filter(s => s.selected).map(s => s.name);
+    filteredAnalyses = filteredAnalyses.filter(a => selectedSexes.includes(a.specimen?.sex?.name ))
+    // console.log("selectedSexes", allAnalyses.length, filteredAnalyses.length);
+  }
 
   // Dropdowns
-  if(selecedAnimalStatuses.length > 0) {
+  if(selecedAnimalStatuses?.length) {
     filteredAnalyses = filteredAnalyses.filter(a => selecedAnimalStatuses.includes(a.experiment.animalStatus))
-    console.log("selecedAnimalStatuses", allAnalyses.length, filteredAnalyses.length);
+    // console.log("selecedAnimalStatuses", allAnalyses.length, filteredAnalyses.length);
   }
 
-  if(selectedVisualizationMethods.length){
+  if(selectedVisualizationMethods?.length){
     filteredAnalyses = filteredAnalyses.filter(a => selectedVisualizationMethods.includes(a.visualizationMethod?.name))
-    console.log("selectedVisualizationMethods", allAnalyses.length, filteredAnalyses.length);
+    // console.log("selectedVisualizationMethods", allAnalyses.length, filteredAnalyses.length);
   }
 
-  if(selectedStrains.length) {
+  if(selectedStrains?.length) {
     filteredAnalyses = filteredAnalyses.filter(a => selectedStrains.includes(a.specimen?.strain?.name ))
-    console.log("strains", allAnalyses.length, filteredAnalyses.length);
+    // console.log("strains", allAnalyses.length, filteredAnalyses.length);
 
-    if(selectedSubstrains.length) {
+    if(selectedSubstrains?.length) {
       filteredAnalyses = filteredAnalyses.filter(a => selectedSubstrains.includes(a.specimen?.substrain?.name ))
-      console.log("selectedSubstrains", allAnalyses.length, filteredAnalyses.length);
+      // console.log("selectedSubstrains", allAnalyses.length, filteredAnalyses.length);
     }
   }
 
-  if(selectedAgeCategories.length){
+  if(selectedAgeCategories?.length){
     filteredAnalyses = filteredAnalyses.filter(a => selectedAgeCategories.includes(a.specimen?.ageCategory?.description ))
-    console.log("selectedAgeCategories", allAnalyses.length, filteredAnalyses.length);
+    // console.log("selectedAgeCategories", allAnalyses.length, filteredAnalyses.length);
   }  
 
-  if(selectedReporters.length) {
+  if(selectedReporters?.length) {
     filteredAnalyses = filteredAnalyses.filter(a => a.reporterIncubations.filter(b => selectedReporters.includes(b.reporter?.rrid)).length > 0)
-    console.log("selectedReporters", allAnalyses.length, filteredAnalyses.length);
+    // console.log("selectedReporters", allAnalyses.length, filteredAnalyses.length);
   }
   return filteredAnalyses;
 };

@@ -31,7 +31,6 @@ export const QuantitationInformation: React.FC = () => {
 
     const tableElements: TableElements = getTableElementsQuantitation(data);
     if(data.relatedDistributions.length) {
-      console.log("HAS RELATED DIST", data.relatedDistributions);
       data.relatedDistributions.map(d => {
         tableElements.push({title: "Related distribution", value: getAnalysisNameFormatted(d.name), link: `/analyses/${d.analysis.id}/${d.id}`})
       })

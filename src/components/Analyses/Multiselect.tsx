@@ -3,16 +3,15 @@ import { FormControl, InputLabel, Select, Input, MenuItem, Checkbox, ListItemTex
 
 interface MultiselectProps {
   elements: string[];
+  selected: string[];
   label: string;
   updateSelectedValues: (values: string[]) => void;
 }
 
-export const Multiselect: React.FC<MultiselectProps> = ({ elements, label, updateSelectedValues }) => {
-  const [selected, setSelected] = useState<string[]>([]);
+export const Multiselect: React.FC<MultiselectProps> = ({ elements, selected, label, updateSelectedValues }) => {
 
   const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     const updatedValues = event.target.value as string[];
-    setSelected(updatedValues);
     updateSelectedValues(updatedValues);
   };
 
