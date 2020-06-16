@@ -25,8 +25,8 @@ export const AnatomicalMetadata: React.FC = () => {
     regionRecord && setRegionElements([
       { title: "Brain region", value: regionRecord.primaryRegion?.name },
       { title: "Region zone", value: regionZone && getStringRep(regionZone.name, regionZone.ontology) },
-      { title: "Coverage", value: regionRecord.coverage, tooltip: "Something" },
-      { title: "Specificity", value: regionRecord.specificity, tooltip: "soomtthing" },
+      { title: "Coverage", value: regionRecord.coverage, tooltip: "How much of the region is covered by the analysis" },
+      { title: "Specificity", value: regionRecord.specificity, tooltip: "Whether or not the analysis specifically related to the region. If non-specific, surrounding regions may be covered" },
     ])
 
     regionRecord && setMetadataElements([

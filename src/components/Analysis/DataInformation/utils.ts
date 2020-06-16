@@ -88,64 +88,66 @@ type Data = Quantitation | Distribution | CellMorphology | undefined;
 
 export const getSoftwareElements = (data: Data) => {
   if (!data || !("software" in data)) return;
-  return([
-  { title: "Name", value: data?.software?.name },
-  { title: "RRID", value: data?.software?.rrid },
-])};
+  return ([
+    { title: "Name", value: data?.software?.name },
+    { title: "RRID", value: data?.software?.rrid },
+  ])
+};
 
 
-export const getStereologyElements= (data: Data): TableElements => {
+export const getStereologyElements = (data: Data): TableElements => {
   if (!data || !("stereology" in data)) return [];
 
   return ([
-  // { title: "Name", value: data.stereology.name },
-  { title: "Probe", value: data.stereology.probe },
-  { title: "Identification featuree", value: data.stereology.identificationFeature },
-  { title: "Disector height", value: data.stereology.disectorHeight },
-  { title: "Area subfraction", value: data.stereology.areaSubfraction },
-  { title: "Height subfraction", value: data.stereology.heightSubfraction },
-  { title: "Investigated sections", value: data.stereology.investigatedSections },
-  { title: "Investigated fields", value: data.stereology.investigatedFields },
-  { title: "Counted objects", value: data.stereology.countedObjects },
-  { title: "Coefficient of error", value: data.stereology.coefficientOfError },
-  { title: "Estimated volume", value: data.stereology?.volumeUnit ? `${data.stereology.estimatedVolume} ${data.stereology.volumeUnit}`: data.stereology?.estimatedVolume },
-  // { title: "Any except probe", value: data.stereology.anyExceptProbe },
-])};
+    // { title: "Name", value: data.stereology.name },
+    { title: "Probe", value: data.stereology.probe },
+    { title: "Identification featuree", value: data.stereology.identificationFeature },
+    { title: "Disector height", value: data.stereology.disectorHeight },
+    { title: "Area subfraction", value: data.stereology.areaSubfraction },
+    { title: "Height subfraction", value: data.stereology.heightSubfraction },
+    { title: "Investigated sections", value: data.stereology.investigatedSections },
+    { title: "Investigated fields", value: data.stereology.investigatedFields },
+    { title: "Counted objects", value: data.stereology.countedObjects },
+    { title: "Coefficient of error", value: data.stereology.coefficientOfError },
+    { title: "Estimated volume", value: data.stereology?.volumeUnit ? `${data.stereology.estimatedVolume} ${data.stereology.volumeUnit}` : data.stereology?.estimatedVolume },
+    // { title: "Any except probe", value: data.stereology.anyExceptProbe },
+  ])
+};
 
 export const getQuantitationSummary = (qunatitation: Quantitation): string => {
-  if(qunatitation.number){
-    if(!qunatitation.originalExtent) return "";
-    const qNumber = qunatitation.originalExtent === "bilateral" ? qunatitation.number/2 : qunatitation.number
-      return `Estimated total number was ${qNumber} ± ${qunatitation.numberSD} (mean ± SD) unilaterally`;
+  if (qunatitation.number) {
+    if (!qunatitation.originalExtent) return "";
+    const qNumber = qunatitation.originalExtent === "bilateral" ? qunatitation.number / 2 : qunatitation.number
+    return `Estimated total number was ${qNumber} ± ${qunatitation.numberSD} (mean ± SD) unilaterally`;
   }
-    if(qunatitation.density) {
-      return `Estimated total number was ${qunatitation.density} ± ${qunatitation.densitySD} (mean ± SD) per ${qunatitation.densityUnit}`;
-    }
+  if (qunatitation.density) {
+    return `Estimated total number was ${qunatitation.density} ± ${qunatitation.densitySD} (mean ± SD) per ${qunatitation.densityUnit}`;
+  }
 
-    return "";
+  return "";
 };
 //Synaptic target: [Quantitations]_[Cellular_ID] [Quantitations]_[Cellular_target_region]
 
 export const getQuantitationData = (analysis: Analysis, quantitation: Quantitation): TableElements => {
   const elems = [
-    {title: "Cell type",value: analysis.cellTypePutative?.name},
-    {title: "Object of intrest",value: analysis.objectOfInterest?.NeuralStructure?.name},
-    {title: "Synaptic target" },
-    {title: "Recognition critera",value: analysis.objectOfInterest?.recognitionCriteria},
+    { title: "Cell type", value: analysis.cellTypePutative?.name },
+    { title: "Object of intrest", value: analysis.objectOfInterest?.NeuralStructure?.name },
+    { title: "Synaptic target" },
+    { title: "Recognition critera", value: analysis.objectOfInterest?.recognitionCriteria },
   ]
 
   const OOIId = analysis.objectOfInterest?.NeuralStructure?.id;
-  if(!OOIId || !quantitation || putativeIds.includes(OOIId)) return elems;
+  if (!OOIId || !quantitation || putativeIds.includes(OOIId)) return elems;
 
-  if(synapseIds.includes(OOIId)){
+  if (synapseIds.includes(OOIId)) {
     elems[2].title = "Synaptic target";
-    elems[2].value = quantitation.targetCell?.name 
+    elems[2].value = quantitation.targetCell?.name
       ? `${quantitation.targetCell?.name}, ${quantitation.targetCellularRegion?.name}`
       : quantitation.targetCellularRegion?.name;
-      return elems;
+    return elems;
   }
 
-  if(synapseIds.includes(OOIId)){
+  if (synapseIds.includes(OOIId)) {
     elems[2].title = "Counted segment";
     elems[2].value = quantitation.targetCellularRegion?.name;
   }
@@ -154,13 +156,16 @@ export const getQuantitationData = (analysis: Analysis, quantitation: Quantitati
 }
 
 export const getDistributionSummary = (distribution: Distribution): string => {
-    return "Todo get summary";
+  if (!distribution.regionRecord?.primaryRegion?.name) {
+    return "";
+  }
+  return `Distribution in ${distribution.regionRecord.primaryRegion.name.toLowerCase()} shown`
 };
 
 export const getDistributionData = (analysis: Analysis): TableElements => {
   return [
-    {title: "Cell type",value: analysis.cellTypePutative?.name},
-    {title: "Object of intrest",value: analysis.objectOfInterest?.NeuralStructure?.name},
-    {title: "Recognition critera",value: analysis.objectOfInterest?.recognitionCriteria},
+    { title: "Cell type", value: analysis.cellTypePutative?.name },
+    { title: "Object of intrest", value: analysis.objectOfInterest?.NeuralStructure?.name },
+    { title: "Recognition critera", value: analysis.objectOfInterest?.recognitionCriteria },
   ]
 }

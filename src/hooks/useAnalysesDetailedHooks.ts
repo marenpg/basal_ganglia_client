@@ -201,14 +201,9 @@ const analysisDetailedQuery = gql`
         relatedDistributions {
           id
           name
-          sectionSampling
-          samplingFraction
-          subsectionalSampling
-          finalEstimateBasis
-          distribution
-          distributionDimensions
-          analysisTypePrimary
-          analysisTypeSecondary
+          analysis {
+            id
+          }
         }
         calculations {
           id
@@ -341,19 +336,9 @@ const analysisDetailedQuery = gql`
         relatedQuantitation {
           id
           name
-          estimateRelevance
-          sectionSampling
-          samplingFraction
-          subsectionalSampling
-          finalEstimateBasis
-          originalExtent
-          number
-          numberSD
-          density
-          densityUnit
-          densitySD
-          volumetricDensity
-          estimateExtraction
+          analysis {
+            id
+          }
         }
       }
       electronMicroscopes {

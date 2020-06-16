@@ -8,6 +8,7 @@ import { InformationCard, InformationTable } from "../../Base/InformationCard";
 import { TableElements } from "../types";
 import { getStereologyElements, getDistributionSummary, getTableElementsDistribution, getQuantitationData } from "./utils";
 import { InfoRow } from "./Common";
+import { getAnalysisNameFormatted } from "../../Analyses/utils";
 
 
 export const DistributionInformation: React.FC = () => {
@@ -28,7 +29,12 @@ export const DistributionInformation: React.FC = () => {
     const data = selectedData as Distribution;
     if (!data) return;
 
-    setGenInfoElements(getTableElementsDistribution(data))
+    const tableElements: TableElements = getTableElementsDistribution(data);
+    if(data.relatedQuantitation) {
+      console.log("HAS RELATED QUANT", data.relatedQuantitation);
+      tableElements.push({title: "Related distribution", value: getAnalysisNameFormatted(data.relatedQuantitation.name), link: `/analyses/${data.relatedQuantitation.analysis?.id}/${data.relatedQuantitation.id}`})
+    }
+    setGenInfoElements(tableElements)
     setHeaderData(getQuantitationData(selectedAnalysis, data.relatedQuantitation));
     data.stereology && setStereologyElements(getStereologyElements(data));
     data.software && setSoftwareElements([

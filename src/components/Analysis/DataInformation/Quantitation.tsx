@@ -4,6 +4,7 @@ import { Box } from "@material-ui/core";
 import { AnalysisContext } from "../../../providers/contexts";
 import { Quantitation } from "../../../utils/api/types";
 import { InformationCard, InformationTable } from "../../Base/InformationCard";
+import { getAnalysisNameFormatted } from "../../Analyses/utils";
 
 import { TableElements } from "../types";
 import { getStereologyElements, getQuantitationSummary, getTableElementsQuantitation, getQuantitationData } from "./utils";
@@ -28,7 +29,15 @@ export const QuantitationInformation: React.FC = () => {
     if (!selectedData) return;
     const data = selectedData as Quantitation;
 
-    setGenInfoElements(getTableElementsQuantitation(data))
+    const tableElements: TableElements = getTableElementsQuantitation(data);
+    if(data.relatedDistributions.length) {
+      console.log("HAS RELATED DIST", data.relatedDistributions);
+      data.relatedDistributions.map(d => {
+        tableElements.push({title: "Related distribution", value: getAnalysisNameFormatted(d.name), link: `/analyses/${d.analysis.id}/${d.id}`})
+      })
+    }
+
+    setGenInfoElements(tableElements)
     setHeaderData(getQuantitationData(selectedAnalysis, data));
     data.stereology && setStereologyElements(getStereologyElements(data));
     data.software && setSoftwareElements([

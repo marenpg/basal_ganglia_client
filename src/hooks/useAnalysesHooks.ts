@@ -26,6 +26,9 @@ const analysisQuery = gql`
           }
         }
       }
+      dataTypes {
+        id
+      }
       experiment {
         id
         name

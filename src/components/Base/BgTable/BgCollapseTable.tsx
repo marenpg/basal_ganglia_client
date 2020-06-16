@@ -91,7 +91,7 @@ export const BgCollapseTable: React.FC<BgCollapseTableProps> = ({
             ))}
             {emptyRows > 0 && (
               <TableRow style={{ height: 33 * emptyRows }}>
-                <TableCell colSpan={6} />
+                <TableCell colSpan={8} />
               </TableRow>
             )}
           </TableBody>
@@ -112,6 +112,25 @@ export const BgCollapseTable: React.FC<BgCollapseTableProps> = ({
 
 const CollapseRow: React.FC<CollapseRowProps> = ({ classes, row }) => {
   const [open, setOpen] = React.useState(false);
+
+  if(row.subRows?.length === 1) {
+    const link = row.subRows[0].link;
+    return <TableRow hover key={row.link} className={classes.tableRow}>
+       <TableCell />
+    {row.cells.map((cell, i) => (
+      <TableCell key={`${row.id}-${cell.text}`} className={classes.tableCell}>
+            <Link
+              href={link}
+              color="textPrimary"
+              variant="inherit"
+              className={classes.tableLink}
+            >
+              {cell.text ? cell.text : "-"}
+            </Link>
+      </TableCell>
+    ))}
+  </TableRow>
+  }
 
   return <>
     <TableRow hover className={`${classes.tableRow} ${classes.collapseRow}`}>
@@ -135,10 +154,10 @@ const CollapseRow: React.FC<CollapseRowProps> = ({ classes, row }) => {
       ))}
     </TableRow>
     {row.subRows &&
-      < TableRow >
-        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+      <TableRow>
+        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={8}>
           <Collapse in={open} timeout="auto" unmountOnExit>
-            <Box margin={1}>
+            <Box ml={8} mr={5} mt={1}>
               {/* <Typography variant="h6" gutterBottom component="div">
                 History
             </Typography> */}

@@ -131,7 +131,7 @@ export const getSubRows = (analysis: Analysis): TableRow[] => {
     {
       id: `${analysis.id}-${dataType.id}`,
       link: `/analyses/${analysis.id}/${dataType.id}`,
-      cells: [{ text: `${dataType.name.split("_")[0]}, ${dataType.name.split("_")[1]}` }, {text:dataType.regionRecord?.primaryRegion?.name}]
+      cells: [{ text: getAnalysisNameFormatted(dataType.name) }, {text:dataType.regionRecord?.primaryRegion?.name}]
     }
   ))
 )}
@@ -140,15 +140,21 @@ export const getRows = (analyses: Analysis[]): TableRow[] => (
   analyses.map(analysis => (({
     id: analysis.id,
     cells: [
-      { text: `${analysis.name.split("_")[0]}, ${analysis.name.split("_")[1]}` },
-      { text: analysis.dataType },
+      { text: getAnalysisNameFormatted(analysis.name) },
+      { text:  `${analysis.dataType} (${analysis.dataTypes?.length})` },
       { text: analysis.specimen?.strain?.name },
       { text: analysis.specimen?.substrain?.name },
       { text: analysis.specimen?.sex?.name },
       { text: analysis.cellTypePutative?.name },
       {text: analysis.objectOfInterest?.NeuralStructure?.name}
     ],
-    subHeaders: [{ text: analysis.dataType }, { text: "Brain region" }],
+    subHeaders: [{ text: analysis.dataType}, { text: "Brain region" }],
     subRows: getSubRows(analysis)
   })))
 );
+
+
+export const getAnalysisNameFormatted = (name:string) => {
+  const splittet = name.split("_");
+  return splittet.length > 1 ? `${splittet[0]}, ${splittet[1]}` : "";
+}

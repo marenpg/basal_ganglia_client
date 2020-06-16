@@ -40,7 +40,7 @@ export const getAnalysisTitle = (analysis: Analysis, selectedDataType: DataType)
   if (!selectedDataType) return title;
 
   if(putativeIds.includes(analysis.objectOfInterest?.NeuralStructure?.id)){ 
-    return `${title} ${analysis.objectOfInterest?.NeuralStructure?.name?.toLowerCase()} cells in the ${selectedDataType.regionRecord.primaryRegion.name.toLowerCase()}` 
+    return `${title} ${analysis.cellTypePutative?.name?.toLowerCase()} cells in the ${selectedDataType.regionRecord.primaryRegion.name.toLowerCase()}` 
   }
 
   if(synapseIds.includes(analysis.objectOfInterest?.NeuralStructure?.id)){ 

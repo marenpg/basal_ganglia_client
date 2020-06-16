@@ -292,6 +292,7 @@ export interface Distribution {
   software: Software;
   stereology: StereologyDetail;
   relatedQuantitation: Quantitation;
+  analysis: Analysis;
 }
 
 export interface CellMorphology {
@@ -354,6 +355,7 @@ export interface Quantitation {
   stereology: StereologyDetail;
   relatedDistributions: Distribution[];
   calculations: Calculation[];
+  analysis: Analysis;
 }
 
 export interface DataType {
