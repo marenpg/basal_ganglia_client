@@ -67,12 +67,15 @@ export const MenuDrawer: React.FC<MenuDrawerProps> = ({ classes, handleMenuItemC
       </List>
       <LightDivider />
       <List component="nav" aria-label="secondary mailbox folders">
-        <ListItem button className={classes.drawerListItem}>
-          <ListItemText primary="Settings" />
-        </ListItem>
-        <ListItem button className={classes.drawerListItem}>
-          <ListItemText primary="Test" />
-        </ListItem>
+      <ListItem
+        button
+        component={NavLink}
+        to={"/information"}
+        className={classes.drawerListItem}
+        activeClassName={classes.drawerListItemActive}
+      >
+        <ListItemText primary={"About"} />
+      </ListItem>
       </List>
     </div>
   </Drawer>

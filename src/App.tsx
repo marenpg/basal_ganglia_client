@@ -14,6 +14,7 @@ import BrainRegionsRoute from "./pages/brain-regions";
 import BrainRegionRoute from "./pages/brain-region";
 import ExperimentsRoute from "./pages/experiments";
 import AnalysisRoute from "./pages/analysis";
+import InformationRoute from "./pages/information";
 
 const App = () => (
   <MuiThemeProvider theme={darkTheme}>
@@ -29,6 +30,8 @@ const App = () => (
 
           <Route exact path="/analyses/:filters?" component={ExperimentsRoute} />
           <Route exact path="/analyses/:id/:dataId" component={AnalysisRoute} />
+
+          <Route exact path="/information" component={InformationRoute} />
           <Route> No match </Route>
         </Switch>
       </Layout>
