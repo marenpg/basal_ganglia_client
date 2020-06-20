@@ -4,4 +4,11 @@ export interface ExperimentInformationProps {
   experiments: Experiment[];
 }
 
-export type TableSort = "name" | "dataType" | "strain" | "substrain" | "sex";
+export type TableSort =
+  | "name"
+  | "dataType"
+  | "cellType"
+  | "ooi"
+  | "strain"
+  | "substrain"
+  | "sex";

@@ -6,6 +6,7 @@ export const Header: React.FC<HeaderProps> = ({
   headerContainerClass,
   pageHeaderClass,
   title,
+  topTitle,
   subtitle,
   titleSize,
   children
@@ -20,6 +21,11 @@ export const Header: React.FC<HeaderProps> = ({
           justifyContent="center"
           flexDirection="column"
         >
+          {topTitle &&
+            <Typography component="p" variant="subtitle1" color="inherit">
+              {topTitle}
+            </Typography>
+          }
           <Typography component="h1" variant={titleSize ? titleSize : "h2"} color="inherit">
             {title}
           </Typography>

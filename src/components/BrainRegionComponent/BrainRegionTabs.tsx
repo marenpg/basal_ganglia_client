@@ -24,7 +24,7 @@ export const BrainRegionTabs: React.FC<BrainRegionTabsProps> = ({
   selectedRegion,
   subRegions,
 }) => {
-  const [tabValue, setTabValue] = useState<number>(0);
+  const [tabValue, setTabValue] = useState<number>(2);
   const [cellsInSubRegions, setCellsInSubRegions] = useState<CellType[]>([])
   const [cellsAllRegions, setCellsInAllRegions] = useState<CellType[]>([])
   const [analysisIds, setAnalysisIds] = useState<string[]>([])

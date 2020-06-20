@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Box, Typography, Container } from "@material-ui/core";
 import { CheckBoxElement } from "../../../utils/types";
 
-import { BgLinkTable } from "../../Base/BgTable";
+import { BgCollapseTable } from "../../Base/BgTable";
 import Checkboxes from "../../Base/Checkboxes";
 
 import { getConnectionId, sortRegionConnections, getFilteredConnections } from "./utils";
@@ -108,7 +108,7 @@ const BrainRegionConnectionsContainer: React.FC<BrainRegionConnectionsProps> = (
 				/>
 			</Box>
 			<Box mt={2}>
-				<BgLinkTable
+				<BgCollapseTable
 					orderBy={orderBy}
 					order={order}
 					handleSortRequest={handleSortRequest}

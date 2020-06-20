@@ -31,6 +31,12 @@ export const sortAnalyses = (
   if (orderBy === "sex") {
     return analysisToSort.sort((a, b) => sortFunction(a.specimen?.sex?.name, b.specimen?.sex?.name, order));
   }
+  if (orderBy === "cellType") {
+    return analysisToSort.sort((a, b) => sortFunction(a.cellTypePutative?.name, b.cellTypePutative?.name, order));
+  }
+  if (orderBy === "ooi") {
+    return analysisToSort.sort((a, b) => sortFunction(a.objectOfInterest?.NeuralStructure?.name, b.objectOfInterest?.NeuralStructure?.name, order));
+  }
 
   return analysisToSort.sort((a, b) => sortFunction(a[orderBy], b[orderBy], order));
 };
@@ -118,11 +124,11 @@ export const getCheckboxes = (elements: string[]): CheckBoxElement[] =>
 export const headers = [
     { text: "Analysis name", val: "name" },
     { text: "Data types", val: "dataType" },
+    { text: "Cell type", val: "cellType" },
+    { text: "Object of interest", val: "ooi" },
     { text: "Strain", val: "strain" },
     { text: "Substrain", val: "substrain" },
-    { text: "Sex", val: "sex" },
-    { text: "Cell type", val: "cellTypePutative" },
-    { text: "Object of interest", val: "" }
+    { text: "Sex", val: "sex" }
   ];
   
 export const getSubRows = (analysis: Analysis): TableRow[] => {
@@ -131,11 +137,15 @@ export const getSubRows = (analysis: Analysis): TableRow[] => {
   analysis.cellMorphologies.map(q => (dataTypes.push(q)));
   analysis.distributions.map(q => (dataTypes.push(q)));
   return(
-  sortElements<DataType[]>(dataTypes, "asc", "id").map(dataType => (
+    sortElements<DataType[]>(dataTypes, "asc", "id").map(dataType => (
     {
       id: `${analysis.id}-${dataType.id}`,
       link: `/analyses/${analysis.id}/${dataType.id}`,
-      cells: [{ text: getAnalysisNameFormatted(dataType.name) }, {text:dataType.regionRecord?.primaryRegion?.name}]
+      cells: [
+        { text: getAnalysisNameFormatted(dataType.name) }, 
+        {text: dataType.regionRecord?.primaryRegion?.name},
+        {text: dataType.regionZone ? dataType.regionZone?.name : ""}
+      ]
     }
   ))
 )}
@@ -146,13 +156,13 @@ export const getRows = (analyses: Analysis[]): TableRow[] => (
     cells: [
       { text: getAnalysisNameFormatted(analysis.name) },
       { text:  `${analysis.dataType} (${analysis.dataTypes?.length})` },
+      { text: analysis.cellTypePutative?.name },
+      {text: analysis.objectOfInterest?.NeuralStructure?.name},
       { text: analysis.specimen?.strain?.name },
       { text: analysis.specimen?.substrain?.name },
       { text: analysis.specimen?.sex?.name },
-      { text: analysis.cellTypePutative?.name },
-      {text: analysis.objectOfInterest?.NeuralStructure?.name}
     ],
-    subHeaders: [{ text: analysis.dataType}, { text: "Brain region" }],
+    subHeaders: [{ text: analysis.dataType}, { text: "Brain region" }, { text: "Region zone" }],
     subRows: getSubRows(analysis)
   })))
 );

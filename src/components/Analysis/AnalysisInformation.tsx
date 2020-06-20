@@ -33,7 +33,7 @@ export const AnalysisInformation: React.FC = () => {
         { title: "Objective lens", value: l.objectiveLens },
         { title: "Total magnification", value: l.totalMagnification },
         { title: "Pixel size", value: l.pixelSize },
-        { title: "Optical slice size", value: l.opticalSliceSize },
+        { title: "Optical slice size", value: l.opticalSliceSize ? `${l.opticalSliceSize} µm` : "" },
         { title: "Microscope", value: l.microscope?.type },
       ]))));
 
@@ -46,7 +46,7 @@ export const AnalysisInformation: React.FC = () => {
 
     selectedAnalysis?.sectioningDetail && (
       setSectioningElements([
-        { title: "Section thickness", value: selectedAnalysis.sectioningDetail.sectionThickness ? `${selectedAnalysis.sectioningDetail.sectionThickness} μ` : "" },
+        { title: "Section thickness", value: selectedAnalysis.sectioningDetail.sectionThickness ? `${selectedAnalysis.sectioningDetail.sectionThickness} μm` : "" },
         { title: "Section orientation", value: selectedAnalysis.sectioningDetail.sectionOrientation },
         { title: "Sectioning instrument", value: selectedAnalysis.sectioningDetail.sectioningInstrument?.name },
       ]));
@@ -69,7 +69,7 @@ export const AnalysisInformation: React.FC = () => {
   }, [selectedAnalysis]);
 
   const getRRIDLink = (incubation: ReporterIncubation) => {
-    if(incubation.reporter?.rrid && incubation.reporter?.rrid.startsWith("RRID") ){
+    if (incubation.reporter?.rrid && incubation.reporter?.rrid.startsWith("RRID")) {
       return `/analyses/specie=${selectedAnalysis?.specimen?.specie?.id}&rrids=[${incubation.reporter.rrid}]`;
     }
     return "";

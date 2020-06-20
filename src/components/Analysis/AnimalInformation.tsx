@@ -18,12 +18,12 @@ export const AnimalInformation: React.FC = () => {
 
     setGenInfoElements([
       { title: "Specie", value: specimen.specie?.name },
-      { title: "Strain", value: getStringRep(specimen.strain?.name, specimen.strain?.ontology) },
-      { title: "Substrain", value: getStringRep(specimen.substrain?.name, specimen.substrain?.ontology) },
+      { title: "Strain", value: specimen.strain?.name },
+      { title: "Substrain", value: specimen.substrain?.name },
       { title: "Genotype", value: getStringRep(specimen.transgenicLine?.name, specimen.transgenicLine?.RRID) ?? "Wildtype" },
-      { title: "Sex", value: getStringRep(specimen.sex?.name, specimen.sex?.ontology) },
+      { title: "Sex", value: specimen.sex?.name },
       { title: "Age category", value: getStringRep(specimen.ageCategory?.name, specimen.ageCategory?.description) },
-      { title: "Age range", value: selectedAnalysis.experiment.ageLowerLimit ? `${selectedAnalysis.experiment.ageLowerLimit} - ${selectedAnalysis.experiment.ageUpperLimit}` : "" },
+      { title: "Age range", value: selectedAnalysis.experiment.ageLowerLimit ? `${selectedAnalysis.experiment.ageLowerLimit} - ${selectedAnalysis.experiment.ageUpperLimit} (in days)` : "" },
       { title: "Weight range", value: selectedAnalysis.experiment.weightLowerLimit ? `${selectedAnalysis.experiment.weightLowerLimit} - ${selectedAnalysis.experiment.weightUpperLimit}` : "" },
     ]);
   }, [selectedAnalysis]);

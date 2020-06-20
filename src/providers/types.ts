@@ -63,6 +63,8 @@ export interface AnalysesContextValue {
     specie?: string;
     rrids?: string[];
     strains?: string[];
+    brainRegionId?: string;
+    cellTypeId?: string;
   };
 }
 

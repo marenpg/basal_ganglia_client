@@ -10,7 +10,7 @@ import { CellTypeTabs } from ".";
 import CellTypeContainer from "../../containers/CellTypeContainer";
 import { SpecieDescription } from "./SpecieDescription";
 
-export const CellTypeComponent: React.FC<CellTypeProps> = ({ classes, cellType, drawer = false }) => {
+export const CellTypeComponent: React.FC<CellTypeProps> = ({ classes, cellType, handleTreeClick, drawer = false }) => {
   return <Box>
     <Header
       headerContainerClass={drawer ? classes.drawerHeaderContainer : classes.headerContainer}
@@ -36,7 +36,7 @@ export const CellTypeComponent: React.FC<CellTypeProps> = ({ classes, cellType, 
         <TreeView
           nodes={setAllNodesExpanded([cellType])}
           expandedIds={getExpandedNodeIds([cellType])}
-          handleTreeClick={() => { }}
+          handleTreeClick={handleTreeClick}
         />
       </Container>
     }

@@ -20,6 +20,7 @@ export interface CellDescriptionProps {
 export interface CellTypeProps extends StyleProps {
   cellType: CellType | CellTypeTreeNode;
   drawer: boolean;
+  handleTreeClick: (node: CellTypeTreeNode) => void;
 }
 
 export interface CellTypeBrainRegionTreeProps {

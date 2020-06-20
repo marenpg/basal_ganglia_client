@@ -4,7 +4,11 @@ import {
   DataType,
 } from "../../utils/api/types";
 
-
+export const getSourceName = (sourceName: string) => {
+  if (!sourceName) return "";
+  if (sourceName.indexOf("_") < 0) return sourceName;
+  return sourceName.replace("_", ", ");
+};
 
 export const getStringRep = (text: string, parenthesis: string): string | undefined => {
   if (!text) return undefined;

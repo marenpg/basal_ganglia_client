@@ -4,7 +4,7 @@ import { Cancel as CancelIcon } from "@material-ui/icons";
 
 import { AnalysisContext } from "../../providers/contexts";
 import { Header } from "../../components/Base/Headers";
-import { getAnalysisTitle } from "../../components/Analysis/utils";
+import { getAnalysisTitle, getSourceName } from "../../components/Analysis/utils";
 import { AnalysisTabs } from "../../components/Analysis/AnalysisTabs";
 
 import { StyleProps, style } from "./AnalysisPage.jss";
@@ -29,6 +29,7 @@ const AnalysisPage: React.FC<StyleProps> = ({ classes }) => {
       <Header
         headerContainerClass={classes.drawerHeaderContainer}
         pageHeaderClass={classes.drawerPageHeader}
+        topTitle={getSourceName(selectedAnalysis.experiment?.source?.sourceName)}
         subtitle={selectedAnalysis.specimen?.specie?.name}
         title={getAnalysisTitle(selectedAnalysis, selectedData)}
         titleSize="h5"

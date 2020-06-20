@@ -43,7 +43,7 @@ export const getTableElementsQuantitation = (data: Quantitation) => {
     { title: "Sampling fraction", value: data.samplingFraction, tooltip: "The ratio of sampled to unsampled sections" },
     { title: "Subsectional sampling", value: data.subsectionalSampling, tooltip: "The method for counting object of interest within a section" },
     { title: "Final estimate basis", value: data.finalEstimateBasis, tooltip: "The basis of the final estimate" },
-    { title: "Estimate relevance", value: data.estimateRelevance },
+    { title: "Estimate relevance", value: dendriteIds.includes(data.id) ? "" : data.estimateRelevance },
   ];
 };
 

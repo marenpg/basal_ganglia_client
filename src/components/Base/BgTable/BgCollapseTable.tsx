@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
   Box,
-  Link,
   Table,
   TableBody,
   TableCell,
@@ -9,19 +8,15 @@ import {
   TableRow,
   Tooltip,
   TableSortLabel,
-  Collapse,
   TableContainer,
   TablePagination,
-  Paper,
-  IconButton
+  Paper
 } from "@material-ui/core";
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 
-import { BgCollapseTableProps, SortableTableHeaderProps, CollapseRowProps, TableRow as TableRowData } from "./types";
-import { BgLinkTable } from ".";
 
-// TODO MAKE PAGINATION
+import { BgCollapseTableProps, SortableTableHeaderProps, TableRow as TableRowData, CollapseTableRow } from "./types";
+import { CollapseRow, RegularRow } from ".";
+
 export const BgCollapseTable: React.FC<BgCollapseTableProps> = ({
   classes,
   orderBy,
@@ -29,16 +24,24 @@ export const BgCollapseTable: React.FC<BgCollapseTableProps> = ({
   handleSortRequest,
   headers,
   rows,
+  onClick
 }) => {
   const [page, setPage] = useState<number>(0);
   const [rowsPerPage, setRowsPerPage] = useState<number>(10);
-  const [visibleRows, setVisibleRows] = useState<TableRowData[]>([])
-
-  useEffect(() => { setPage(0) }, [rows])
+  const [visibleRows, setVisibleRows] = useState<TableRowData[]>([]);
+  const [visibleCollapseRows, setVisibleCollapseRows] = useState<CollapseTableRow[]>([]);
 
   useEffect(() => {
+    setPage(0)
+  }, [rows]);
+
+  useEffect(() => {
+    if (rows.length > 0 && "subRows" in rows[0]) {
+      setVisibleCollapseRows(rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage));
+      return;
+    }
     setVisibleRows(rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage));
-  }, [page, rows, rowsPerPage])
+  }, [page, rows, rowsPerPage]);
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -72,7 +75,9 @@ export const BgCollapseTable: React.FC<BgCollapseTableProps> = ({
           {headers && (
             <TableHead>
               <TableRow>
-                <TableCell />
+                {visibleCollapseRows.length > 0 &&
+                  <TableCell />
+                }
                 {headers.map(header => (
                   <React.Fragment key={header.text}>
                     {header.val ? (
@@ -86,14 +91,20 @@ export const BgCollapseTable: React.FC<BgCollapseTableProps> = ({
             </TableHead>
           )}
           <TableBody>
+            {visibleCollapseRows.map(row => {
+              if ("subRows" in row) {
+                return <CollapseRow key={row.id} row={row} classes={classes} headers={headers} />
+              }
+            })}
             {visibleRows.map(row => (
-              <CollapseRow key={row.id} row={row} classes={classes} />
+              <RegularRow key={row.id} row={row} classes={classes} headers={headers} onClick={onClick} />
             ))}
-            {emptyRows > 0 && (
+
+            {/* {emptyRows > 0 && (
               <TableRow style={{ height: 33 * emptyRows }}>
                 <TableCell colSpan={8} />
               </TableRow>
-            )}
+            )} */}
           </TableBody>
         </Table>
       </TableContainer>
@@ -110,68 +121,3 @@ export const BgCollapseTable: React.FC<BgCollapseTableProps> = ({
   );
 };
 
-const CollapseRow: React.FC<CollapseRowProps> = ({ classes, row }) => {
-  const [open, setOpen] = React.useState(false);
-
-  if(row.subRows?.length === 1) {
-    const link = row.subRows[0].link;
-    return <TableRow hover key={row.link} className={classes.tableRow}>
-       <TableCell />
-    {row.cells.map((cell, i) => (
-      <TableCell key={`${row.id}-${cell.text}`} className={classes.tableCell}>
-            <Link
-              href={link}
-              color="textPrimary"
-              variant="inherit"
-              className={classes.tableLink}
-            >
-              {cell.text ? cell.text : "-"}
-            </Link>
-      </TableCell>
-    ))}
-  </TableRow>
-  }
-
-  return <>
-    <TableRow hover className={`${classes.tableRow} ${classes.collapseRow}`}>
-      <TableCell>
-        <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
-          {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-        </IconButton>
-      </TableCell>
-      {row.cells.map((cell, i) => (
-        <TableCell key={`${row.id}-${i}-${cell.text}`} className={classes.tableCell} onClick={() => setOpen(!open)}>
-          <Link
-            component="button"
-            color="textPrimary"
-            variant="inherit"
-
-            className={classes.tableLink}
-          >
-            {cell.text ? cell.text : "-"}
-          </Link>
-        </TableCell>
-      ))}
-    </TableRow>
-    {row.subRows &&
-      <TableRow>
-        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={8}>
-          <Collapse in={open} timeout="auto" unmountOnExit>
-            <Box ml={8} mr={5} mt={1}>
-              {/* <Typography variant="h6" gutterBottom component="div">
-                History
-            </Typography> */}
-              <BgLinkTable
-                orderBy=""
-                order="asc"
-                handleSortRequest={null}
-                headers={row.subHeaders ?? [{ text: "", val: "" }]}
-                rows={row.subRows}
-              />
-            </Box>
-          </Collapse>
-        </TableCell>
-      </TableRow>
-    }
-  </>;
-}; 

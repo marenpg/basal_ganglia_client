@@ -1,13 +1,29 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Box, Typography } from "@material-ui/core";
 
+import { BrainRegion } from "../../utils/api/types";
 import { CellTypeContext } from "../../providers/contexts";
 import { InformationCard } from "../Base/InformationCard";
 import { BgLinkTable } from "../Base/BgTable";
+import { sortElements } from "../../utils";
 
 export const CellTypeInformation: React.FC = () => {
-
+  const [regions, setRegions] = useState<BrainRegion[]>([]);
   const { selectedCellType } = useContext(CellTypeContext);
+
+  useEffect(() => {
+    if (!selectedCellType?.observedInRegions?.length) return;
+    const sortedRegions = sortElements<BrainRegion[]>(selectedCellType.observedInRegions, "asc", "name");
+    if (selectedCellType.observedInSpecies?.length === 1) {
+      setRegions(sortedRegions);
+      return;
+    }
+
+    const mouseRegions = sortedRegions.filter(r => r.specie?.id === "2");
+    const ratRegions = sortedRegions.filter(r => r.specie?.id === "1");
+    setRegions(mouseRegions.concat(ratRegions));
+  }, [selectedCellType])
+
 
   if (!selectedCellType) return <></>;
 
@@ -16,11 +32,11 @@ export const CellTypeInformation: React.FC = () => {
       <>
         <Box pl={2} pb={2} display="flex" justifyContent="center">
           <Typography component="p">
-            {`Observed in `}
+            {`This cell or its subcellular components have been observed in `}
             <Typography component="span" variant="h1">
               {selectedCellType.observedInRegions.length}
             </Typography>
-            {" brain regions"}
+            {" regions"}
           </Typography>
         </Box>
         <InformationCard heading="" width="100%">
@@ -30,10 +46,10 @@ export const CellTypeInformation: React.FC = () => {
               order="asc"
               handleSortRequest={null}
               headers={[{ text: "", val: "" }]}
-              rows={selectedCellType.observedInRegions.map((region => ({
+              rows={regions.map((region => ({
                 id: region.id,
                 link: `/brain-regions/${region.id}`,
-                cells: [{ text: region.name }]
+                cells: [{ text: `${region.specie?.id === "1" ? "Rat" : "Mouse"} ${region.name.toLowerCase()}` }]
               })))}
             />
           </Box>

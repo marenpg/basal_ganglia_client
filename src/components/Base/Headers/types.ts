@@ -18,6 +18,7 @@ export interface HeaderProps {
   pageHeaderClass: any;
   title: string;
   subtitle: string;
+  topTitle?: string;
   titleSize?:
     | "inherit"
     | "button"

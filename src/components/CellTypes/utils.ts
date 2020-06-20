@@ -1,5 +1,6 @@
 import { CellClass, CellGroup, CellType } from "../../utils/api/types";
 import { CellTypeTreeNode } from "../../utils/types";
+import { sortElements } from "../../utils";
 
 export const getCellTypeTreeNode = (
   cellType: CellGroup | CellClass | CellType,
@@ -41,7 +42,12 @@ export const getCellTypesAndTreeNodes = (
           }
         );
 
-        return getCellTypeTreeNode(cellClass, classId, classChildren, groupId);
+        return getCellTypeTreeNode(
+          cellClass,
+          classId,
+          sortElements(classChildren, "asc", "name"),
+          groupId
+        );
       }
     );
     const node = getCellTypeTreeNode(cellGroup, groupId, groupChildren);

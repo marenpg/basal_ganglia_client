@@ -17,7 +17,8 @@ const styles = (theme: Theme) =>
     },
     tableLink: {
       display: "block",
-      padding: "6px 24px 6px 16px",
+      padding: "8px 0 8px 16px",
+      fontSize: "0.88rem",
       "&:hover": {
         textDecoration: "none",
       },
@@ -28,6 +29,12 @@ const styles = (theme: Theme) =>
       "& > *": {
         borderBottom: "unset",
       },
+    },
+    iconCell: {
+      paddingRight: 0,
+      paddingTop: 0,
+      paddingBottom: 0,
+      maxWidth: 30,
     },
   });
 

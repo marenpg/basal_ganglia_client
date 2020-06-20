@@ -18,6 +18,9 @@ const cellTypeDetailedQuery = gql`
       observedInRegions {
         id
         name
+        specie {
+          id
+        }
       }
       analyses {
         id

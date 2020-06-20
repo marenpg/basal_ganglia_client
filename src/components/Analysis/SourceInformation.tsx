@@ -5,12 +5,7 @@ import { AnalysisContext } from "../../providers/contexts";
 
 import { InformationCard, InformationTable } from "../Base/InformationCard";
 import { TableElements } from "./types";
-
-const getName = (sourceName: string) => {
-  if (!sourceName) return "";
-  if (sourceName.indexOf("_") < 0) return sourceName;
-  return sourceName.replace("_", ", ");
-};
+import { getSourceName } from "./utils";
 
 export const SourceInformation: React.FC = () => {
   const [genInfoElements, setGenInfoElements] = useState<TableElements>([]);
@@ -28,7 +23,7 @@ export const SourceInformation: React.FC = () => {
       { title: "Raw data available:", value: source.rawDataAvailable },
       { title: "Journal:", value: source.collectedFrom.name },
     ]);
-    setHeading(getName(source.sourceName))
+    setHeading(getSourceName(source.sourceName))
 
   }, [selectedAnalysis]);
 

@@ -52,8 +52,7 @@ export const CellTypesTree: React.FC<CellTypesTreeProps> = ({ cellTypeTree }) =>
               handleDrawerChange={(newOpen) => setDrawerOpen(newOpen)}
               fullscreenLink={"observedInRegions" in selectedCellType ? `/cell-types/${selectedCellType.id}` : undefined}
             >
-              {/* <CellType id={selectedCellTypeId} cellGroups={cellGroups} drawer={true} /> */}
-              <CellTypeComponent cellType={selectedCellType} drawer={true} />
+              <CellTypeComponent cellType={selectedCellType} drawer={true} handleTreeClick={handleTreeClick} />
             </CloseableDrawer>
           }
         </>

@@ -370,6 +370,7 @@ export interface DataType {
   id: string;
   name: string;
   regionRecord: RegionRecord;
+  regionZone?: RegionZone;
 }
 
 export interface ObjectOfInterest {

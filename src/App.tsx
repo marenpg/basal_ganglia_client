@@ -31,7 +31,7 @@ const App = () => (
           <Route exact path="/analyses/:filters?" component={ExperimentsRoute} />
           <Route exact path="/analyses/:id/:dataId" component={AnalysisRoute} />
 
-          <Route exact path="/information" component={InformationRoute} />
+          <Route exact path="/acknowledgements" component={InformationRoute} />
           <Route> No match </Route>
         </Switch>
       </Layout>

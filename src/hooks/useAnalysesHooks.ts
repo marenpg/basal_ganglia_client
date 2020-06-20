@@ -93,6 +93,9 @@ const analysisQuery = gql`
             name
           }
         }
+        regionZone {
+          name
+        }
       }
     } # Analysis end
     Specie {

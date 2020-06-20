@@ -32,11 +32,17 @@ export interface BgCollapseTableProps extends StyleProps {
   order?: "desc" | "asc";
   handleSortRequest: any;
   headers: { text: string; val?: string }[];
-  rows: TableRow[];
+  rows: TableRow[] | CollapseTableRow[];
   onClick?: (id: string) => (event: any) => void;
 }
 
 export interface TableRow {
+  link?: string;
+  id: string;
+  cells: { text: string }[];
+}
+
+export interface CollapseTableRow {
   link?: string;
   id: string;
   cells: { text: string }[];
@@ -45,5 +51,12 @@ export interface TableRow {
 }
 
 export interface CollapseRowProps extends StyleProps {
+  row: CollapseTableRow;
+  headers: { text: string; val?: string }[];
+}
+
+export interface RegularRowProps extends StyleProps {
   row: TableRow;
+  headers: { text: string; val?: string }[];
+  onClick?: (id: string) => (event: any) => void;
 }
