@@ -113,7 +113,6 @@ export const getStereologyElements = (data: Data): TableElements => {
 };
 
 export const getQuantitationSummary = (qunatitation: Quantitation, selectedAnalysis: Analysis): string => {
-
   let summary = "";
   if (qunatitation.number) {
     if (qunatitation.originalExtent && qunatitation.originalExtent !== "N/A") {
