@@ -6,7 +6,7 @@ import { AnalysisContext } from "../../../providers/contexts";
 import { InformationCard, InformationTable } from "../../Base/InformationCard";
 import { TableElements } from "../types";
 import { CellMorphology, Neuromorpho } from "../../../utils/api/types";
-import { getTableElementsOnDataType } from "./utils";
+import { getTableElementsCellMorphology } from "./utils";
 
 
 export const MorphologyInformation: React.FC = () => {
@@ -18,10 +18,10 @@ export const MorphologyInformation: React.FC = () => {
 
   useEffect(() => {
     if (!selectedAnalysis || !selectedData) return;
-    selectedAnalysis && setGenInfoElements(getTableElementsOnDataType(selectedAnalysis, selectedData))
     const data = selectedData as CellMorphology;
     if (!data) return;
 
+    selectedAnalysis && setGenInfoElements(getTableElementsCellMorphology(data))
     const setNeuromorphoData = async () => {
       setNeuromorphoLinks(data.morphology);
     }

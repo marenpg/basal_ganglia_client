@@ -349,9 +349,9 @@ export interface Quantitation {
   originalExtent: string;
   number: number;
   numberSD: number;
-  density: number;
+  density: string;
   densityUnit: string;
-  densitySD: number;
+  densitySD: string;
   volumetricDensity: number;
   estimateExtraction: string;
 

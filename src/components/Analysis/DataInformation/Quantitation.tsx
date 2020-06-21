@@ -29,10 +29,10 @@ export const QuantitationInformation: React.FC = () => {
     if (!selectedData) return;
     const data = selectedData as Quantitation;
 
-    const tableElements: TableElements = getTableElementsQuantitation(data);
-    if(data.relatedDistributions.length) {
+    const tableElements: TableElements = getTableElementsQuantitation(data, selectedAnalysis);
+    if (data.relatedDistributions.length) {
       data.relatedDistributions.map(d => {
-        tableElements.push({title: "Related distribution", value: getAnalysisNameFormatted(d.name), link: `/analyses/${d.analysis.id}/${d.id}`})
+        tableElements.push({ title: "Related distribution", value: getAnalysisNameFormatted(d.name), link: `/analyses/${d.analysis.id}/${d.id}` })
       })
     }
 
@@ -44,7 +44,7 @@ export const QuantitationInformation: React.FC = () => {
       { title: "RRID", value: data.software.rrid },
     ]);
 
-    setSummary(getQuantitationSummary(data));
+    setSummary(getQuantitationSummary(data, selectedAnalysis));
   }, [selectedAnalysis, selectedData]);
 
   if (!selectedAnalysis) return <></>;
@@ -52,7 +52,12 @@ export const QuantitationInformation: React.FC = () => {
   return (
     <Box display="flex" flexDirection="row" flexWrap="wrap" justifyContent="flex-start">
       <Box component="p" mt={4} mb={2} textAlign="center" width="100%">
-        {`${summary}${summary ? ", browse" : "Browse"} detailed methodological information in the tabs above.`}
+        <Box component="span">
+          {summary}
+        </Box>
+        <Box component="span" display="block">
+          {"Browse detailed methodological information in the tabs above."}
+        </Box>
       </Box>
       <Box mt={2} mb={2} ml={1} textAlign="left" width="100%">
         {headerData.map(data => (

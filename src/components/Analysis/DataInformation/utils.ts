@@ -5,25 +5,6 @@ export const putativeIds = ["1", "2", "23"];
 export const synapseIds = ["4", "5", "9", "10", "24"];
 export const dendriteIds = ["11", "12", "13", "14", "17", "18"];
 
-export const getTableElementsOnDataType = (
-  selectedAnalysis: Analysis,
-  selectedDataType: Quantitation | Distribution | CellMorphology
-): TableElements => {
-
-  if (selectedAnalysis.dataType === "Quantitation") {
-    return selectedDataType ? getTableElementsQuantitation(selectedDataType as Quantitation) : [];
-  }
-
-  if (selectedAnalysis.dataType === "Distribution") {
-    return selectedDataType ? getTableElementsDistribution(selectedDataType as Distribution) : [];
-  }
-
-  if (selectedAnalysis.dataType === "Morphology") {
-    return selectedDataType ? getTableElementsCellMorphology(selectedDataType as CellMorphology) : [];
-  }
-
-  return [];
-};
 
 export const getTableElementsDistribution = (data: Distribution) => {
   const analysisType = [data.distributionDimensions, data.analysisTypePrimary, data.analysisTypeSecondary].join(", ");
@@ -37,17 +18,34 @@ export const getTableElementsDistribution = (data: Distribution) => {
   ];
 };
 
-export const getTableElementsQuantitation = (data: Quantitation) => {
+export const getTableElementsQuantitation = (data: Quantitation, analysis: Analysis) => {
   return [
     { title: "Section sampling", value: data.sectionSampling, tooltip: "The method of sampling sections, defined as exhaustive (all sections), systematic random (random start with uniform fraction), preferential, or N/A." },
     { title: "Sampling fraction", value: data.samplingFraction, tooltip: "The ratio of sampled to unsampled sections" },
     { title: "Subsectional sampling", value: data.subsectionalSampling, tooltip: "The method for counting object of interest within a section" },
     { title: "Final estimate basis", value: data.finalEstimateBasis, tooltip: "The basis of the final estimate" },
-    { title: "Estimate relevance", value: dendriteIds.includes(data.id) ? "" : data.estimateRelevance },
+    { title: "Estimate relevance", value: dendriteIds.includes(data.id) ? "" : getEstimateRelevance(data, analysis) },
+    { title: "Cellular target region", value: data.targetCellularRegion?.name },
   ];
 };
 
-const getTableElementsCellMorphology = (data: CellMorphology) => {
+const getEstimateRelevance = (data: Quantitation, analysis: Analysis): string => {
+  if(!data?.estimateRelevance || ! analysis) return "";
+   
+  if(!analysis.objectOfInterest?.NeuralStructure?.name) return data.estimateRelevance;
+  const estimateRelevance = data.estimateRelevance.toLowerCase();
+  if( estimateRelevance === "per cellular origin"){
+    return `Number of ${analysis.objectOfInterest.NeuralStructure.name?.toLowerCase()} made onto ${analysis.cellTypePutative?.name?.toLowerCase()}`;
+  }
+
+  if(estimateRelevance === "per all targets in ROI" || estimateRelevance === "per cellular target"){
+    return `Number of ${analysis.objectOfInterest.NeuralStructure.name.toLowerCase()} made onto ${data.targetCell?.name?.toLowerCase()} ${data.targetCellularRegion?.name?.toLowerCase()}`;
+  }
+
+  return data.estimateRelevance;
+}
+
+export const getTableElementsCellMorphology = (data: CellMorphology) => {
   return [
     { title: "Neuromorpho Id ", value: data.neuromorphoId },
     { title: "Soma surface", value: data.somaSurface },
@@ -114,17 +112,25 @@ export const getStereologyElements = (data: Data): TableElements => {
   ])
 };
 
-export const getQuantitationSummary = (qunatitation: Quantitation): string => {
+export const getQuantitationSummary = (qunatitation: Quantitation, selectedAnalysis: Analysis): string => {
+  console.log(qunatitation);
+  let summary = "";
   if (qunatitation.number) {
-    if (!qunatitation.originalExtent) return "";
-    const qNumber = qunatitation.originalExtent === "bilateral" ? qunatitation.number / 2 : qunatitation.number
-    return `Estimated total number was ${qNumber} ± ${qunatitation.numberSD} (mean ± SD) unilaterally`;
+    if (qunatitation.originalExtent && qunatitation.originalExtent !== "N/A") {
+      const qNumber = qunatitation.originalExtent === "bilateral" ? qunatitation.number / 2 : qunatitation.number
+      summary = `Estimated total number was ${qNumber} ± ${qunatitation.numberSD} (mean ± SD) unilaterally. `;
+    }
   }
-  if (qunatitation.density) {
-    return `Estimated total number was ${qunatitation.density} ± ${qunatitation.densitySD} (mean ± SD) per ${qunatitation.densityUnit}`;
+  if (qunatitation.density && !summary) {
+    summary = `Estimated total number was ${qunatitation.density} ± ${qunatitation.densitySD} (mean ± SD) per ${qunatitation.densityUnit}. `;
+    const ooiIds = ["1", "2", "23"]
+    const ooiId = selectedAnalysis.objectOfInterest?.NeuralStructure?.id;
+    if(qunatitation.densityUnit != "mm^3" && ooiId && ooiIds.includes(ooiId)){
+      summary += `This equals a density of ${qunatitation.volumetricDensity} per mm^3.`
+    }
   }
 
-  return "";
+  return summary;
 };
 //Synaptic target: [Quantitations]_[Cellular_ID] [Quantitations]_[Cellular_target_region]
 
