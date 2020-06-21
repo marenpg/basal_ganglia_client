@@ -27,7 +27,7 @@ const CellTypeContainer: React.FC<CellTypeContainerProps> = ({ cellTypeId, child
       }
       {error && !loading && (
         <Box display="flex" alignItems="center" justifyContent="center" height="90vh">
-          <Typography component="p" color="error">An error occurred while fetching the experiments</Typography>
+          <Typography component="p" color="error">An error occurred while fetching the cells</Typography>
         </Box>
       )}
 

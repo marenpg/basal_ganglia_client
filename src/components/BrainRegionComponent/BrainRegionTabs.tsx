@@ -8,7 +8,7 @@ import { CellsInRegionCount } from "../CellTypeComponents";
 import { BrainRegionCellTree } from "./BrainRegionCellTree";
 import BrainRegionConnections from "./connectivity";
 import { BrainRegionTabsProps } from "./types";
-import { getCellsInAllRegions, getAnalysisIdsInRegions } from "./utils";
+import { getCellsInRegions, getAnalysisIdsInRegions } from "./utils";
 import { RegionConnectivity } from "./connectivity/types";
 import { getRegionConnectivity } from "./connectivity/utils";
 import AnalysesContainer from "../../containers/AnalysesContainer";
@@ -24,7 +24,7 @@ export const BrainRegionTabs: React.FC<BrainRegionTabsProps> = ({
   selectedRegion,
   subRegions,
 }) => {
-  const [tabValue, setTabValue] = useState<number>(1);
+  const [tabValue, setTabValue] = useState<number>(0);
   const [cellsInSubRegions, setCellsInSubRegions] = useState<CellType[]>([])
   const [cellsAllRegions, setCellsInAllRegions] = useState<CellType[]>([])
   const [analysisIds, setAnalysisIds] = useState<string[]>([])
@@ -33,11 +33,9 @@ export const BrainRegionTabs: React.FC<BrainRegionTabsProps> = ({
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    console.log(selectedRegion, subRegions);
-    const subRegionCells = getCellsInAllRegions(subRegions);
+    const subRegionCells = getCellsInRegions(subRegions);
     setCellsInSubRegions(subRegionCells);
-    const unique = new Set([...subRegionCells, ...selectedRegion.cellsObserved])
-    setCellsInAllRegions([...unique]);
+    setCellsInAllRegions(getCellsInRegions(subRegions.concat(selectedRegion)));
     setAnalysisIds(getAnalysisIdsInRegions([selectedRegion].concat(subRegions)));
 
     setRegionIds([selectedRegion].concat(subRegions).map(r => r.id));

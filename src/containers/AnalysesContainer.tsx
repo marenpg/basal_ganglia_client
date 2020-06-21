@@ -37,7 +37,7 @@ const AnalysesContainer: React.FC<AnalysesContainerProps> = ({ analysisIds, regi
         const split2 = s.split("=");
         const filter = split2[0]
         const filterValue = split2[1]
-        console.log("filters", filter, filterValue);
+
         if (filter === "specie" || filter === "brainRegion" || filter === "cellType") {
           filterMap[filter] = filterValue;
         }
@@ -49,8 +49,9 @@ const AnalysesContainer: React.FC<AnalysesContainerProps> = ({ analysisIds, regi
       value.filters = filterMap;
 
       if (value.filters?.brainRegion) {
-        const region = data.BrainRegion.find(r => r.id === value.filters?.brainRegion);
-        value.selectedBrainRegions = region ? [region] : undefined;
+        const ids = value.filters.brainRegion.split(",");
+        const regions = data.BrainRegion.filter(r => ids.includes(r.id));
+        value.selectedBrainRegions = regions.length ? regions : undefined;
       }
       if (value.filters?.cellType) {
         value.selectedCellType = data.CellType.find(r => r.id === value.filters?.cellType)

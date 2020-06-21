@@ -43,13 +43,9 @@ const ExperimentsPage: React.FC<StyleProps> = ({ classes }) => {
   }
 
   const handleSpecieCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("ckecbox chenge");
     setSelectedSpecieId(event.target.value);
     setFilteredAnalyses(getAnalysisOnSpecie(event.target.value, analyses));
   };
-
-
-  console.log(selectedSpecieId, selectedBrainRegions, selectedCellType, filteredAnalyses)
 
   return (
     <>

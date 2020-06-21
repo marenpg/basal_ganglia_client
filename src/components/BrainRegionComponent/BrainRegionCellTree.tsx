@@ -5,7 +5,7 @@ import { BrainRegionDataContext } from "../../providers/contexts";
 import { BrainRegionCellTreeProps } from "./types";
 import { Box } from "@material-ui/core";
 import { CellTypeTreeNode } from "../../utils/types";
-import { getCellTypeIds, getCellTypesFromIds, generatecCellTree } from "./utils";
+import { getCellTypesDetailed, generatecCellTree } from "./utils";
 import { getExpandedNodeIds } from "../../utils/treeMapper";
 
 export const BrainRegionCellTree: React.FC<BrainRegionCellTreeProps> = ({ cellTypes }) => {
@@ -14,8 +14,7 @@ export const BrainRegionCellTree: React.FC<BrainRegionCellTreeProps> = ({ cellTy
   const { selectedRegion, cellTypes: allCellTypes, cellClasses, cellGroups } = useContext(BrainRegionDataContext);
 
   useEffect(() => {
-    const ids = getCellTypeIds(cellTypes);
-    const cellTypesWithInfo = getCellTypesFromIds(ids, allCellTypes!);
+    const cellTypesWithInfo = getCellTypesDetailed(cellTypes, allCellTypes!);
     const cellTypeTree = generatecCellTree(cellTypesWithInfo, cellClasses!, cellGroups!, selectedRegion!);
 
     setTreeNodes(cellTypeTree);

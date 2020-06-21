@@ -8,19 +8,21 @@ import {
 import { CellTypeTreeNode } from "../../utils/types";
 import { getCellTypeTreeNode } from "../CellTypes/utils";
 
-export const getCellsInAllRegions = (regions: BrainRegion[]): CellType[] => {
-  const cellTypes: CellType[] = regions.reduce(
-    (acc: any, current: BrainRegion, index: number) => {
-      if ("cellsObserved" in acc) {
-        return acc.cellsObserved.concat(current.cellsObserved);
+export const getCellsInRegions = (regions: BrainRegion[]): CellType[] => {
+  let cellTypes: CellType[] = []
+  regions.map(region => {
+    const cells: CellType[] = region.cellsObserved.map(c => ({...c, observedInRegions: [region]}))
+    cells.map(c => {
+      const cell = cellTypes.find(c1 => c1.id === c.id);
+      if(cell){
+        cell.observedInRegions = cell.observedInRegions.concat(c.observedInRegions);
+      } else {
+        cellTypes.push(c);
       }
-      return acc.concat(current.cellsObserved);
-    },
-    [] as CellType[]
-  );
-
-  const cellsAsSet = new Set(cellTypes);
-  return [...cellsAsSet];
+    })
+  })
+  
+  return cellTypes;
 };
 
 const getSubregionsHelper = (
@@ -50,11 +52,11 @@ export const getAllSubRegions = (
   return getSubregionsHelper(region, subRegions, map);
 };
 
-export const sortElements = (
+export const sortElements = <T>(
   elements: any,
   order: string,
   orderBy: string
-): any => {
+): T => {
   if (order === "asc") {
     return elements.sort((a: any, b: any) =>
       a[orderBy] > b[orderBy] ? 1 : a[orderBy] < b[orderBy] ? -1 : 0
@@ -87,14 +89,14 @@ const getCellNodeMap = (
   const treeNodeMap: { [key: string]: CellTypeTreeNode } = {};
 
   // First map the nodes of the array to an object -> create a hash table.
-  cellTypes.map((cellType) => {
+  sortElements<CellType[]>(cellTypes, "asc", "name").map((cellType) => {
     treeNodeMap[cellType.id] = getCellTypeTreeNode(
       cellType,
       cellType.id,
       [],
       cellType.classMembership.id + "class"
     );
-    treeNodeMap[cellType.id].link = `/analyses/specie=${region.specie?.id}&brainRegion=${region.id}&cellType=${cellType.id}`;
+    treeNodeMap[cellType.id].link = `/analyses/specie=${region.specie?.id}&brainRegion=${cellType.observedInRegions.map(b => b.id).join(",")}&cellType=${cellType.id}`;
   });
 
   cellClasses.map((cellClass) => {
@@ -113,6 +115,7 @@ const getCellNodeMap = (
     treeNodeMap[webId] = getCellTypeTreeNode(cellGroup, webId.toString(), []);
     treeNodeMap[webId].expanded = true;
   });
+  
   return treeNodeMap;
 };
 
@@ -145,6 +148,12 @@ export const generatecCellTree = (
       }
     });
 
+    tree.map( cGroup => {
+      cGroup.children.map(cClass => {
+        cClass.children = sortElements<CellTypeTreeNode[]>(cClass.children, "asc", "name");
+      })
+    });
+
     return tree;
   };
 
@@ -156,15 +165,16 @@ export const generatecCellTree = (
   return treeNodes;
 };
 
-export const getCellTypeIds = (cellTypeIds: CellType[]): string[] => {
-  const ids: string[] = [];
-  cellTypeIds.map((c) => ids.push(c.id));
-  return ids;
-};
-
-export const getCellTypesFromIds = (
-  cellTypeIds: string[],
-  cellTypes: CellType[]
+export const getCellTypesDetailed = (
+  cellTypes: CellType[],
+  allCellTypes: CellType[]
 ) => {
-  return cellTypes.filter((c) => cellTypeIds.includes(c.id));
+  const cells: CellType[] = [];
+  allCellTypes.map(c => {
+    const cellType = cellTypes.find(c1 => c1.id === c.id);
+    if(cellType){
+      cells.push({...c, observedInRegions: cellType.observedInRegions})
+    }
+  });
+  return cells;
 };
