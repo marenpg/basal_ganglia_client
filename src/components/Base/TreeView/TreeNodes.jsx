@@ -2,11 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { fade, withStyles } from "@material-ui/core/styles";
 import TreeItem from "@material-ui/lab/TreeItem";
-import {
-  Collapse,
-  ButtonBase,
-  Box,
-} from "@material-ui/core";
+import { Collapse, ButtonBase, Box, Link } from "@material-ui/core";
 // import InfoIcon from "@material-ui/icons/Info";
 import { useSpring, animated } from "react-spring/web.cjs"; // web.cjs is required for IE 11 support
 import { useTreeViewStyles } from "./TreeView.jss";
@@ -54,26 +50,31 @@ export const TreeNodes = ({ node, handleTreeClick }) => {
 
   const LabelItem = () => (
     <Box display="flex" alignItems="center">
-
-      <ButtonBase
-        className={classes.treeButton}
-        title={`See information about ${node.name}`}
-        onClick={handleTreeClick(node)}
-      >
-        {node.matching ? <Box fontStyle="italic">{node.name}</Box> : node.name}
-       </ButtonBase>
-      {/*{node.description && (
-        <Tooltip
-          title={`${node.description.description} Collected from ${node.description.iri}`}
-          aria-label="description"
-          placement="right"
+      {node.link ? (
+        <Link
+          href={node.link}
+          className={classes.treeButton}
+          title={`See analyses of ${node.name} in region`}
         >
-          <Box pl={1}>
-          <InfoIcon />
-          </Box>
-            
-        </Tooltip>
-      )} */}
+          {node.matching ? (
+            <Box fontStyle="italic">{node.name}</Box>
+          ) : (
+            node.name
+          )}
+        </Link>
+      ) : (
+        <ButtonBase
+          className={classes.treeButton}
+          title={`See information about ${node.name}`}
+          onClick={handleTreeClick(node)}
+        >
+          {node.matching ? (
+            <Box fontStyle="italic">{node.name}</Box>
+          ) : (
+            node.name
+          )}
+        </ButtonBase>
+      )}
     </Box>
   );
 

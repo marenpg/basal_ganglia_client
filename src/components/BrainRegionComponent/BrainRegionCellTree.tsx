@@ -11,12 +11,12 @@ import { getExpandedNodeIds } from "../../utils/treeMapper";
 export const BrainRegionCellTree: React.FC<BrainRegionCellTreeProps> = ({ cellTypes }) => {
   const [treeNodes, setTreeNodes] = useState<CellTypeTreeNode[]>([]);
   const [expandedIds, setExpandedIds] = useState<string[]>([]);
-  const { cellTypes: allCellTypes, cellClasses, cellGroups } = useContext(BrainRegionDataContext);
+  const { selectedRegion, cellTypes: allCellTypes, cellClasses, cellGroups } = useContext(BrainRegionDataContext);
 
   useEffect(() => {
     const ids = getCellTypeIds(cellTypes);
     const cellTypesWithInfo = getCellTypesFromIds(ids, allCellTypes!);
-    const cellTypeTree = generatecCellTree(cellTypesWithInfo, cellClasses!, cellGroups!);
+    const cellTypeTree = generatecCellTree(cellTypesWithInfo, cellClasses!, cellGroups!, selectedRegion!);
 
     setTreeNodes(cellTypeTree);
     setExpandedIds(getExpandedNodeIds(cellTypeTree));

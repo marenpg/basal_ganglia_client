@@ -8,6 +8,7 @@ import {
   Strain,
   CellType,
   AgeCategory,
+  BrainRegion,
 } from "../utils/api/types";
 
 export interface AnalysesData {
@@ -19,6 +20,8 @@ export interface AnalysesData {
   Reporter: Reporter[];
   Strain: Strain[];
   AgeCategory: AgeCategory[];
+  BrainRegion: BrainRegion[];
+  CellType: CellType[];
 }
 
 export interface AnalysisData {

@@ -132,12 +132,8 @@ export const headers = [
   ];
   
 export const getSubRows = (analysis: Analysis): TableRow[] => {
-  const dataTypes: DataType[] = []
-  analysis.quantitations.map(q => (dataTypes.push(q)));
-  analysis.cellMorphologies.map(q => (dataTypes.push(q)));
-  analysis.distributions.map(q => (dataTypes.push(q)));
   return(
-    sortElements<DataType[]>(dataTypes, "asc", "id").map(dataType => (
+    sortElements<DataType[]>(analysis.dataTypes, "asc", "id").map(dataType => (
     {
       id: `${analysis.id}-${dataType.id}`,
       link: `/analyses/${analysis.id}/${dataType.id}`,
@@ -151,7 +147,16 @@ export const getSubRows = (analysis: Analysis): TableRow[] => {
 )}
   
 export const getRows = (analyses: Analysis[]): TableRow[] => (
-  analyses.map(analysis => (({
+  analyses.map(analysis => {
+    if(analysis.dataTypes && !analysis.dataTypes[0].name){
+      const dataTypes: DataType[] = []
+      analysis.quantitations.map(q => (dataTypes.push(q)));
+      analysis.cellMorphologies.map(q => (dataTypes.push(q)));
+      analysis.distributions.map(q => (dataTypes.push(q)));
+      analysis.dataTypes = dataTypes;
+    }
+    
+    return (({
     id: analysis.id,
     cells: [
       { text: getAnalysisNameFormatted(analysis.name) },
@@ -164,7 +169,7 @@ export const getRows = (analyses: Analysis[]): TableRow[] => (
     ],
     subHeaders: [{ text: analysis.dataType}, { text: "Brain region" }, { text: "Region zone" }],
     subRows: getSubRows(analysis)
-  })))
+  }))})
 );
 
 

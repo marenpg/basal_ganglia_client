@@ -81,7 +81,8 @@ export const getAnalysisIdsInRegions = (regions: BrainRegion[]): string[] => {
 const getCellNodeMap = (
   cellTypes: CellType[],
   cellClasses: CellClass[],
-  cellGroups: CellGroup[]
+  cellGroups: CellGroup[],
+  region: BrainRegion
 ): { [key: string]: CellTypeTreeNode } => {
   const treeNodeMap: { [key: string]: CellTypeTreeNode } = {};
 
@@ -93,6 +94,7 @@ const getCellNodeMap = (
       [],
       cellType.classMembership.id + "class"
     );
+    treeNodeMap[cellType.id].link = `/analyses/specie=${region.specie?.id}&brainRegion=${region.id}&cellType=${cellType.id}`;
   });
 
   cellClasses.map((cellClass) => {
@@ -117,7 +119,8 @@ const getCellNodeMap = (
 export const generatecCellTree = (
   cellTypes: CellType[],
   cellClasses: CellClass[],
-  cellGroups: CellGroup[]
+  cellGroups: CellGroup[],
+  region: BrainRegion
 ): CellTypeTreeNode[] => {
   const unflatten = (
     cellTypes: CellType[],
@@ -125,7 +128,7 @@ export const generatecCellTree = (
     cellGroups: CellGroup[]
   ) => {
     const tree: CellTypeTreeNode[] = [];
-    const treeNodeMap = getCellNodeMap(cellTypes, cellClasses, cellGroups);
+    const treeNodeMap = getCellNodeMap(cellTypes, cellClasses, cellGroups, region);
 
     Object.entries(treeNodeMap).map(([id, treeNode]) => {
       // If the element is not at the root level, add it to its parent array of children.

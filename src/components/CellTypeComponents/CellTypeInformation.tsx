@@ -48,7 +48,7 @@ export const CellTypeInformation: React.FC = () => {
               headers={[{ text: "", val: "" }]}
               rows={regions.map((region => ({
                 id: region.id,
-                link: `/brain-regions/${region.id}`,
+                link: `/analyses/specie=${region.specie?.id}&brainRegion=${region.id}&cellType=${selectedCellType.id}`,
                 cells: [{ text: `${region.specie?.id === "1" ? "Rat" : "Mouse"} ${region.name.toLowerCase()}` }]
               })))}
             />

@@ -19,7 +19,6 @@ export const CellTypeTabs: React.FC = () => {
 
   const { selectedCellType } = useContext(CellTypeContext);
 
-
   useEffect(() => {
     selectedCellType && setAnalysesIds(selectedCellType.analyses.map(a => a.id));
   }, [selectedCellType])

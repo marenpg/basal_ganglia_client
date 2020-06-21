@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import { AppBar, Box, Container, Divider, Tabs, Tab } from "@material-ui/core";
+import { AppBar, Box, Container, Divider, Tabs, Tab, CircularProgress, Typography } from "@material-ui/core";
 
 import { CellType } from "../../utils/api/types";
 import TabPanel from "../Base/TabPanel";
@@ -24,20 +24,25 @@ export const BrainRegionTabs: React.FC<BrainRegionTabsProps> = ({
   selectedRegion,
   subRegions,
 }) => {
-  const [tabValue, setTabValue] = useState<number>(2);
+  const [tabValue, setTabValue] = useState<number>(1);
   const [cellsInSubRegions, setCellsInSubRegions] = useState<CellType[]>([])
   const [cellsAllRegions, setCellsInAllRegions] = useState<CellType[]>([])
   const [analysisIds, setAnalysisIds] = useState<string[]>([])
+  const [regionIds, setRegionIds] = useState<string[]>([])
   const [connectivity, setConnectivity] = useState<RegionConnectivity[]>([])
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
+    console.log(selectedRegion, subRegions);
     const subRegionCells = getCellsInAllRegions(subRegions);
     setCellsInSubRegions(subRegionCells);
     const unique = new Set([...subRegionCells, ...selectedRegion.cellsObserved])
     setCellsInAllRegions([...unique]);
     setAnalysisIds(getAnalysisIdsInRegions([selectedRegion].concat(subRegions)));
 
+    setRegionIds([selectedRegion].concat(subRegions).map(r => r.id));
     setConnectivity(getRegionConnectivity(selectedRegion));
+    setLoading(false);
   }, [selectedRegion, subRegions])
 
   const handleTabChange = (_: any, newTabValue: number) => {
@@ -46,42 +51,57 @@ export const BrainRegionTabs: React.FC<BrainRegionTabsProps> = ({
 
   return (
     <Box mb={4}>
-      <AnalysesContainer analysisIds={analysisIds}>
-        <AppBar position="static" color="secondary">
-          <Tabs
-            centered
-            value={tabValue}
-            onChange={handleTabChange}
-            aria-label="simple tabs example"
-            indicatorColor="primary"
-            textColor="primary"
-          >
-            <Tab label="Cells" {...a11yTabProps(0)} />
-            <Tab label="Analyses" {...a11yTabProps(1)} />
+      {loading ? (
+        <CircularProgress />
+      ) : (
+          <AnalysesContainer analysisIds={analysisIds} regionIds={regionIds}>
+            <AppBar position="static" color="secondary">
+              <Tabs
+                centered
+                value={tabValue}
+                onChange={handleTabChange}
+                aria-label="simple tabs example"
+                indicatorColor="primary"
+                textColor="primary"
+              >
+                <Tab label="Cells" {...a11yTabProps(0)} />
+                <Tab label="Analyses" {...a11yTabProps(1)} />
+                {connectivity && connectivity.length > 0 &&
+                  <Tab label="Connected Regions" {...a11yTabProps(2)} />
+                }
+              </Tabs>
+            </AppBar>
+            <TabPanel value={tabValue} index={0}>
+              {!selectedRegion?.cellsObserved?.length && !subRegions?.length ? (
+                <Box mt={4}>
+                  <Container maxWidth="lg">
+                    <Typography align="center">No cells observed in this region.</Typography>
+                  </Container>
+                </Box>
+              ) : (
+                  <>
+                    <CellsInRegionCount
+                      region={selectedRegion}
+                      cellsIncludingSubRegions={cellsInSubRegions}
+                    />
+                    <Divider />
+                    <Container maxWidth="sm">
+                      <BrainRegionCellTree cellTypes={cellsAllRegions} />
+                    </Container>
+                  </>
+
+                )}
+            </TabPanel>
+            <TabPanel value={tabValue} index={1}>
+              <AnalysesTable />
+            </TabPanel>
             {connectivity && connectivity.length > 0 &&
-              <Tab label="Connected Regions" {...a11yTabProps(2)} />
+              <TabPanel value={tabValue} index={2}>
+                <BrainRegionConnections connectivity={connectivity} />
+              </TabPanel>
             }
-          </Tabs>
-        </AppBar>
-        <TabPanel value={tabValue} index={0}>
-          <CellsInRegionCount
-            region={selectedRegion}
-            cellsIncludingSubRegions={cellsInSubRegions}
-          />
-          <Divider />
-          <Container maxWidth="sm">
-            <BrainRegionCellTree cellTypes={cellsAllRegions} />
-          </Container>
-        </TabPanel>
-        <TabPanel value={tabValue} index={1}>
-          <AnalysesTable />
-        </TabPanel>
-        {connectivity && connectivity.length > 0 &&
-          <TabPanel value={tabValue} index={2}>
-            <BrainRegionConnections connectivity={connectivity} />
-          </TabPanel>
-        }
-      </AnalysesContainer>
+          </AnalysesContainer>
+        )}
     </Box>
   );
 };

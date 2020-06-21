@@ -25,6 +25,7 @@ export interface GenericTreeNode {
 export interface CellTypeTreeNode extends GenericTreeNode {
   originalId: string;
   children: CellTypeTreeNode[];
+  link?: string;
 }
 
 export interface BrainRegionTreeNode extends GenericTreeNode {}

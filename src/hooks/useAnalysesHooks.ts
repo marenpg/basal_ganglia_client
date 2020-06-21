@@ -13,6 +13,11 @@ const analysisQuery = gql`
         name
         regionRecord {
           primaryRegion {
+            id
+            name
+          }
+          secondaryRegion {
+            id
             name
           }
         }
@@ -22,6 +27,11 @@ const analysisQuery = gql`
         name
         regionRecord {
           primaryRegion {
+            id
+            name
+          }
+          secondaryRegion {
+            id
             name
           }
         }
@@ -50,10 +60,12 @@ const analysisQuery = gql`
         }
       } # Experierment end
       cellTypePutative {
+        id
         name
       }
       objectOfInterest {
         NeuralStructure {
+          id
           name
         }
       }
@@ -90,6 +102,11 @@ const analysisQuery = gql`
         finalEstimateBasis
         regionRecord {
           primaryRegion {
+            id
+            name
+          }
+          secondaryRegion {
+            id
             name
           }
         }
@@ -133,6 +150,14 @@ const analysisQuery = gql`
       specie {
         id
       }
+    }
+    BrainRegion {
+      id
+      name
+    }
+    CellType {
+      id
+      name
     }
   }
 `;

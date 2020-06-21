@@ -10,9 +10,10 @@ import { style, StyleProps } from "../components/Analyses/Analyses.jss";
 interface AnalysesContainerProps extends StyleProps {
   analysisIds?: string[];
   filters?: string;
+  regionIds?: string[];
 }
 
-const AnalysesContainer: React.FC<AnalysesContainerProps> = ({ analysisIds, filters, children }) => {
+const AnalysesContainer: React.FC<AnalysesContainerProps> = ({ analysisIds, regionIds, filters, children }) => {
   const analysisIdObjects = analysisIds ? analysisIds.map(id => ({ id })) : [];
   const { loading, data, error } = useAnalysesHooks<AnalysesData>(analysisIdObjects);
 
@@ -25,23 +26,39 @@ const AnalysesContainer: React.FC<AnalysesContainerProps> = ({ analysisIds, filt
       visualizationMethods: data.VisualizationProtocol,
       reporters: data.Reporter,
       strains: data.Strain,
-      ageCategories: data.AgeCategory
+      ageCategories: data.AgeCategory,
     })
 
     if (filters) {
+
       const splitted = filters.split("&");
       const filterMap: any = {};
       splitted.map(s => {
-        const filter = s.split("=");
-        if (filter[0] === "specie") {
-          filterMap.specie = filter[1];
+        const split2 = s.split("=");
+        const filter = split2[0]
+        const filterValue = split2[1]
+        console.log("filters", filter, filterValue);
+        if (filter === "specie" || filter === "brainRegion" || filter === "cellType") {
+          filterMap[filter] = filterValue;
         }
-        if (filter[0] === "rrids" || filter[0] === "strains") {
-          filterMap[filter[0]] = filter[1].replace("[", "").replace("]", "").split(",");
+        if (filter === "rrids" || filter === "strains") {
+          filterMap[filter] = filterValue.replace("[", "").replace("]", "").split(",");
         }
       })
 
       value.filters = filterMap;
+
+      if (value.filters?.brainRegion) {
+        const region = data.BrainRegion.find(r => r.id === value.filters?.brainRegion);
+        value.selectedBrainRegions = region ? [region] : undefined;
+      }
+      if (value.filters?.cellType) {
+        value.selectedCellType = data.CellType.find(r => r.id === value.filters?.cellType)
+      }
+    }
+
+    if (regionIds) {
+      value.selectedBrainRegions = data.BrainRegion.filter(r => regionIds.includes(r.id));
     }
     return value;
   }

@@ -59,12 +59,14 @@ export interface AnalysesContextValue {
   visualizationMethods: VisualizationProtocol[];
   reporters: Reporter[];
   ageCategories: AgeCategory[];
+  selectedBrainRegions?: BrainRegion[];
+  selectedCellType?: CellType;
   filters?: {
     specie?: string;
     rrids?: string[];
     strains?: string[];
-    brainRegionId?: string;
-    cellTypeId?: string;
+    brainRegion?: string;
+    cellType?: string;
   };
 }
 

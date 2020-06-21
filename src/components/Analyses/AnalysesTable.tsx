@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Box, Container } from "@material-ui/core";
+import { Box, Container, Typography } from "@material-ui/core";
 
 import { AnalysesContext } from "../../providers/contexts";
 import { Analysis } from "../../utils/api/types";
 
+import { getAnalysisOnRegions } from "../../pages/experiments/utils";
 import { TableRow } from "../Base/BgTable/types";
 import { BgCollapseTable } from "../Base/BgTable";
 
@@ -13,34 +14,41 @@ import { AdvancedFilter } from "./AdvancedFilter";
 
 interface AnalysesTableProps {
   filteredSpecieAnalyses?: Analysis[];
+  ignoreSelectedRegion?: boolean;
 }
 
-export const AnalysesTable: React.FC<AnalysesTableProps> = ({ filteredSpecieAnalyses }) => {
+export const AnalysesTable: React.FC<AnalysesTableProps> = ({ filteredSpecieAnalyses, ignoreSelectedRegion }) => {
   const [order, setOrder] = useState<"asc" | "desc">("asc");
   const [orderBy, setOrderBy] = useState<TableSort>("name");
   const [rows, setRows] = useState<TableRow[]>([]);
 
   const [analysesOnSpecie, setAnalysesOnSpecie] = useState<Analysis[]>([]);
   const [filteredAnalyses, setFilteredAnalyses] = useState<Analysis[]>([]);
-  const [selectedSpecieIds, setSelectedSpecieIds] = useState<string[]>([]);
-  const { analyses } = useContext(AnalysesContext);
 
-  const { species } = useContext(AnalysesContext);
+  const [selectedSpecieIds, setSelectedSpecieIds] = useState<string[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const { analyses, species, selectedBrainRegions } = useContext(AnalysesContext);
 
   useEffect(() => {
     if (!analyses) return;
-
-    const analysesToSort = filteredSpecieAnalyses ?? analyses;
     setSelectedSpecieIds(filteredSpecieAnalyses && filteredSpecieAnalyses[0] ? [filteredSpecieAnalyses[0].specimen.specie!.id] : species!.map(s => s.id));
+
+    let analysesToSort = filteredSpecieAnalyses ?? analyses;
+
+    if (!ignoreSelectedRegion && selectedBrainRegions) {
+      analysesToSort = getAnalysisOnRegions(selectedBrainRegions.map(r => r.id), analysesToSort);
+    }
 
     const sortedAnalyses = sortAnalyses(
       analysesToSort,
       order,
       orderBy
     );
+
     setAnalysesOnSpecie(sortedAnalyses);
     setFilteredAnalyses(sortedAnalyses);
-  }, [analyses, filteredSpecieAnalyses, order, orderBy, species]);
+    setLoading(false);
+  }, [analyses, filteredSpecieAnalyses, order, orderBy, species, selectedBrainRegions]);
 
 
   useEffect(() => {
@@ -65,6 +73,14 @@ export const AnalysesTable: React.FC<AnalysesTableProps> = ({ filteredSpecieAnal
     setFilteredAnalyses(sortedAnalysis);
     setRows(getRows(sortedAnalysis))
   };
+
+  if (!loading && !analysesOnSpecie.length) {
+    return <Box mt={4}>
+      <Container maxWidth="lg">
+        <Typography align="center">No analyses found for this region.</Typography>
+      </Container>
+    </Box>
+  }
 
   return (
     <Box mt={4}>
