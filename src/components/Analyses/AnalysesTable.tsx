@@ -92,8 +92,9 @@ export const AnalysesTable: React.FC<AnalysesTableProps> = ({ filteredSpecieAnal
           handleFilteredAnalysesChange={handleFilteredAnalysesChange}
           handleClearFilter={handleClearFilter}
         />
-        {rows &&
-          <Box mt={2}>
+
+        <Box mt={2} mb={4}>
+          {rows && rows.length ? (
             <BgCollapseTable
               orderBy={orderBy}
               order={order}
@@ -101,8 +102,10 @@ export const AnalysesTable: React.FC<AnalysesTableProps> = ({ filteredSpecieAnal
               headers={headers}
               rows={rows}
             />
-          </Box>
-        }
+          ) : (
+              <Typography align="center">No analyses matches the filter</Typography>
+            )}
+        </Box>
       </Container>
     </Box>
   );
