@@ -82,7 +82,7 @@ export const AnalysisInformation: React.FC = () => {
   return (
     <>
       <Box component="p" mt={4} mb={2}>
-        {`For this analysis ${selectedAnalysis.visualizationMethod?.name?.toLowerCase()} was performed on ${selectedAnalysis.specimen?.form?.toLowerCase()}`}
+        {`For this analysis ${selectedAnalysis.visualizationMethod?.name?.toLowerCase()} was performed to visualize the object of interest`}
       </Box>
       <Box display="flex" flexDirection="row" flexWrap="wrap" justifyContent="flex-start">
         {reporterElements.length > 0 &&

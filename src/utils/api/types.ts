@@ -287,12 +287,17 @@ export interface Distribution {
   analysisTypePrimary: string;
   analysisTypeSecondary: string;
 
+  cellularTargetRegion: CellularTargetRegion;
   regionRecord: RegionRecord;
-  cellularRegion: CellularRegion;
   software: Software;
   stereology: StereologyDetail;
   relatedQuantitation: Quantitation;
   analysis: Analysis;
+}
+
+export interface CellularTargetRegion {
+  CellularRegion: CellularRegion;
+  cytochemicalId: string;
 }
 
 export interface CellMorphology {

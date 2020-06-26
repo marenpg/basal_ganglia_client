@@ -24,7 +24,7 @@ export const AnimalInformation: React.FC = () => {
       { title: "Sex", value: specimen.sex?.name },
       { title: "Age category", value: getStringRep(specimen.ageCategory?.name, specimen.ageCategory?.description) },
       { title: "Age range", value: selectedAnalysis.experiment.ageLowerLimit ? `${selectedAnalysis.experiment.ageLowerLimit} - ${selectedAnalysis.experiment.ageUpperLimit} (in days)` : "" },
-      { title: "Weight range", value: selectedAnalysis.experiment.weightLowerLimit ? `${selectedAnalysis.experiment.weightLowerLimit} - ${selectedAnalysis.experiment.weightUpperLimit}` : "" },
+      { title: "Weight range", value: selectedAnalysis.experiment.weightLowerLimit ? `${selectedAnalysis.experiment.weightLowerLimit} - ${selectedAnalysis.experiment.weightUpperLimit} gram` : "" },
     ]);
   }, [selectedAnalysis]);
 

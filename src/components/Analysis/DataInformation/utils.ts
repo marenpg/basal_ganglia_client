@@ -24,18 +24,16 @@ export const getTableElementsQuantitation = (data: Quantitation, analysis: Analy
     { title: "Sampling fraction", value: data.samplingFraction, tooltip: "The ratio of sampled to unsampled sections" },
     { title: "Subsectional sampling", value: data.subsectionalSampling, tooltip: "The method for counting object of interest within a section" },
     { title: "Final estimate basis", value: data.finalEstimateBasis, tooltip: "The basis of the final estimate" },
-    { title: "Estimate relevance", value: dendriteIds.includes(data.id) ? "" : getEstimateRelevance(data, analysis) },
-    { title: "Cellular target region", value: data.targetCellularRegion?.name },
   ];
 };
 
-const getEstimateRelevance = (data: Quantitation, analysis: Analysis): string => {
+const getSynapticTarget = (data: Quantitation, analysis: Analysis): string => {
   if(!data?.estimateRelevance || ! analysis) return "";
-   
   if(!analysis.objectOfInterest?.NeuralStructure?.name) return data.estimateRelevance;
+
   const estimateRelevance = data.estimateRelevance.toLowerCase();
   if( estimateRelevance === "per cellular origin"){
-    return `Number of ${analysis.objectOfInterest.NeuralStructure.name?.toLowerCase()} made onto ${analysis.cellTypePutative?.name?.toLowerCase()}`;
+    return `Number of ${analysis.cellTypePutative?.name?.toLowerCase()} ${analysis.objectOfInterest.NeuralStructure.name?.toLowerCase()}`;
   }
 
   if(estimateRelevance === "per all targets in ROI" || estimateRelevance === "per cellular target"){
@@ -97,7 +95,6 @@ export const getStereologyElements = (data: Data): TableElements => {
   if (!data || !("stereology" in data)) return [];
 
   return ([
-    // { title: "Name", value: data.stereology.name },
     { title: "Probe", value: data.stereology.probe },
     { title: "Identification featuree", value: data.stereology.identificationFeature },
     { title: "Disector height", value: data.stereology.disectorHeight },
@@ -108,17 +105,16 @@ export const getStereologyElements = (data: Data): TableElements => {
     { title: "Counted objects", value: data.stereology.countedObjects },
     { title: "Coefficient of error", value: data.stereology.coefficientOfError },
     { title: "Estimated volume", value: data.stereology?.volumeUnit ? `${data.stereology.estimatedVolume} ${data.stereology.volumeUnit}` : data.stereology?.estimatedVolume },
-    // { title: "Any except probe", value: data.stereology.anyExceptProbe },
   ])
 };
 
 export const getQuantitationSummary = (qunatitation: Quantitation, selectedAnalysis: Analysis): string => {
   let summary = "";
   if (qunatitation.number) {
-    if (qunatitation.originalExtent && qunatitation.originalExtent !== "N/A") {
-      const qNumber = qunatitation.originalExtent === "bilateral" ? qunatitation.number / 2 : qunatitation.number
-      summary = `Estimated total number was ${qNumber} ± ${qunatitation.numberSD} (mean ± SD) unilaterally. `;
-    }
+    const hasOriginalExtent = qunatitation.originalExtent && qunatitation.originalExtent !== "N/A";
+    const qNumber = qunatitation.originalExtent === "bilateral" ? qunatitation.number / 2 : qunatitation.number
+    summary = `Estimated total number was ${qNumber} ${qunatitation.numberSD && `± ${qunatitation.numberSD} (mean ± SD)`} ${hasOriginalExtent ? "unilaterally" : ". It is not clear whether this estimate is uni- or bilateral"}. `;
+    
   }
   if (qunatitation.density && !summary) {
     summary = `Estimated total number was ${qunatitation.density} ± ${qunatitation.densitySD} (mean ± SD) per ${qunatitation.densityUnit}. `;
@@ -131,7 +127,6 @@ export const getQuantitationSummary = (qunatitation: Quantitation, selectedAnaly
 
   return summary;
 };
-//Synaptic target: [Quantitations]_[Cellular_ID] [Quantitations]_[Cellular_target_region]
 
 export const getQuantitationData = (analysis: Analysis, quantitation: Quantitation): TableElements => {
   const elems = [
@@ -145,14 +140,14 @@ export const getQuantitationData = (analysis: Analysis, quantitation: Quantitati
   if (!OOIId || !quantitation || putativeIds.includes(OOIId)) return elems;
 
   if (synapseIds.includes(OOIId)) {
-    elems[2].title = "Synaptic target";
-    elems[2].value = quantitation.targetCell?.name
-      ? `${quantitation.targetCell?.name}, ${quantitation.targetCellularRegion?.name}`
-      : quantitation.targetCellularRegion?.name;
+    // elems[2].value = quantitation.targetCell?.name
+    //   ? `${quantitation.targetCell?.name}, ${quantitation.targetCellularRegion?.name}`
+    //   : quantitation.targetCellularRegion?.name;
+    elems[2].value = getSynapticTarget(quantitation, analysis);
     return elems;
   }
 
-  if (synapseIds.includes(OOIId)) {
+  if (dendriteIds.includes(OOIId)) {
     elems[2].title = "Counted segment";
     elems[2].value = quantitation.targetCellularRegion?.name;
   }
@@ -167,10 +162,21 @@ export const getDistributionSummary = (distribution: Distribution): string => {
   return `Distribution in ${distribution.regionRecord.primaryRegion.name.toLowerCase()} shown`
 };
 
-export const getDistributionData = (analysis: Analysis): TableElements => {
-  return [
+export const getDistributionData = (analysis: Analysis, distribution: Distribution): TableElements => {
+  const elements = [
     { title: "Cell type", value: analysis.cellTypePutative?.name },
     { title: "Object of intrest", value: analysis.objectOfInterest?.NeuralStructure?.name },
     { title: "Recognition critera", value: analysis.objectOfInterest?.recognitionCriteria },
   ]
+
+  const OOIId = analysis.objectOfInterest?.NeuralStructure?.id;
+  if (!OOIId || !distribution || !distribution.cellularTargetRegion || !synapseIds.includes(OOIId)) return elements;
+  
+  var value = 
+  distribution.cellularTargetRegion.cytochemicalId
+    ? `${distribution.cellularTargetRegion.cytochemicalId}, ${distribution.cellularTargetRegion.CellularRegion.name}`
+    : distribution.cellularTargetRegion.CellularRegion.name;
+  elements.push({title: "Synaptic target", value}) 
+
+  return elements; 
 }

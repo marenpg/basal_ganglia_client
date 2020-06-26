@@ -32,11 +32,7 @@ export const CellTypeInformation: React.FC = () => {
       <>
         <Box pl={2} pb={2} display="flex" justifyContent="center">
           <Typography component="p">
-            {`This cell or its subcellular components have been observed in `}
-            <Typography component="span" variant="h1">
-              {selectedCellType.observedInRegions.length}
-            </Typography>
-            {" regions"}
+            {"This cell or its subcellular components have been observed in the following regions:"}
           </Typography>
         </Box>
         <InformationCard heading="" width="100%">

@@ -6,7 +6,7 @@ import { Distribution } from "../../../utils/api/types";
 import { InformationCard, InformationTable } from "../../Base/InformationCard";
 
 import { TableElements } from "../types";
-import { getStereologyElements, getDistributionSummary, getTableElementsDistribution, getQuantitationData } from "./utils";
+import { getStereologyElements, getDistributionSummary, getTableElementsDistribution, getDistributionData } from "./utils";
 import { InfoRow } from "./Common";
 import { getAnalysisNameFormatted } from "../../Analyses/utils";
 
@@ -30,11 +30,12 @@ export const DistributionInformation: React.FC = () => {
     if (!data) return;
 
     const tableElements: TableElements = getTableElementsDistribution(data);
-    if(data.relatedQuantitation) {
-      tableElements.push({title: "Related distribution", value: getAnalysisNameFormatted(data.relatedQuantitation.name), link: `/analyses/${data.relatedQuantitation.analysis?.id}/${data.relatedQuantitation.id}`})
+    if (data.relatedQuantitation) {
+      tableElements.push({ title: "Related distribution", value: getAnalysisNameFormatted(data.relatedQuantitation.name), link: `/analyses/${data.relatedQuantitation.analysis?.id}/${data.relatedQuantitation.id}` })
     }
+
     setGenInfoElements(tableElements)
-    setHeaderData(getQuantitationData(selectedAnalysis, data.relatedQuantitation));
+    setHeaderData(getDistributionData(selectedAnalysis, data));
     data.stereology && setStereologyElements(getStereologyElements(data));
     data.software && setSoftwareElements([
       { title: "Name", value: data.software.name },

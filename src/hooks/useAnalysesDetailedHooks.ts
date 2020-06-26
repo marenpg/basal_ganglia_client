@@ -314,11 +314,15 @@ const analysisDetailedQuery = gql`
             name
           }
         }
-        cellularRegion {
-          id
-          name
-          ontology
+        cellularTargetRegion {
+          CellularRegion {
+            id
+            name
+            ontology
+          }
+          cytochemicalId
         }
+
         software {
           id
           name
