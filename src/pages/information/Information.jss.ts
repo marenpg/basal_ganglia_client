@@ -3,7 +3,7 @@ import { Theme, WithStyles, withStyles, createStyles } from "@material-ui/core";
 const styles = (theme: Theme) =>
   createStyles({
     drawerPageHeader: {
-      paddingTop: 40,
+      paddingTop: 50,
       minHeight: 220,
       [theme.breakpoints.down("xs")]: {
         " h1": {

@@ -43,7 +43,6 @@ export const sortAnalyses = (
 
 export const getAnalysesOnSpecieBoxes = (specieCheckboxes: CheckBoxElement[], analyses: Analysis[]): Analysis[] => {
   const selectedSpecies = specieCheckboxes.filter(s => s.selected).map(s => s.name);
-  console.log(selectedSpecies, analyses.length, analyses.filter(a => selectedSpecies.includes(a.specimen.specie.name )).length)
   return analyses.filter(a => selectedSpecies.includes(a.specimen.specie.name ))
 }
 
@@ -95,7 +94,11 @@ export const getFilteredAnalyses = (
   }
 
   if(selectedAgeCategories?.length){
-    filteredAnalyses = filteredAnalyses.filter(a => selectedAgeCategories.includes(a.specimen?.ageCategory?.description ))
+    let addjustedAgeCategories = selectedAgeCategories.map(a => a.split(" ")[0]);
+
+    if(addjustedAgeCategories){
+      filteredAnalyses = filteredAnalyses.filter(a => addjustedAgeCategories.includes(a.specimen?.ageCategory?.name ))
+    }
     // console.log("selectedAgeCategories", allAnalyses.length, filteredAnalyses.length);
   }  
 

@@ -13,6 +13,7 @@ import BrainRegionsPage from "./BrainRegionsPage";
 
 export const BrainRegionsRoute: React.FC<StyleProps> = ({ classes }) => {
   const { loading, data, error } = useBrainRegionsHooks<BrainRegionIdAndSpecieData>();
+
   if (loading && !error) {
     return <LoadingPage classes={classes} title="Brain regions" subtitle="" />;
   }

@@ -8,7 +8,6 @@ import { BrainRegionsDataContext } from "../../providers/contexts";
 import SearchField from "../../components/Base/Search";
 import { Header } from "../../components/Base/Headers";
 import { Checkboxes } from "../../components/Base/Checkboxes/Checkboxes";
-import CloseableDrawer from "../../components/Base/CloseableDrawer";
 
 import { SpecieBrainRegions } from "../../components/BrainRegions";
 import { SpecieRegions } from "../../components/BrainRegions/types";
@@ -16,24 +15,23 @@ import { generateSpecieBrainRegions } from "../../components/BrainRegions/utils"
 
 
 import { StyleProps } from "./BrainRegionsContainer.jss";
-import { BrainRegionContainer } from "../brain-region";
+import RegionDrawer from "./RegionDrawer";
 
 const BrainRegionsPage: React.FC<StyleProps> = ({ classes }) => {
   const [speciesRegions, setSpeciesRegions] = useState<SpecieRegions[]>([]);
   const [specieCheckboxes, setSpecieChecboxes] = useState<SpecieCheckbox[]>([])
   const [searchFilter, setSearchFilter] = useState<string>("");
-  const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
   const [selectedRegionId, setSelectedRegionId] = useState<string>();
 
   const { BrainRegion: brainRegions, Specie: species } = useContext(BrainRegionsDataContext);
 
   useEffect(() => {
     species && setSpecieChecboxes(species.map(specie => ({ ...specie, selected: true })));
-  }, [species]);
+  }, [brainRegions, species]);
 
   useEffect(() => {
     brainRegions && species && setSpeciesRegions(generateSpecieBrainRegions(brainRegions, species));
-  }, [brainRegions, species]);
+  }, [brainRegions]);
 
 
   const handleSearchFilterChange = () => (event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -55,7 +53,6 @@ const BrainRegionsPage: React.FC<StyleProps> = ({ classes }) => {
 
   const handleRegionSelected = (region: GenericTreeNode): void => {
     setSelectedRegionId(region.id);
-    setDrawerOpen(true);
   };
 
   return (
@@ -99,15 +96,7 @@ const BrainRegionsPage: React.FC<StyleProps> = ({ classes }) => {
           }
         </Box>
       </Container>
-      {selectedRegionId &&
-        <CloseableDrawer
-          open={drawerOpen}
-          handleDrawerChange={(newOpen) => setDrawerOpen(newOpen)}
-          fullscreenLink={`/brain-regions/${selectedRegionId}`}
-        >
-          <BrainRegionContainer id={selectedRegionId} />
-        </CloseableDrawer>
-      }
+      <RegionDrawer selectedRegionId={selectedRegionId} />
     </>
   );
 };

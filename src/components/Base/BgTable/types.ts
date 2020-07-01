@@ -38,6 +38,7 @@ export interface BgCollapseTableProps extends StyleProps {
 
 export interface TableRow {
   link?: string;
+  title?: string;
   id: string;
   cells: { text: string }[];
 }

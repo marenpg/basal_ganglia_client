@@ -21,6 +21,7 @@ interface AdvancedFilterProps {
 
 export const AdvancedFilter: React.FC<AdvancedFilterProps> = ({ analyses, selectedSpecieIds, handleFilteredAnalysesChange, handleClearFilter }) => {
   const [allAnalyses, setAllAnalyses] = useState<Analysis[]>([]);
+  const [expanded, setExpanded] = React.useState<boolean>(false);
 
   const [dataTypeCheckboxes, setDataTypeCheckboxes] = useState<CheckBoxElement[]>([]);
   const [sexCheckboxes, setSexCheckboxes] = useState<CheckBoxElement[]>([]);
@@ -39,7 +40,7 @@ export const AdvancedFilter: React.FC<AdvancedFilterProps> = ({ analyses, select
   const mounted = useRef<boolean>(false);
 
   useEffect(() => {
-    if(!analyses?.length) return;
+    if (!analyses?.length) return;
     clearAllSelected();
     setAllAnalyses(analyses);
     setDataTypeCheckboxes([...new Set(analyses.map(a => a.dataType))].map((d, i) => ({ id: i, name: d, selected: true })));
@@ -47,12 +48,13 @@ export const AdvancedFilter: React.FC<AdvancedFilterProps> = ({ analyses, select
     const allAnimalStatuses = [...new Set(analyses.map(a => a.experiment?.animalStatus))].filter(a => a != null).sort();
     setAnimalStatuses(allAnimalStatuses);
 
-    if(!mounted.current) {
-      if(filters?.rrids) {
+    if (!mounted.current) {
+      if (filters?.rrids) {
         setSelectedReporters(filters.rrids);
         const filteredAnalyses = getFilteredAnalyses(
           analyses, undefined, undefined, [], [], [], filters.rrids);
         handleFilteredAnalysesChange(filteredAnalyses);
+        setExpanded(true);
       }
       mounted.current = true;
     }
@@ -75,11 +77,13 @@ export const AdvancedFilter: React.FC<AdvancedFilterProps> = ({ analyses, select
     setSubstrains(updatedSubstrains)
   }, [selectedStrains, strains])
 
-
+  const handleChange = (event: React.ChangeEvent<{}>, isExpanded: boolean) => {
+    setExpanded(isExpanded);
+  };
 
   const clearAllSelected = () => {
-    setDataTypeCheckboxes(dataTypeCheckboxes.map(box => ({...box, selected:true})))
-    setSexCheckboxes(sexCheckboxes.map(box => ({...box, selected:true})))
+    setDataTypeCheckboxes(dataTypeCheckboxes.map(box => ({ ...box, selected: true })))
+    setSexCheckboxes(sexCheckboxes.map(box => ({ ...box, selected: true })))
     setSelectedAnimalStatuses([]);
     setSelectedVisualizationMethods([]);
     setSelectedReporters([]);
@@ -89,6 +93,7 @@ export const AdvancedFilter: React.FC<AdvancedFilterProps> = ({ analyses, select
   }
 
   const handleFilterAnalyses = () => {
+    setExpanded(false);
     const filteredAnalyses = getFilteredAnalyses(
       allAnalyses,
       dataTypeCheckboxes,
@@ -127,7 +132,7 @@ export const AdvancedFilter: React.FC<AdvancedFilterProps> = ({ analyses, select
   }
 
   return (
-    <ExpansionPanel defaultExpanded={filters?.rrids?.length ? true : false}>
+    <ExpansionPanel expanded={expanded} onChange={handleChange}>
       <ExpansionPanelSummary
         expandIcon={<ExpandMoreIcon />}
         aria-controls="panel1a-content"
@@ -155,7 +160,7 @@ export const AdvancedFilter: React.FC<AdvancedFilterProps> = ({ analyses, select
               </Box>
 
               {strains.length > 0 && substrains.length > 0 &&
-                <Multiselect label="Substrains" elements={substrains.map(v => v.name).sort()} selected={selectedSubstrains}  updateSelectedValues={handleMultiselectChange(setSelectedSubstrains)} />
+                <Multiselect label="Substrains" elements={substrains.map(v => v.name).sort()} selected={selectedSubstrains} updateSelectedValues={handleMultiselectChange(setSelectedSubstrains)} />
               }
             </Box>
           }

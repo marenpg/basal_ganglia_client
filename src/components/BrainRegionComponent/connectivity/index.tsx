@@ -84,6 +84,7 @@ const BrainRegionConnectionsContainer: React.FC<BrainRegionConnectionsProps> = (
 		return {
 			id: getConnectionId(connection),
 			link: getConnectionId(connection),
+			title: "Click to see how the relationship was derived",
 			cells: [
 				{ text: connection.direction },
 				{ text: connection.connectedRegion.name },
@@ -97,12 +98,12 @@ const BrainRegionConnectionsContainer: React.FC<BrainRegionConnectionsProps> = (
 		<Container maxWidth="md">
 			<Box mt={2} display="flex" justifyContent="center" flexDirection="column">
 				<Checkboxes
-					legend="Reltion direction:"
+					legend="Relation direction:"
 					elements={checkboxState}
 					handleChange={handleCheckboxChange}
 				/>
 				<Checkboxes
-					legend="Reltion types:"
+					legend="Relation types:"
 					elements={relationTypeCheckboxState}
 					handleChange={handleRelationCheckboxChange}
 				/>

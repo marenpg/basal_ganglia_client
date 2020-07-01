@@ -29,8 +29,14 @@ const InformationRoute: React.FC<StyleProps> = ({ classes }) => {
       <Header
         headerContainerClass={classes.drawerHeaderContainer}
         pageHeaderClass={classes.drawerPageHeader}
-        subtitle="This web site gives a unified view of data from the Murine basal ganglia database [1,2], Brain Architecture Management System [3,4] and Neuromorpho.org [5,6]."
-        title={"Acknowledgements"}>
+        title={"Acknowledgements"}
+        subtitle=""
+      >
+        <Container maxWidth="sm">
+          <Typography component="p" variant="subtitle1" color="inherit">
+            {"This web site gives a unified view of data from the Murine basal ganglia database [1,2], Brain Architecture Management System [3,4] and Neuromorpho.org [5,6]."}
+          </Typography>
+        </Container>
       </Header>
       <Box mt={4}>
         <Container maxWidth="sm">

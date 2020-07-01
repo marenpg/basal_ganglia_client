@@ -73,6 +73,7 @@ export const MenuDrawer: React.FC<MenuDrawerProps> = ({ classes, handleMenuItemC
           to={"/acknowledgements"}
           className={classes.drawerListItem}
           activeClassName={classes.drawerListItemActive}
+          onClick={handleMenuItemClick}
         >
           <ListItemText primary={"Acknowledgements"} />
         </ListItem>

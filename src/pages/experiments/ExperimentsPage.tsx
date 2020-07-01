@@ -54,30 +54,33 @@ const ExperimentsPage: React.FC<StyleProps> = ({ classes }) => {
         pageHeaderClass={classes.pageHeader}
         subtitle=" "
         title={"Analyses"}>
-        <Box display="flex" justifyContent="center" flexDirection="column">
-          <RadioButtons
-            legend="Species:"
-            value={selectedSpecieId}
-            elements={specieCheckboxes}
-            handleChange={handleSpecieCheckboxChange}
-          />
-        </Box>
-        {!ignoreSelectedRegionCell && selectedBrainRegions && selectedCellType &&
-          <Box display="flex" justifyContent="center">
-            <Container maxWidth="sm">
-              <Typography>
-                {`Analyses of ${selectedCellType?.name.toLowerCase()} cells in the ${selectedBrainRegions.map(r => r.name.toLowerCase()).join(", ")}`}
-                <IconButton
-                  aria-label="Clear"
-                  color="primary"
-                  // className={classes.closeButton}
-                  onClick={clearBrainRegionCellTypeFilter}
-                >
-                  <CancelIcon />
-                </IconButton>
-              </Typography>
-            </Container>
+        {ignoreSelectedRegionCell || !selectedBrainRegions || !selectedCellType ? (
+
+          <Box display="flex" justifyContent="center" flexDirection="column">
+            <RadioButtons
+              legend="Species:"
+              value={selectedSpecieId}
+              elements={specieCheckboxes}
+              handleChange={handleSpecieCheckboxChange}
+            />
           </Box>
+        ) : (
+            <Box display="flex" justifyContent="center">
+              <Container maxWidth="md">
+                <Typography>
+                  {`Analyses of ${selectedCellType?.name.toLowerCase()} cells in the ${selectedBrainRegions.map(r => r.name.toLowerCase()).join(", ")}`}
+                  <IconButton
+                    aria-label="Clear"
+                    color="primary"
+                    // className={classes.closeButton}
+                    onClick={clearBrainRegionCellTypeFilter}
+                  >
+                    <CancelIcon />
+                  </IconButton>
+                </Typography>
+              </Container>
+            </Box>
+          )
         }
       </Header>
       <AnalysesTable filteredSpecieAnalyses={filteredAnalyses} ignoreSelectedRegion={true} />
