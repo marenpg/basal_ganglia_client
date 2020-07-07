@@ -11,6 +11,15 @@ const analysisDetailedQuery = gql`
         id
         name
       }
+      similarAnalyses {
+        from {
+          Analysis {
+            id
+            name
+          }
+          score
+        }
+      }
       experiment {
         id
         name

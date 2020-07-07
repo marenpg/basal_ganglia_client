@@ -405,6 +405,17 @@ export interface Analysis {
   electronMicroscopes: ElectronMicroscopeDetail[];
   lightFluorescenceMicroscopes: LightFluorescenceMicroscopeDetail[];
   brainRegions: BrainRegion[];
+  similarAnalyses: AnalysisSimilarityRelation[];
+}
+
+export interface AnalysisSimilarity {
+  Analysis: Analysis;
+  score: number;
+}
+
+export interface AnalysisSimilarityRelation {
+  from: AnalysisSimilarity;
+  //to: AnalysisSimilarity;
 }
 
 export interface Experiment {
