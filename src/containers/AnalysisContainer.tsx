@@ -35,7 +35,8 @@ const AnalysesContainer: React.FC<AnalysisContainerProps> = ({ analysisId, dataI
 
         return ({
             selectedAnalysis,
-            selectedData
+            selectedData,
+            allAnalyses: data.allAnalyses
         })
     }
 

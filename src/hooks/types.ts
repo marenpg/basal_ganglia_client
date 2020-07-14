@@ -26,6 +26,7 @@ export interface AnalysesData {
 
 export interface AnalysisData {
   Analysis: Analysis[];
+  allAnalyses: Analysis[];
 }
 
 export interface CellTypeData {

@@ -73,6 +73,7 @@ export interface AnalysesContextValue {
 export interface AnalysisContextValue {
   selectedAnalysis: Analysis;
   selectedData: Quantitation | Distribution | CellMorphology | undefined;
+  allAnalyses: Analysis[];
 }
 
 export interface CellTypeContextValue {

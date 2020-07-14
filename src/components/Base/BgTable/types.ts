@@ -23,7 +23,7 @@ export interface BgLinkTableProps extends StyleProps {
   order?: "desc" | "asc";
   handleSortRequest: any;
   headers: { text: string; val?: string }[];
-  rows: { id: string; link?: string; cells: { text: string }[] }[];
+  rows: TableRow[];
   onClick?: (id: string) => (event: any) => void;
 }
 

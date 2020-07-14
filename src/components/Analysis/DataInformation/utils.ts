@@ -108,16 +108,15 @@ export const getStereologyElements = (data: Data): TableElements => {
   ])
 };
 
-export const getQuantitationSummary = (qunatitation: Quantitation, selectedAnalysis: Analysis): string => {
+const getQuantitationTotalNumber = (qunatitation: Quantitation, selectedAnalysis: Analysis): string => {
   let summary = "";
   if (qunatitation.number) {
     const hasOriginalExtent = qunatitation.originalExtent && qunatitation.originalExtent !== "N/A";
     const qNumber = qunatitation.originalExtent === "bilateral" ? qunatitation.number / 2 : qunatitation.number
-    summary = `Estimated total number was ${qNumber} ${qunatitation.numberSD && `± ${qunatitation.numberSD} (mean ± SD)`} ${hasOriginalExtent ? "unilaterally" : ". It is not clear whether this estimate is uni- or bilateral"}. `;
-    
+    summary = `${qNumber} ${qunatitation.numberSD ? `± ${qunatitation.numberSD} (mean ± SD)` : ""} ${hasOriginalExtent ? "unilaterally" : ". It is not clear whether this estimate is uni- or bilateral"}. `;
   }
   if (qunatitation.density && !summary) {
-    summary = `Estimated total number was ${qunatitation.density} ± ${qunatitation.densitySD} (mean ± SD) per ${qunatitation.densityUnit}. `;
+    summary = `${qunatitation.density} ± ${qunatitation.densitySD} (mean ± SD) per ${qunatitation.densityUnit}. `;
     const ooiIds = ["1", "2", "23"]
     const ooiId = selectedAnalysis.objectOfInterest?.NeuralStructure?.id;
     if(qunatitation.densityUnit != "mm^3" && ooiId && ooiIds.includes(ooiId)){
@@ -126,14 +125,23 @@ export const getQuantitationSummary = (qunatitation: Quantitation, selectedAnaly
   }
 
   return summary;
+}
+
+export const getQuantitationSummary = (qunatitation: Quantitation, selectedAnalysis: Analysis): string => {
+  let summary = getQuantitationTotalNumber(qunatitation, selectedAnalysis);
+  if(summary) {
+    return `Estimated total number was ${summary}`;
+  }
+  return summary;
 };
 
 export const getQuantitationData = (analysis: Analysis, quantitation: Quantitation): TableElements => {
   const elems = [
     { title: "Cell type", value: analysis.cellTypePutative?.name },
-    { title: "Object of intrest", value: analysis.objectOfInterest?.NeuralStructure?.name },
+    { title: "Object of interest", value: analysis.objectOfInterest?.NeuralStructure?.name },
     { title: "Synaptic target" },
     { title: "Recognition critera", value: analysis.objectOfInterest?.recognitionCriteria },
+    { title: "Estimated total number", value: getQuantitationTotalNumber(quantitation, analysis) },
   ]
 
   const OOIId = analysis.objectOfInterest?.NeuralStructure?.id;
@@ -165,7 +173,7 @@ export const getDistributionSummary = (distribution: Distribution): string => {
 export const getDistributionData = (analysis: Analysis, distribution: Distribution): TableElements => {
   const elements = [
     { title: "Cell type", value: analysis.cellTypePutative?.name },
-    { title: "Object of intrest", value: analysis.objectOfInterest?.NeuralStructure?.name },
+    { title: "Object of interest", value: analysis.objectOfInterest?.NeuralStructure?.name },
     { title: "Recognition critera", value: analysis.objectOfInterest?.recognitionCriteria },
   ]
 

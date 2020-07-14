@@ -392,6 +392,23 @@ const analysisDetailedQuery = gql`
         }
       }
     }
+    allAnalyses: Analysis {
+      id
+      name
+      brainRegions {
+        id
+        name
+      }
+      cellTypePutative {
+        id
+        name
+      }
+      dataType
+      dataTypes {
+        id
+        name
+      }
+    }
   }
 `;
 

@@ -8,6 +8,7 @@ import { AnimalInformation } from "./AnimalInformation";
 import { SourceInformation } from "./SourceInformation";
 import { AnatomicalMetadata } from "./AnatomicalMetadata";
 import { DistributionInformation, QuantitationInformation, MorphologyInformation } from "./DataInformation";
+import { SimilarAnalyses } from "./SimilarAnalses";
 
 
 const a11yTabProps = (index: number) => ({
@@ -19,6 +20,7 @@ export const AnalysisTabs: React.FC = () => {
   const [tabValue, setTabValue] = useState<number>(0);
 
   const { selectedAnalysis } = useContext(AnalysisContext);
+  const hasSimilarAnalyses = selectedAnalysis?.similarAnalyses?.from.length;
 
   useEffect(() => {
   }, [selectedAnalysis])
@@ -45,6 +47,9 @@ export const AnalysisTabs: React.FC = () => {
           <Tab label="Data acquisition" {...a11yTabProps(2)} />
           <Tab label="Anatomical metadata" {...a11yTabProps(3)} />
           <Tab label="Source" {...a11yTabProps(4)} />
+          {hasSimilarAnalyses &&
+            <Tab label="Similar analyses" {...a11yTabProps(5)} />
+          }
         </Tabs>
       </AppBar>
       <TabPanel value={tabValue} index={0}>
@@ -78,6 +83,13 @@ export const AnalysisTabs: React.FC = () => {
           <SourceInformation />
         </Container>
       </TabPanel>
+      {hasSimilarAnalyses &&
+        <TabPanel value={tabValue} index={5}>
+          <Container maxWidth="md">
+            <SimilarAnalyses />
+          </Container>
+        </TabPanel>
+      }
     </Box>
   );
 };

@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 
-import { Box } from "@material-ui/core";
+import { Box, Typography } from "@material-ui/core";
 import { AnalysisContext } from "../../../providers/contexts";
 import { Quantitation } from "../../../utils/api/types";
 import { InformationCard, InformationTable } from "../../Base/InformationCard";
@@ -17,10 +17,45 @@ export const QuantitationInformation: React.FC = () => {
 
   const [stereologyElements, setStereologyElements] = useState<TableElements>([]);
   const [softwareElements, setSoftwareElements] = useState<TableElements>([]);
-  const [summary, setSummary] = useState<string>("");
+  // const [summary, setSummary] = useState<string>("");
 
 
   const { selectedAnalysis, selectedData } = useContext(AnalysisContext);
+
+  // const QuantitationSummary: React.FC<{ quantitation: Quantitation }> = ({ quantitation }) => {
+  //   if (quantitation.number) {
+  //     const hasOriginalExtent = quantitation.originalExtent && quantitation.originalExtent !== "N/A";
+  //     const qNumber = quantitation.originalExtent === "bilateral" ? quantitation.number / 2 : quantitation.number
+  //     return <Typography>
+  //       {"Estimated total number was "}
+  //       <Typography component="span" variant="h2">{qNumber}</Typography>
+  //       {quantitation.numberSD ? (
+  //         <> {"±"}  {quantitation.numberSD} {"(mean ± SD)"} </>
+  //       ) : (<></>)
+  //       }
+  //       {hasOriginalExtent ? (
+  //         <>{"unilaterally"}</>
+  //       ) : (
+  //           <>{". It is not clear whether this estimate is uni- or bilateral."} </>
+  //         )}
+  //     </Typography>
+  //   }
+  //   if (quantitation.density) {
+  //     const ooiIds = ["1", "2", "23"]
+  //     const ooiId = selectedAnalysis?.objectOfInterest?.NeuralStructure?.id;
+
+  //     return <Typography>
+  //       {"Estimated total number was "}
+  //       <Typography component="span" variant="h2">{quantitation.density}</Typography>
+  //       {quantitation.densityUnit != "mm^3" && ooiId && ooiIds.includes(ooiId) ? (
+  //         <> {`This equals a density of ${quantitation.volumetricDensity} per mm^3.`} </>
+  //       ) : (<></>)
+  //       }
+  //     </Typography>
+  //   }
+
+  //   return <></>;
+  // }
 
   useEffect(() => {
     if (!selectedAnalysis) return;
@@ -44,7 +79,7 @@ export const QuantitationInformation: React.FC = () => {
       { title: "RRID", value: data.software.rrid },
     ]);
 
-    setSummary(getQuantitationSummary(data, selectedAnalysis));
+    // setSummary(getQuantitationSummary(data, selectedAnalysis));
   }, [selectedAnalysis, selectedData]);
 
   if (!selectedAnalysis) return <></>;
@@ -52,9 +87,13 @@ export const QuantitationInformation: React.FC = () => {
   return (
     <Box display="flex" flexDirection="row" flexWrap="wrap" justifyContent="flex-start">
       <Box component="p" mt={4} mb={2} textAlign="center" width="100%">
-        <Box component="span">
+        {/* <Box component="span">
           {summary}
-        </Box>
+
+        </Box> */}
+        {/* {selectedData &&
+          <QuantitationSummary quantitation={selectedData as Quantitation} />
+        } */}
         <Box component="span" display="block">
           {"Browse detailed methodological information in the tabs above."}
         </Box>
