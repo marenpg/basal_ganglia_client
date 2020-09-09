@@ -9,9 +9,10 @@ import { BrainRegionContainerInner } from "./BrainRegionContainerInner";
 
 export interface BrainRegionContainerProps extends StyleProps {
     id: string;
+    tab?: number;
 }
 
-export const BrainRegionContainer: React.FC<BrainRegionContainerProps> = ({ classes, id }) => {
+export const BrainRegionContainer: React.FC<BrainRegionContainerProps> = ({ classes, id, tab }) => {
     const { loading, data, error } = useBrainRegionIdsHooks<{ BrainRegion: BrainRegion[] }>();
 
     if (loading && !error) {
@@ -33,6 +34,7 @@ export const BrainRegionContainer: React.FC<BrainRegionContainerProps> = ({ clas
             classes={classes}
             allRegionIds={data.BrainRegion}
             id={id}
+            tab={tab}
         />
     }
 

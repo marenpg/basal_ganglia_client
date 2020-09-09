@@ -1,12 +1,12 @@
 import React, { useContext, useState, useEffect } from "react";
 import { AnalysisContext } from "../../providers/contexts";
-import { Box } from "@material-ui/core";
+import { Box, Link } from "@material-ui/core";
 import { CollapseTableRow, TableRow } from "../Base/BgTable/types";
 import { BgCollapseTable } from "../Base/BgTable";
 import { getAnalysisNameFormatted } from "../Analyses/utils";
 import { Analysis } from "../../utils/api/types";
 
-export const getSubRows = (analysis: Analysis): TableRow[] => {
+const getSubRows = (analysis: Analysis): TableRow[] => {
   return (
     analysis.dataTypes.map(dataType => (
       {
@@ -57,6 +57,14 @@ export const SimilarAnalyses: React.FC = () => {
 
   return (
     <Box mt={2}>
+      {selectedAnalysis?.brainRegions.map(region => (
+        <Link href={`/brain-regions/${region.id}/1`}>See all analyses performed on the brain region {region.name}</Link>
+      ))}
+      {selectedAnalysis?.cellTypePutative ? (
+        <Link href={`/brain-regions/${selectedAnalysis?.cellTypePutative.id}/1`}>See all analyses performed on the cell type {selectedAnalysis?.cellTypePutative.name}</Link>
+      ) : null
+      }
+
       <BgCollapseTable
         orderBy=""
         order="asc"

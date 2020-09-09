@@ -8,7 +8,7 @@ import {
 } from "../../utils/api/types";
 
 interface MatchParams {
-  params: { id: string };
+  params: { id: string, tab: string };
 }
 // Might not work: https://stackoverflow.com/questions/48138111/what-typescript-type-should-i-use-to-reference-the-match-object-in-my-props
 export interface BrainRegionRouteProps extends StyleProps {
@@ -18,6 +18,7 @@ export interface BrainRegionRouteProps extends StyleProps {
 export interface BrainRegionRouteInnerProps extends StyleProps {
   allRegionIds: BrainRegion[];
   id: string;
+  tab?: number;
 }
 
 export interface BrainRegionData {

@@ -27,6 +27,7 @@ const App = () => (
 
           <Route exact path="/brain-regions" component={BrainRegionsRoute} />
           <Route exact path="/brain-regions/:id" component={BrainRegionRoute} />
+          <Route exact path="/brain-regions/:id/:tab" component={BrainRegionRoute} />
 
           <Route exact path="/analyses/:filters?" component={ExperimentsRoute} />
           <Route exact path="/analyses/:id/:dataId" component={AnalysisRoute} />

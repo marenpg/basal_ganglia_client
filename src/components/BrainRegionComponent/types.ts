@@ -15,6 +15,7 @@ export interface BrainRegionContentProps extends StyleProps {
 export interface BrainRegionTabsProps extends StyleProps {
   selectedRegion: BrainRegion;
   subRegions: BrainRegion[];
+  selectedTab?: number;
 }
 
 export interface BrainRegionCellTreeProps {

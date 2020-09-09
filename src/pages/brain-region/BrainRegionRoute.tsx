@@ -9,7 +9,9 @@ import { BrainRegionContainer } from "./BrainRegionContainer";
 
 
 export const BrainRegionRoute: React.FC<BrainRegionRouteProps> = ({ classes, match }) => {
-  const { id } = match.params;
+  const { id, tab } = match.params;
+
+  const tabValue = tab ? parseInt(tab) : undefined;
 
   return <Box pt={7}>
     <IconButton
@@ -22,6 +24,6 @@ export const BrainRegionRoute: React.FC<BrainRegionRouteProps> = ({ classes, mat
     >
       <CancelIcon />
     </IconButton>
-    <BrainRegionContainer id={id} classes={classes} />
+    <BrainRegionContainer id={id} tab={tabValue} classes={classes} />
   </Box>
 };

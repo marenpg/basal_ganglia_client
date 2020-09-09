@@ -16,6 +16,7 @@ export const BrainRegionContainerInner: React.FC<BrainRegionRouteInnerProps> = (
     classes,
     id,
     allRegionIds,
+    tab
 }) => {
     // After getting all ids, get all regions that are sub regions of selected region
 
@@ -40,7 +41,7 @@ export const BrainRegionContainerInner: React.FC<BrainRegionRouteInnerProps> = (
         const selectedRegion = data.BrainRegion.filter(r => r.id === id)[0];
         const subRegions = getAllSubRegions(selectedRegion, data.BrainRegion);
         return (
-            <BrainRegionDataContext.Provider value={{ selectedRegion, subRegions, cellTypes: data.CellType, cellClasses: data.CellClass, cellGroups: data.CellGroup }}>
+            <BrainRegionDataContext.Provider value={{ selectedRegion, subRegions, cellTypes: data.CellType, cellClasses: data.CellClass, cellGroups: data.CellGroup, tab: tab }}>
                 <BrainRegionPage classes={classes} />
             </BrainRegionDataContext.Provider>
         );

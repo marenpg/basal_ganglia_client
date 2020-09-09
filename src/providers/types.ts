@@ -39,6 +39,7 @@ export interface BrainRegionContextValue {
   cellTypes: CellType[];
   cellGroups: CellGroup[];
   cellClasses: CellClass[];
+  tab?: number;
 }
 
 export interface ExperimentsContextValue {
