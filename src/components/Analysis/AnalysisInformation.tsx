@@ -48,29 +48,29 @@ export const AnalysisInformation: React.FC = () => {
       setSectioningElements([
         { title: "Section thickness", value: selectedAnalysis.sectioningDetail.sectionThickness ? `${selectedAnalysis.sectioningDetail.sectionThickness} μm` : "" },
         { title: "Section orientation", value: selectedAnalysis.sectioningDetail.sectionOrientation },
-        { title: "Sectioning instrument", value: selectedAnalysis.sectioningDetail.sectioningInstrument?.name },
+        { title: "Sectioning instrument", value: selectedAnalysis.sectioningDetail.SectioningInstrument?.name },
       ]));
 
     selectedAnalysis?.reporterIncubations && selectedAnalysis?.reporterIncubations.length > 0 && (
       setReporterElements(orderReporterIncubations(selectedAnalysis.reporterIncubations).map(incubation => ([
         { title: "Order", value: incubation.order },
-        { title: "Name", value: incubation.reporter?.name },
-        { title: "Type", value: incubation.reporter?.type },
-        { title: "Unique Id", value: incubation.reporter?.rrid, link: getRRIDLink(incubation) },
+        { title: "Name", value: incubation.Reporter?.name },
+        { title: "Type", value: incubation.Reporter?.type },
+        { title: "Unique Id", value: incubation.Reporter?.rrid, link: getRRIDLink(incubation) },
         { title: "Concentration", value: incubation.concentration },
         { title: "Time", value: incubation.time ? `${incubation.time} hours` : undefined },
         { title: "Temperature", value: incubation.temperature },
-        { title: "Label", value: incubation.reporter?.label?.name },
-        { title: "Target", value: incubation.reporter?.target?.phenotype },
-        { title: "Origin specie", value: incubation.reporter?.originSpecie },
-        { title: "Comment", value: incubation.reporter?.comment },
+        { title: "Label", value: incubation.Reporter?.label?.name },
+        { title: "Target", value: incubation.Reporter?.target?.phenotype },
+        { title: "Origin specie", value: incubation.Reporter?.originSpecie },
+        { title: "Comment", value: incubation.Reporter?.comment },
       ]))));
 
   }, [selectedAnalysis]);
 
   const getRRIDLink = (incubation: ReporterIncubation) => {
-    if (incubation.reporter?.rrid && incubation.reporter?.rrid.startsWith("RRID")) {
-      return `/analyses/specie=${selectedAnalysis?.specimen?.specie?.id}&rrids=[${incubation.reporter.rrid}]`;
+    if (incubation.Reporter?.rrid && incubation.Reporter?.rrid.startsWith("RRID")) {
+      return `/analyses/specie=${selectedAnalysis?.specimen?.specie?.id}&rrids=[${incubation.Reporter.rrid}]`;
     }
     return "";
   }
@@ -98,15 +98,16 @@ export const AnalysisInformation: React.FC = () => {
           </InformationCard>
         }
 
-        {sectioningElements.length > 0 &&
+        {sectioningElements.length > 0 ? (
           <InformationCard heading="Sectioning details" width={width}>
             <Box mt={2}>
               <InformationTable elements={sectioningElements} />
             </Box>
           </InformationCard>
+        ) : null
         }
 
-        {emElements.length > 0 && (
+        {emElements.length > 0 ? (
           <InformationCard heading="Microscopy details" width={width}>
             {emElements.map(elements => (
               <Box mt={2} key={`${elements[0].title}-${elements[0].value}`}>
@@ -114,8 +115,9 @@ export const AnalysisInformation: React.FC = () => {
               </Box>
             ))}
           </InformationCard>
-        )}
-        {lfElements.length > 0 && (
+        ) : null
+        }
+        {lfElements.length > 0 ? (
           <InformationCard heading="Microscopy details" width={width}>
             {lfElements.map(elements => (
               <Box mt={2} key={`${elements[0].title}-${elements[0].value}`}>
@@ -123,7 +125,8 @@ export const AnalysisInformation: React.FC = () => {
               </Box>
             ))}
           </InformationCard>
-        )}
+        ) : null
+        }
       </Box>
     </>
   );

@@ -30,10 +30,10 @@ export const AnimalInformation: React.FC = () => {
 
   const InfoRow: React.FC<{ title: string, value?: string | number }> = ({ title, value }) => (
     <>
-      {value && <Box display="flex" flexDirection="row">
+      {value ? <Box display="flex" flexDirection="row">
         <Box fontWeight="500" pr={2}>{`${title}: `}</Box>
         <Typography>{value ?? "Not defined"} </Typography>
-      </Box>
+      </Box> : null
       }
     </>
   )

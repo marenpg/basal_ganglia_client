@@ -48,7 +48,7 @@ export const BgLinkTable: React.FC<BgLinkTableProps> = ({
   return (
     <Box className={classes.scrollBox}>
       <Table size="small">
-        {headers && (
+        {headers ? (
           <TableHead>
             <TableRow>
               {headers.map((header, i) => (
@@ -62,7 +62,7 @@ export const BgLinkTable: React.FC<BgLinkTableProps> = ({
               ))}
             </TableRow>
           </TableHead>
-        )}
+        ) : null}
         <TableBody>
           {rows.map(row => (
             <TableRow hover key={row.link} className={classes.tableRow}>

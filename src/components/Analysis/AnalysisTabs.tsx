@@ -47,8 +47,9 @@ export const AnalysisTabs: React.FC = () => {
           <Tab label="Data acquisition" {...a11yTabProps(2)} />
           <Tab label="Anatomical metadata" {...a11yTabProps(3)} />
           <Tab label="Source" {...a11yTabProps(4)} />
-          {hasSimilarAnalyses &&
+          {hasSimilarAnalyses ? (
             <Tab label="Similar analyses" {...a11yTabProps(5)} />
+          ) : null
           }
         </Tabs>
       </AppBar>
@@ -83,12 +84,13 @@ export const AnalysisTabs: React.FC = () => {
           <SourceInformation />
         </Container>
       </TabPanel>
-      {hasSimilarAnalyses &&
+      {hasSimilarAnalyses ? (
         <TabPanel value={tabValue} index={5}>
           <Container maxWidth="md">
             <SimilarAnalyses />
           </Container>
         </TabPanel>
+      ) : null
       }
     </Box>
   );

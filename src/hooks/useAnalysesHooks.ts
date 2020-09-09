@@ -88,7 +88,7 @@ const analysisQuery = gql`
         }
       }
       reporterIncubations {
-        reporter {
+        Reporter {
           rrid
         }
       }

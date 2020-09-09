@@ -436,9 +436,9 @@ export interface Experiment {
 }
 
 export interface SectioningDetail {
+  SectioningInstrument: SectioningInstrument;
   sectionThickness: number;
   sectionOrientation: string;
-  sectioningInstrument: SectioningInstrument;
 }
 
 export interface SectioningInstrument {
@@ -447,13 +447,11 @@ export interface SectioningInstrument {
 }
 
 export interface ReporterIncubation {
-  id: string;
+  Reporter: Reporter;
   order: string;
   concentration: string;
-  time: number;
-  temperature: number;
-
-  reporter: Reporter;
+  time: string;
+  temperature: string;
 }
 
 export interface Reporter {

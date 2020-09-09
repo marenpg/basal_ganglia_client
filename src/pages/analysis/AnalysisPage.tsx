@@ -36,6 +36,7 @@ const AnalysisPage: React.FC<StyleProps> = ({ classes }) => {
       >
       </Header>
       <AnalysisTabs />
+
     </>
   );
 };

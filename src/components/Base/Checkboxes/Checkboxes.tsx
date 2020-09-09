@@ -18,7 +18,7 @@ export const Checkboxes: React.FC<CheckboxesProps> = ({ legend, elements, handle
   <FormControl component="fieldset">
     <FormLabel component="legend">{legend}</FormLabel>
     <FormGroup row>
-      {elements && elements.map(element => (
+      {elements ? elements.map(element => (
         <FormControlLabel
           key={element.id}
           control={
@@ -30,7 +30,7 @@ export const Checkboxes: React.FC<CheckboxesProps> = ({ legend, elements, handle
           }
           label={element.name}
         />
-      ))}
+      )) : null}
     </FormGroup>
   </FormControl>
 );

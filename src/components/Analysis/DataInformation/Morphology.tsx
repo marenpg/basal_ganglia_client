@@ -38,7 +38,7 @@ export const MorphologyInformation: React.FC = () => {
 
   return (
     <Box display="flex" flexDirection="row" flexWrap="wrap" justifyContent="flex-start" mt={4}>
-      {neuromorphoLinks && (
+      {neuromorphoLinks ? (
         <InformationCard heading="Morphology" width="100%">
           <img src={`data:image/png;base64, ${neuromorphoLinks.base64.replace("b'", "").replace("'", "")}`} alt="" style={{ maxWidth: "300px" }} />
           <Typography variant="body2" color="textSecondary" component="p">
@@ -47,23 +47,24 @@ export const MorphologyInformation: React.FC = () => {
             {` (${neuromorphoLinks?.archive} repository).`}
           </Typography>
         </InformationCard>
-      )}
-      {genInfoElements.length > 0 &&
+      ) : null}
+      {genInfoElements.length > 0 ? (
         <InformationCard heading="Information" width="100%">
           <Box mt={2}>
             <InformationTable elements={genInfoElements} />
           </Box>
         </InformationCard>
+      ) : null
       }
 
-      {softwareElements.length > 0 &&
+      {softwareElements.length > 0 ? (
         <InformationCard heading="Reconstruction method" width={"70%"}>
           <Box mt={2}>
             <InformationTable elements={softwareElements} />
           </Box>
         </InformationCard>
+      ) : null
       }
-
     </Box>
   );
 };

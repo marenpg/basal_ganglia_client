@@ -104,29 +104,31 @@ export const QuantitationInformation: React.FC = () => {
         ))
         }
       </Box>
-      {genInfoElements.length > 0 &&
+      {genInfoElements.length > 0 ? (
         <InformationCard heading="Information" width="100%">
           <Box mt={2}>
             <InformationTable elements={genInfoElements} />
           </Box>
         </InformationCard>
+      ) : null
       }
 
-      {stereologyElements.length > 0 &&
+      {stereologyElements.length > 0 ? (
         <InformationCard heading="Stereology details" width={"40%"}>
           <Box mt={2}>
             <InformationTable elements={stereologyElements} />
           </Box>
         </InformationCard>
+      ) : null
       }
-      {softwareElements.length > 0 &&
+      {softwareElements.length > 0 ? (
         <InformationCard heading="Software" width={"40%"}>
           <Box mt={2}>
             <InformationTable elements={softwareElements} />
           </Box>
         </InformationCard>
+      ) : null
       }
-
     </Box>
   );
 };

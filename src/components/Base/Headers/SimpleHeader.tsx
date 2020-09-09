@@ -10,16 +10,16 @@ export const SimpleHeader: React.FC<SimpleHeaderProps> = ({ classes, title, subt
     justifyContent="center"
     flexDirection="column"
   >
-    {title && (
+    {title ? (
       <Typography component="h1" variant="h2" color="inherit">
         {title}
       </Typography>
-    )}
-    {subtitle && (
+    ) : null}
+    {subtitle ? (
       <Typography component="p" variant="subtitle1" color="inherit">
         {subtitle}
       </Typography>
-    )}
+    ) : null}
   </Box>
 );
 

@@ -30,7 +30,7 @@ interface InformationTableProps {
 export const InformationTableUnstyled: React.FC<InformationTableProps> = ({ elements }) => (
   <Table size="small" padding="none">
     <TableBody>
-      {elements.map(({ title, value, tooltip, link }) => (value || value === 0) && (
+      {elements.map(({ title, value, tooltip, link }) => (value || value === 0) ? (
         <TableRow key={`${title}-${value}`}>
           <TableCell component="th" scope="row">
             <Box fontWeight="500" pr={1} component="p" mt={0.5} mb={0.5}>
@@ -39,11 +39,11 @@ export const InformationTableUnstyled: React.FC<InformationTableProps> = ({ elem
           </TableCell>
           <TableCell>
             <Box display="flex">
-              { link ? (
+              {link ? (
                 <Link href={link}><Box component="p" mt={0} mb={0} pr={2}>{value}</Box></Link>
               ) : (
-                <Box component="p" mt={0} mb={0} pr={2}>{value}</Box>
-              )
+                  <Box component="p" mt={0} mb={0} pr={2}>{value}</Box>
+                )
               }
               {tooltip &&
                 <Tooltip title={tooltip} placement="right" enterDelay={300}>
@@ -53,7 +53,7 @@ export const InformationTableUnstyled: React.FC<InformationTableProps> = ({ elem
             </Box>
           </TableCell>
         </TableRow>
-      ))}
+      ) : null)}
     </TableBody>
   </Table>
 );

@@ -72,12 +72,10 @@ export const BgCollapseTable: React.FC<BgCollapseTableProps> = ({
     <Box className={classes.scrollBox}>
       <TableContainer component={Paper}>
         <Table size="small">
-          {headers && (
+          {headers ? (
             <TableHead>
               <TableRow>
-                {visibleCollapseRows.length > 0 &&
-                  <TableCell />
-                }
+                {visibleCollapseRows.length > 0 ? <TableCell /> : null}
                 {headers.map(header => (
                   <React.Fragment key={header.text}>
                     {header.val ? (
@@ -89,7 +87,7 @@ export const BgCollapseTable: React.FC<BgCollapseTableProps> = ({
                 ))}
               </TableRow>
             </TableHead>
-          )}
+          ) : null}
           <TableBody>
             {visibleCollapseRows.map(row => {
               if ("subRows" in row) {

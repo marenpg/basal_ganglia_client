@@ -106,18 +106,17 @@ const analysisDetailedQuery = gql`
       sectioningDetail {
         sectionThickness
         sectionOrientation
-        sectioningInstrument {
+        SectioningInstrument {
           id
           name
         }
       }
       reporterIncubations {
-        id
         order
         concentration
         time
         temperature
-        reporter {
+        Reporter {
           name
           type
           rrid
