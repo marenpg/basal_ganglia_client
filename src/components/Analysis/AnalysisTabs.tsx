@@ -51,26 +51,28 @@ const AnalysisTabsInner: React.FC<RouteComponentProps> = (history) => {
   return (
     <Box mb={4}>
       <AppBar position="static" color="secondary">
-        <Tabs
-          // centered
-          value={tabValue}
-          onChange={handleTabChange}
-          aria-label="simple tabs example"
-          indicatorColor="primary"
-          textColor="primary"
-          variant="scrollable"
-          scrollButtons="on"
-        >
-          <Tab label={selectedAnalysis?.dataType} {...a11yTabProps(0)} />
-          <Tab label="Animals" {...a11yTabProps(1)} />
-          <Tab label="Data acquisition" {...a11yTabProps(2)} />
-          <Tab label="Anatomical metadata" {...a11yTabProps(3)} />
-          <Tab label="Source" {...a11yTabProps(4)} />
-          {/* {hasSimilarAnalyses ? ( */}
-          <Tab label="Similar analyses" {...a11yTabProps(5)} />
-          {/* ) : null
+        <Container maxWidth="lg">
+          <Tabs
+            // centered
+            value={tabValue}
+            onChange={handleTabChange}
+            aria-label="simple tabs example"
+            indicatorColor="primary"
+            textColor="primary"
+            variant="scrollable"
+            scrollButtons="on"
+          >
+            <Tab label={selectedAnalysis?.dataType} {...a11yTabProps(0)} />
+            <Tab label="Animals" {...a11yTabProps(1)} />
+            <Tab label="Data acquisition" {...a11yTabProps(2)} />
+            <Tab label="Anatomical metadata" {...a11yTabProps(3)} />
+            <Tab label="Source" {...a11yTabProps(4)} />
+            {/* {hasSimilarAnalyses ? ( */}
+            <Tab label="Similar analyses" {...a11yTabProps(5)} />
+            {/* ) : null
           } */}
-        </Tabs>
+          </Tabs>
+        </Container>
       </AppBar>
       <TabPanel value={tabValue} index={0}>
         <Container maxWidth="md">
