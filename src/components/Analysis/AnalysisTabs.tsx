@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
+import { withRouter, RouteComponentProps } from "react-router";
 
 import { AppBar, Box, Container, Tabs, Tab } from "@material-ui/core";
 import { AnalysisContext } from "../../providers/contexts";
@@ -16,16 +17,34 @@ const a11yTabProps = (index: number) => ({
   "aria-controls": `simple-tabpanel-${index}`
 });
 
-export const AnalysisTabs: React.FC = () => {
+const AnalysisTabsInner: React.FC<RouteComponentProps> = (history) => {
   const [tabValue, setTabValue] = useState<number>(0);
 
   const { selectedAnalysis } = useContext(AnalysisContext);
-  const hasSimilarAnalyses = selectedAnalysis?.similarAnalyses?.from.length;
+  // const hasSimilarAnalyses = selectedAnalysis?.similarAnalyses?.from.length;
 
   useEffect(() => {
   }, [selectedAnalysis])
 
+  useEffect(() => {
+    if (!history.location.hash) {
+      return
+    }
+    let newTab = 0
+    try {
+      newTab = parseInt(history.location.hash.replace("#", ""));
+      if (newTab > 5 || newTab < 0) {
+        return;
+      }
+    } catch (error) {
+      return;
+    }
+
+    setTabValue(newTab)
+  }, [history]);
+
   const handleTabChange = (_: any, newTabValue: number) => {
+    window.location.hash = `#${newTabValue}`;
     setTabValue(newTabValue);
   };
 
@@ -47,10 +66,10 @@ export const AnalysisTabs: React.FC = () => {
           <Tab label="Data acquisition" {...a11yTabProps(2)} />
           <Tab label="Anatomical metadata" {...a11yTabProps(3)} />
           <Tab label="Source" {...a11yTabProps(4)} />
-          {hasSimilarAnalyses ? (
-            <Tab label="Similar analyses" {...a11yTabProps(5)} />
-          ) : null
-          }
+          {/* {hasSimilarAnalyses ? ( */}
+          <Tab label="Similar analyses" {...a11yTabProps(5)} />
+          {/* ) : null
+          } */}
         </Tabs>
       </AppBar>
       <TabPanel value={tabValue} index={0}>
@@ -84,14 +103,16 @@ export const AnalysisTabs: React.FC = () => {
           <SourceInformation />
         </Container>
       </TabPanel>
-      {hasSimilarAnalyses ? (
-        <TabPanel value={tabValue} index={5}>
-          <Container maxWidth="md">
-            <SimilarAnalyses />
-          </Container>
-        </TabPanel>
-      ) : null
-      }
+      {/* {hasSimilarAnalyses ? ( */}
+      <TabPanel value={tabValue} index={5}>
+        <Container maxWidth="md">
+          <SimilarAnalyses />
+        </Container>
+      </TabPanel>
+      {/* ) : null
+      } */}
     </Box>
   );
 };
+
+export const AnalysisTabs = withRouter(AnalysisTabsInner);

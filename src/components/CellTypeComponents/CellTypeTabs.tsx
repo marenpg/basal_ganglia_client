@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
+import { withRouter, RouteComponentProps } from "react-router";
 
 import { AppBar, Box, Container, Tabs, Tab, Typography } from "@material-ui/core";
 import { CellTypeContext } from "../../providers/contexts";
@@ -13,7 +14,7 @@ const a11yTabProps = (index: number) => ({
   "aria-controls": `simple-tabpanel-${index}`
 });
 
-export const CellTypeTabs: React.FC = () => {
+const CellTypeTabsInner: React.FC<RouteComponentProps> = ({ history }) => {
   const [tabValue, setTabValue] = useState<number>(0);
   const [analysisIds, setAnalysesIds] = useState<string[]>([]);
 
@@ -23,7 +24,25 @@ export const CellTypeTabs: React.FC = () => {
     selectedCellType && setAnalysesIds(selectedCellType.analyses.map(a => a.id));
   }, [selectedCellType])
 
+  useEffect(() => {
+    if (!history.location.hash) {
+      return
+    }
+    let newTab = 0
+    try {
+      newTab = parseInt(history.location.hash.replace("#", ""));
+      if (newTab > 1 || newTab < 0) {
+        return;
+      }
+    } catch (error) {
+      return;
+    }
+
+    setTabValue(newTab)
+  }, [history]);
+
   const handleTabChange = (_: any, newTabValue: number) => {
+    window.location.hash = `#${newTabValue}`;
     setTabValue(newTabValue);
   };
 
@@ -76,3 +95,5 @@ export const CellTypeTabs: React.FC = () => {
     </Box>
   );
 };
+
+export const CellTypeTabs = withRouter(CellTypeTabsInner);

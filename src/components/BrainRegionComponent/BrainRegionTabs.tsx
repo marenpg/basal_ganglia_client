@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useContext } from "react";
-
+import React, { useState, useEffect } from "react";
+import { withRouter, RouteComponentProps } from "react-router";
 import { AppBar, Box, Container, Divider, Tabs, Tab, CircularProgress, Typography } from "@material-ui/core";
 
 import { CellType } from "../../utils/api/types";
@@ -13,17 +13,16 @@ import { RegionConnectivity } from "./connectivity/types";
 import { getRegionConnectivity } from "./connectivity/utils";
 import AnalysesContainer from "../../containers/AnalysesContainer";
 import { AnalysesTable } from "../Analyses/AnalysesTable";
-import { BrainRegionDataContext } from "../../providers/contexts";
-
 
 const a11yTabProps = (index: number) => ({
   id: `simple-tab-${index}`,
   "aria-controls": `simple-tabpanel-${index}`
 });
 
-export const BrainRegionTabs: React.FC<BrainRegionTabsProps> = ({
+const BrainRegionTabsInner: React.FC<BrainRegionTabsProps & RouteComponentProps> = ({
   selectedRegion,
-  subRegions
+  subRegions,
+  history
 }) => {
   const [tabValue, setTabValue] = useState<number>(0);
   const [cellsInSubRegions, setCellsInSubRegions] = useState<CellType[]>([])
@@ -33,12 +32,24 @@ export const BrainRegionTabs: React.FC<BrainRegionTabsProps> = ({
   const [connectivity, setConnectivity] = useState<RegionConnectivity[]>([])
   const [loading, setLoading] = useState<boolean>(true);
 
-  const { tab } = useContext(BrainRegionDataContext);
+  const hasConnectivityInfo = connectivity && connectivity.length > 0;
 
   useEffect(() => {
-    if (!tab) return;
-    setTabValue(tab!);
-  }, [tab]);
+    if (!history.location.hash) {
+      return
+    }
+    let newTab = 0
+    try {
+      newTab = parseInt(history.location.hash.replace("#", ""));
+      if ((hasConnectivityInfo && newTab > 2) || (!hasConnectivityInfo && newTab > 1) || newTab < 0) {
+        return;
+      }
+    } catch (error) {
+      return;
+    }
+
+    setTabValue(newTab)
+  }, [history, hasConnectivityInfo]);
 
   useEffect(() => {
     const subRegionCells = getCellsInRegions(subRegions);
@@ -52,6 +63,7 @@ export const BrainRegionTabs: React.FC<BrainRegionTabsProps> = ({
   }, [selectedRegion, subRegions])
 
   const handleTabChange = (_: any, newTabValue: number) => {
+    window.location.hash = `#${newTabValue}`;
     setTabValue(newTabValue);
   };
 
@@ -72,7 +84,7 @@ export const BrainRegionTabs: React.FC<BrainRegionTabsProps> = ({
               >
                 <Tab label="Cells" {...a11yTabProps(0)} />
                 <Tab label="Analyses" {...a11yTabProps(1)} />
-                {connectivity && connectivity.length > 0 &&
+                {hasConnectivityInfo &&
                   <Tab label="Connected Regions" {...a11yTabProps(2)} />
                 }
               </Tabs>
@@ -101,7 +113,7 @@ export const BrainRegionTabs: React.FC<BrainRegionTabsProps> = ({
             <TabPanel value={tabValue} index={1}>
               <AnalysesTable />
             </TabPanel>
-            {connectivity && connectivity.length > 0 &&
+            {hasConnectivityInfo &&
               <TabPanel value={tabValue} index={2}>
                 <BrainRegionConnections connectivity={connectivity} />
               </TabPanel>
@@ -111,3 +123,5 @@ export const BrainRegionTabs: React.FC<BrainRegionTabsProps> = ({
     </Box>
   );
 };
+
+export const BrainRegionTabs = withRouter(BrainRegionTabsInner);

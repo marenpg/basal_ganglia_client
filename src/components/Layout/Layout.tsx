@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import classNames from "classnames";
 
-import { AppBar, Toolbar, Typography, IconButton } from "@material-ui/core";
+import { AppBar, Toolbar, Typography, Link, IconButton } from "@material-ui/core";
 import { Menu as MenuIcon } from "@material-ui/icons";
 
 import { MenuDrawer } from "./MenuDrawer";
@@ -15,21 +15,22 @@ const Layout: React.FC<StyleProps> = ({ classes, children }) => {
         <Toolbar className={classes.toolbar}>
           <IconButton
             aria-label="Open drawer"
-            // color="primary"
             onClick={() => setDrawerOpen(true)}
             className={classNames(classes.menuButton)}
           >
             <MenuIcon />
           </IconButton>
-          <Typography
-            component="h1"
-            variant="h5"
-            color="primary"
-            noWrap
-            className={classes.title}
-          >
-            Basal Ganglia Data
-          </Typography>
+          <Link href="/">
+            <Typography
+              component="h1"
+              variant="h5"
+              color="primary"
+              noWrap
+              className={classes.title}
+            >
+              Basal Ganglia Data
+            </Typography>
+          </Link>
         </Toolbar>
       </AppBar>
       <MenuDrawer
