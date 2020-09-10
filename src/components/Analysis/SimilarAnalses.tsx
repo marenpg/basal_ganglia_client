@@ -61,7 +61,7 @@ export const SimilarAnalyses: React.FC = () => {
   return (
     <Box mt={2}>
       {selectedAnalysis?.brainRegions.map(region => (
-        <Box mb={2}>
+        <Box mb={2} key={region.id}>
           <Button component={Link} color="primary" startIcon={<NavigateNextIcon />} href={`/brain-regions/${region.id}#1`}>See all analyses performed on the brain region {region.name}</Button>
         </Box>
       ))}

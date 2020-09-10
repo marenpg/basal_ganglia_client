@@ -406,6 +406,19 @@ const analysisDetailedQuery = gql`
       dataTypes {
         id
         name
+        regionRecord {
+          primaryRegion {
+            id
+            name
+          }
+        }
+      }
+      quantitations {
+        id
+        regionZone {
+          id
+          name
+        }
       }
     }
   }

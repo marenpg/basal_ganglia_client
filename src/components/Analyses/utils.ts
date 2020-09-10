@@ -151,7 +151,7 @@ export const getSubRows = (analysis: Analysis): TableRow[] => {
         cells: [
           { text: getAnalysisNameFormatted(dataType.name) },
           { text: dataType.regionRecord?.primaryRegion?.name },
-          { text: dataType.regionZone ? dataType.regionZone?.name : "" }
+          { text: analysis.quantitations?.length ? analysis.quantitations[0]?.regionZone?.name : "" },
         ]
       }
     ))
