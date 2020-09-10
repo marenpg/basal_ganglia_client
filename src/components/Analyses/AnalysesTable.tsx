@@ -7,8 +7,9 @@ import { Analysis } from "../../utils/api/types";
 import { getAnalysisOnRegions } from "../../pages/experiments/utils";
 import { TableRow } from "../Base/BgTable/types";
 import { BgCollapseTable } from "../Base/BgTable";
+import SearchField from "../Base/Search";
 
-import { sortAnalyses, getRows, headers } from "./utils";
+import { sortAnalyses, getRows, headers, getSearchFilterAnalyses } from "./utils";
 import { TableSort } from "./types";
 import { AdvancedFilter } from "./AdvancedFilter";
 
@@ -23,10 +24,13 @@ export const AnalysesTable: React.FC<AnalysesTableProps> = ({ filteredSpecieAnal
   const [rows, setRows] = useState<TableRow[]>([]);
 
   const [analysesOnSpecie, setAnalysesOnSpecie] = useState<Analysis[]>([]);
+  const [advancedFilteredAnalyses, setAdvancedFilteredAnalyses] = useState<Analysis[]>([]);
   const [filteredAnalyses, setFilteredAnalyses] = useState<Analysis[]>([]);
 
+  const [searchFilter, setSearchFilter] = useState<string>("");
   const [selectedSpecieIds, setSelectedSpecieIds] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+
   const { analyses, species, selectedBrainRegions } = useContext(AnalysesContext);
 
   useEffect(() => {
@@ -46,21 +50,25 @@ export const AnalysesTable: React.FC<AnalysesTableProps> = ({ filteredSpecieAnal
     );
 
     setAnalysesOnSpecie(sortedAnalyses);
-    setFilteredAnalyses(sortedAnalyses);
+    setAdvancedFilteredAnalyses(sortedAnalyses);
     setLoading(false);
-  }, [analyses, filteredSpecieAnalyses, order, orderBy, species, selectedBrainRegions]);
+  }, [analyses, filteredSpecieAnalyses, order, orderBy, species, selectedBrainRegions, ignoreSelectedRegion]);
+
+  useEffect(() => {
+    setFilteredAnalyses(getSearchFilterAnalyses(searchFilter, advancedFilteredAnalyses));
+  }, [searchFilter, advancedFilteredAnalyses])
 
 
   useEffect(() => {
     setRows(getRows(filteredAnalyses));
   }, [filteredAnalyses])
 
-  const handleFilteredAnalysesChange = (filteredAnalyses: Analysis[]) => {
-    setFilteredAnalyses(filteredAnalyses);
+  const handleFilteredAnalysesChange = (newAdvancedFilteredAnalyses: Analysis[]) => {
+    setAdvancedFilteredAnalyses(newAdvancedFilteredAnalyses);
   }
 
   const handleClearFilter = () => {
-    setFilteredAnalyses(analysesOnSpecie);
+    setAdvancedFilteredAnalyses(analysesOnSpecie);
   }
 
   const handleSortRequest = (newOrderBy: TableSort) => () => {
@@ -74,6 +82,11 @@ export const AnalysesTable: React.FC<AnalysesTableProps> = ({ filteredSpecieAnal
     setRows(getRows(sortedAnalysis))
   };
 
+  const handleSearchFilterChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    const searchValue = event.target.value;
+    setSearchFilter(searchValue);
+  };
+
   if (!loading && !analysesOnSpecie.length) {
     return <Box mt={4}>
       <Container maxWidth="lg">
@@ -84,8 +97,15 @@ export const AnalysesTable: React.FC<AnalysesTableProps> = ({ filteredSpecieAnal
 
   return (
     <Box mt={4}>
+      <Container maxWidth="sm">
+        <SearchField
+          id="brain-region-search"
+          label="Search for analyses by author name or year"
+          searchValue={searchFilter}
+          handleSearch={handleSearchFilterChange}
+        />
+      </Container>
       <Container maxWidth="lg">
-
         <AdvancedFilter
           analyses={analysesOnSpecie}
           selectedSpecieIds={selectedSpecieIds}

@@ -46,6 +46,14 @@ export const getAnalysesOnSpecieBoxes = (specieCheckboxes: CheckBoxElement[], an
   return analyses.filter(a => selectedSpecies.includes(a.specimen.specie.name))
 }
 
+export const getSearchFilterAnalyses = (filter: string, analyses: Analysis[]): Analysis[] => {
+  if (!filter) {
+    return analyses;
+  }
+
+  return analyses.filter(a => getAnalysisNameFormatted(a.name).toLowerCase().indexOf(filter.toLowerCase()) >= 0);
+};
+
 export const getFilteredAnalyses = (
   allAnalyses: Analysis[],
   dataTypeCheckboxes?: CheckBoxElement[],
