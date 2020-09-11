@@ -19,6 +19,7 @@ export const RegularRow: React.FC<RegularRowProps> = ({ classes, row, headers, o
             href={row.link}
             color="textPrimary"
             variant="body1"
+            target="_blank"
             className={classes.tableLink}
           >
             {cell.text ? cell.text : "-"}

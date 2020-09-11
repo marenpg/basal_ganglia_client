@@ -53,7 +53,6 @@ const AnalysisTabsInner: React.FC<RouteComponentProps> = (history) => {
       <AppBar position="static" color="secondary">
         <Container maxWidth="lg">
           <Tabs
-            // centered
             value={tabValue}
             onChange={handleTabChange}
             aria-label="simple tabs example"
@@ -67,10 +66,7 @@ const AnalysisTabsInner: React.FC<RouteComponentProps> = (history) => {
             <Tab label="Data acquisition" {...a11yTabProps(2)} />
             <Tab label="Anatomical metadata" {...a11yTabProps(3)} />
             <Tab label="Source" {...a11yTabProps(4)} />
-            {/* {hasSimilarAnalyses ? ( */}
             <Tab label="Similar analyses" {...a11yTabProps(5)} />
-            {/* ) : null
-          } */}
           </Tabs>
         </Container>
       </AppBar>
@@ -105,14 +101,11 @@ const AnalysisTabsInner: React.FC<RouteComponentProps> = (history) => {
           <SourceInformation />
         </Container>
       </TabPanel>
-      {/* {hasSimilarAnalyses ? ( */}
       <TabPanel value={tabValue} index={5}>
         <Container maxWidth="md">
           <SimilarAnalyses />
         </Container>
       </TabPanel>
-      {/* ) : null
-      } */}
     </Box>
   );
 };

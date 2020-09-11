@@ -43,7 +43,7 @@ export const AnatomicalMetadata: React.FC = () => {
 
     setCollectorsComment({ title: "Collectors comment", value: regionRecord.collectorsComment })
 
-  }, [selectedAnalysis]);
+  }, [selectedAnalysis, selectedData]);
 
   if (!selectedAnalysis) return <></>;
 

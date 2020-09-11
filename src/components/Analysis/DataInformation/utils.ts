@@ -28,15 +28,15 @@ export const getTableElementsQuantitation = (data: Quantitation, analysis: Analy
 };
 
 const getSynapticTarget = (data: Quantitation, analysis: Analysis): string => {
-  if(!data?.estimateRelevance || ! analysis) return "";
-  if(!analysis.objectOfInterest?.NeuralStructure?.name) return data.estimateRelevance;
+  if (!data?.estimateRelevance || !analysis) return "";
+  if (!analysis.objectOfInterest?.NeuralStructure?.name) return data.estimateRelevance;
 
   const estimateRelevance = data.estimateRelevance.toLowerCase();
-  if( estimateRelevance === "per cellular origin"){
+  if (estimateRelevance === "per cellular origin") {
     return `Number of ${analysis.cellTypePutative?.name?.toLowerCase()} ${analysis.objectOfInterest.NeuralStructure.name?.toLowerCase()}`;
   }
 
-  if(estimateRelevance === "per all targets in ROI" || estimateRelevance === "per cellular target"){
+  if (estimateRelevance === "per all targets in ROI" || estimateRelevance === "per cellular target") {
     return `Number of ${analysis.objectOfInterest.NeuralStructure.name.toLowerCase()} made onto ${data.targetCell?.name?.toLowerCase()} ${data.targetCellularRegion?.name?.toLowerCase()}`;
   }
 
@@ -119,7 +119,7 @@ const getQuantitationTotalNumber = (qunatitation: Quantitation, selectedAnalysis
     summary = `${qunatitation.density} ± ${qunatitation.densitySD} (mean ± SD) per ${qunatitation.densityUnit}. `;
     const ooiIds = ["1", "2", "23"]
     const ooiId = selectedAnalysis.objectOfInterest?.NeuralStructure?.id;
-    if(qunatitation.densityUnit != "mm^3" && ooiId && ooiIds.includes(ooiId)){
+    if (qunatitation.densityUnit !== "mm^3" && ooiId && ooiIds.includes(ooiId)) {
       summary += `This equals a density of ${qunatitation.volumetricDensity} per mm^3.`
     }
   }
@@ -129,7 +129,7 @@ const getQuantitationTotalNumber = (qunatitation: Quantitation, selectedAnalysis
 
 export const getQuantitationSummary = (qunatitation: Quantitation, selectedAnalysis: Analysis): string => {
   let summary = getQuantitationTotalNumber(qunatitation, selectedAnalysis);
-  if(summary) {
+  if (summary) {
     return `Estimated total number was ${summary}`;
   }
   return summary;
@@ -179,12 +179,12 @@ export const getDistributionData = (analysis: Analysis, distribution: Distributi
 
   const OOIId = analysis.objectOfInterest?.NeuralStructure?.id;
   if (!OOIId || !distribution || !distribution.cellularTargetRegion || !synapseIds.includes(OOIId)) return elements;
-  
-  var value = 
-  distribution.cellularTargetRegion.cytochemicalId
-    ? `${distribution.cellularTargetRegion.cytochemicalId}, ${distribution.cellularTargetRegion.CellularRegion.name}`
-    : distribution.cellularTargetRegion.CellularRegion.name;
-  elements.push({title: "Synaptic target", value}) 
 
-  return elements; 
+  var value =
+    distribution.cellularTargetRegion.cytochemicalId
+      ? `${distribution.cellularTargetRegion.cytochemicalId}, ${distribution.cellularTargetRegion.CellularRegion.name}`
+      : distribution.cellularTargetRegion.CellularRegion.name;
+  elements.push({ title: "Synaptic target", value })
+
+  return elements;
 }
