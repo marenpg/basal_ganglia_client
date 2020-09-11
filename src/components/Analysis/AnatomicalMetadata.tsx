@@ -21,11 +21,14 @@ export const AnatomicalMetadata: React.FC = () => {
 
     const regionZone = "regionZone" in selectedData ? selectedData.regionZone : undefined;
 
-    const regions = selectedAnalysis.brainRegions.map(r => r.name)?.join(", ");
+    // const regions = selectedAnalysis.brainRegions.map(r => r.name)?.join(", ");
+    const region = regionRecord.coverage === "Part of region" && regionZone ?
+      `Part of ${regionRecord.primaryRegion?.name} (${getStringRep(regionZone.name, regionZone.ontology)})`
+      : regionRecord.primaryRegion?.name;
+
     regionRecord && setRegionElements([
-      { title: "Brain region", value: regionRecord.primaryRegion?.name },
-      { title: "Region zone", value: regionZone && getStringRep(regionZone.name, regionZone.ontology) },
-      { title: "Coverage", value: regionRecord.coverage, tooltip: "How much of the region is covered by the analysis" },
+      { title: "Brain region", value: region },
+      { title: "Coverage", value: regionRecord.coverage === "Part of region" ? "" : regionRecord.coverage, tooltip: "How much of the region is covered by the analysis" },
       { title: "Specificity", value: regionRecord.specificity, tooltip: "Whether or not the analysis specifically related to the region. If non-specific, surrounding regions may be covered" },
     ])
 
