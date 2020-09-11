@@ -341,6 +341,7 @@ export interface Neuromorpho {
   href: string;
   base64: string;
   archive: string;
+  dois: string;
 }
 
 export interface Quantitation {

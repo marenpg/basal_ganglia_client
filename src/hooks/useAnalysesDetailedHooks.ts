@@ -253,6 +253,7 @@ const analysisDetailedQuery = gql`
           href
           base64
           archive
+          dois
         }
 
         regionRecord {

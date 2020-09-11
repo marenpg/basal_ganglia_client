@@ -43,8 +43,9 @@ export const MorphologyInformation: React.FC = () => {
           <img src={`data:image/png;base64, ${neuromorphoLinks.base64.replace("b'", "").replace("'", "")}`} alt="" style={{ maxWidth: "300px" }} />
           <Typography variant="body2" color="textSecondary" component="p">
             {"This morphology is collected from "}
-            <Link href={neuromorphoLinks.href}>neuromorpho.org</Link>
-            {` (${neuromorphoLinks?.archive} repository).`}
+            <Link href={neuromorphoLinks.href}>NeuroMorpho.Org</Link>
+            {` (${neuromorphoLinks?.archive} repository). `}
+            {"See "} <Link href="#4">Sources</Link> {"for detailed information."}
           </Typography>
         </InformationCard>
       ) : null}
