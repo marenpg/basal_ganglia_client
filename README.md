@@ -1,10 +1,10 @@
 # Murine Basal Ganglia Web Solution - UI
+This application is based on the [GRANDstack Starter](https://github.com/grand-stack/grand-stack-starter) react web application.
+This directory contains a React app (bootstrapped with Create React App) that uses Apollo Client to query the  [murine basal ganglia GraphQL API](https://github.com/marenpg/basal_ganglia_api).
 
-This directory contains a React app (bootstrapped with Create React App) that uses Apollo Client to query a GraphQL API.
+The web solution is deployed to Heroku at https://basal-ganglia.herokuapp.com/.
 
-The template app queries for a list of users from the GraphQL API and displays them in a list.
-
-## Quickstart
+## Getting started
 
 Install dependencies:
 
@@ -23,9 +23,3 @@ npm run start-dev
 Configuration is done with environment variables specified in `.env`
 
 Edit `.env` to specify the URI of the GraphQL API. The default is `http://localhost:4000`
-
-_.env_
-
-```
-REACT_APP_GRAPHQL_URI=http://localhost:4000
-```
